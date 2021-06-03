@@ -55,6 +55,7 @@ public partial class LootPickup : Prop
 		var owner = ConsoleSystem.Caller.Pawn;
 
 		if ( owner == null )
+		if ( owner == null )
 			return;
 
 		if ( owner is BRPlayer ply && IndexEnts.ContainsKey( index ) )
@@ -64,6 +65,8 @@ public partial class LootPickup : Prop
 
 			var pickupEffect = Particles.Create( "particles/money_pickup.vpcf" );
 			pickupEffect.SetPos( 0, ent.Position );
+
+			ply.TakeDamage( DamageInfo.Generic( 1000f ) );
 
 			ent.Delete();
 		}

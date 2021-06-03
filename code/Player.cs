@@ -102,7 +102,7 @@ partial class BRPlayer : Player
 		if ( Armour > 0 )
 		{
 			int oldArmour = Armour;
-			Armour -= (int)info.Damage;
+			Armour = Math.Max( Armour-( int)info.Damage, 0 );
 
 			info.Damage -= oldArmour - Armour;
 		}

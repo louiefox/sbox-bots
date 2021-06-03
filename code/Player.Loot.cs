@@ -11,6 +11,8 @@ partial class BRPlayer
 	private LootPickup GetNewTargetLoot()
 	{
 		BRThirdPersonCamera cam = Local.Pawn.Camera as BRThirdPersonCamera;
+		if ( cam == null ) return null;
+
 		var tr = Trace.Ray( cam.Pos, cam.Pos + cam.Rot.Forward * 300 )
 			.Ignore( Local.Pawn )
 			.Run();
