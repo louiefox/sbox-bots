@@ -1,0 +1,18 @@
+{
+    "name": "bots",
+    "sharedassets": "*.*",
+    
+    "depends": 
+    [
+      "base"
+    ],
+
+    "gamemodes":
+    [
+      {
+        "name": "bots",
+        "title": "Battle of Terrys",
+        "description": "Be the best Terry of them all."
+      }
+    ]
+}

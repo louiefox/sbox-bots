@@ -1,0 +1,140 @@
+﻿crosshair {
+	position: absolute;
+	transform: translateX( -50% ) translateY( -0% );
+	mix-blend-mode: lighten;
+	width: 1px;
+	height: 1px;
+
+	.element {
+		position: absolute;
+	}
+
+	opacity: 0.5;
+	transition: opacity 0.3s ease-out;
+
+	.el0, .el1, .el2, .el3, .el4 {
+		background-color: white;
+		border-radius: 0;
+		transition: all 0.5s ease-out;
+	}
+
+	.el0 {
+		width: 2px;
+		height: 2px;
+	}	
+	
+	.el1, .el2 {
+		width: 10px;
+		height: 2px;
+	}
+
+	.el3, .el4 {
+		width: 2px;
+		height: 10px;
+	}
+
+	.el1 {
+		right: 8px;
+	}
+
+	.el2 {
+		left: 8px;
+	}
+
+	.el3 {
+		bottom: 8px;
+		left: -.5px;
+	}
+
+	.el4 {
+		top: 8px;
+		left: -.5px;
+	}
+
+
+	&.fire {
+		opacity: 1;
+		transition: opacity 0.01s ease-out;
+
+		.el1, .el2, .el3, .el4 {
+			transition: all 0.01s ease-in;
+		}
+
+		.el1 {
+			right: 60px;
+		}
+
+		.el2 {
+			left: 60px;
+		}
+
+		.el3 {
+			bottom: 60px;
+		}
+
+		.el4 {
+			top: 60px;
+		}
+	}
+
+
+	&.dm_shotgun {
+		opacity: 0.3;
+		transition: opacity 0.5s linear;
+
+		.el0 {
+			background-color: transparent;
+			border-radius: 1000px;
+			left: -100px;
+			top: -100px;
+			width: 200px;
+			height: 200px;
+			border: 6px solid #ff00;
+			border-left: 6px solid #ff0;
+			border-right: 6px solid #ff0;
+			transition: all 0.5s ease-out;
+		}
+
+		.el1 {
+			transition: all 0.5s ease-out;
+			background-color: #ff05;
+			border-radius: 1000px;
+			width: 10px;
+			height: 10px;
+			left: -5px;
+			top: -5px;
+		}
+
+		.el2 {
+			opacity: 0;
+		}
+
+		.el3 {
+			opacity: 0;
+		}
+
+		&.fire {
+			opacity: 0.9;
+			transition: opacity 0.01s ease-out;
+
+			.el0 {
+				transition: all 0.01s ease-out;
+				left: -150px;
+				width: 300px;
+				border: 6px solid #0000;
+				border-left: 6px solid #fa0;
+				border-right: 6px solid #fa0;
+				opacity: 1.0;
+			}
+
+			.el1 {
+				transition: all 0.01s ease-out;
+				background-color: #ff0;
+				width: 16px;
+				height: 16px;
+				left: -8px;
+				top: -8px;
+			}
+		}
+	}
+}
