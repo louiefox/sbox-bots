@@ -6,9 +6,9 @@ using BattleRoyale;
 
 partial class BRPlayer
 {
-	private LootPickup LootTarget;
+	private FloorUsable LootTarget;
 
-	public LootPickup GetNewTargetLoot()
+	public FloorUsable GetNewTargetLoot()
 	{
 		BRThirdPersonCamera cam = Local.Pawn.Camera as BRThirdPersonCamera;
 		if ( cam == null ) return null;
@@ -22,12 +22,12 @@ partial class BRPlayer
 		List<LootPickupDist> sortedEnts = new List<LootPickupDist>();
 		foreach ( var ent in All )
 		{
-			if ( ent is LootPickup lootEnt )
+			if ( ent is FloorUsable lootEnt )
 			{
 				float distance = startPos.Distance( lootEnt.Position );
-				if ( distance > 30 ) continue;
+				if ( distance > 30 && tr.Entity != ent ) continue;
 
-				sortedEnts.Add( new LootPickupDist( lootEnt as LootPickup, distance ) );
+				sortedEnts.Add( new LootPickupDist( lootEnt as FloorUsable, distance ) );
 			}
 		}
 
@@ -35,7 +35,7 @@ partial class BRPlayer
 
 		if ( sortedEnts.Count <= 0 ) return null;
 
-		LootPickup newTarget = sortedEnts[0].Ent;
+		FloorUsable newTarget = sortedEnts[0].Ent;
 
 		if ( newTarget == null || !newTarget.IsValid() ) return null;
 
@@ -45,7 +45,7 @@ partial class BRPlayer
 	[Event( "client.tick" )]
 	public void LootPickupNearest()
 	{
-		LootPickup oldTarget = LootTarget;
+		FloorUsable oldTarget = LootTarget;
 		LootTarget = GetNewTargetLoot();
 
 		if ( oldTarget == LootTarget ) return;
@@ -64,20 +64,20 @@ partial class BRPlayer
 	{
 		if ( !IsClient ) return;
 
-		LootPickup target = GetNewTargetLoot();
+		FloorUsable target = GetNewTargetLoot();
 
 		if ( target == null ) return;
 
-		ConsoleSystem.Run( "request_loot_pickup", target.Index );
+		ConsoleSystem.Run( "request_forusable_use", target.Index );
 	}
 }
 
 public struct LootPickupDist
 {
-	public LootPickup Ent { set; get; }
+	public FloorUsable Ent { set; get; }
 	public float Distance { set; get; }
 
-	public LootPickupDist(LootPickup ent, float distance)
+	public LootPickupDist( FloorUsable ent, float distance)
 	{
 		Ent = ent;
 		Distance = distance;

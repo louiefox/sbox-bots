@@ -70,7 +70,7 @@ namespace Sandbox.UI
 		{
 			base.Tick();
 
-			CurrentTarget = (Local.Pawn as BRPlayer).GetNewTargetLoot();
+			CurrentTarget = (Local.Pawn as BRPlayer).GetNewTargetLoot() as LootPickup;
 
 			if( CurrentTarget == null && CurrentTag != null )
 			{

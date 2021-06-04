@@ -36,8 +36,8 @@ public partial class BRGame : Sandbox.Game
 		player.Respawn();
 	}
 
-	[ServerCmd( "test_loot" )]
-	public static void TestLoot( string itemID )
+	[ServerCmd( "test_spawnloot" )]
+	public static void TestSpawnLoot( string itemID )
 	{
 		var owner = ConsoleSystem.Caller.Pawn;
 
@@ -56,5 +56,24 @@ public partial class BRGame : Sandbox.Game
 		};
 
 		lootEnt.SetItem( itemID );
+	}		
+	
+	[ServerCmd( "test_spawncrate" )]
+	public static void TestSpawnCrate()
+	{
+		var owner = ConsoleSystem.Caller.Pawn;
+
+		if ( owner == null )
+			return;
+
+		var tr = Trace.Ray( owner.EyePos, owner.EyePos + owner.EyeRot.Forward * 200 )
+			.UseHitboxes()
+			.Ignore( owner )
+			.Run();
+
+		new SupplyCrate
+		{
+			Position = tr.EndPos
+		};
 	}	
 }

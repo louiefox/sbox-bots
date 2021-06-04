@@ -2,14 +2,9 @@
 using System;
 using System.Collections.Generic;
 
-[Library( "ent_loot_pickup" )]
-public partial class LootPickup : Prop
+[Library( "ent_lootpickup" )]
+public partial class LootPickup : FloorUsable
 {
-	private static Dictionary<int, LootPickup> IndexEnts = new Dictionary<int, LootPickup>();
-
-	[Net]
-	public int Index { get; set; }
-
 	[Net]
 	public string ItemID { get; set; }
 
@@ -19,24 +14,7 @@ public partial class LootPickup : Prop
 	private bool ClientBobIncreasing = true;
 	private float ClientZBob = 0f;
 
-	public override void Spawn()
-	{
-		base.Spawn();
-
-		if ( !IsServer ) return;
-
-		int newIndex = -1;
-		for ( int i = 0; i < IndexEnts.Count; i++ )
-		{
-			if ( IndexEnts.ContainsKey( i ) ) continue;
-
-			newIndex = i;
-			break;
-		}
-
-		Index = newIndex >= 0 ? newIndex : IndexEnts.Count;
-		IndexEnts.Add( Index, this );
-	}
+	private Color32 RarityColor;
 
 	public void SetItem(string itemID)
 	{
@@ -55,23 +33,22 @@ public partial class LootPickup : Prop
 	{
 		LootItem item = LootItem.Items[ItemID];
 
-		Color32 glowColor;
 		switch (item.Rarity)
 		{
 			case ItemRarity.Uncommon:
-				glowColor = new Color32( 75, 235, 61 );
+				RarityColor = new Color32( 75, 235, 61 );
 				break;
 			case ItemRarity.Rare:
-				glowColor = new Color32( 67, 61, 235 );
+				RarityColor = new Color32( 67, 61, 235 );
 				break;			
 			case ItemRarity.Epic:
-				glowColor = new Color32( 154, 61, 235 );
+				RarityColor = new Color32( 154, 61, 235 );
 				break;			
 			case ItemRarity.Legendary:
-				glowColor = new Color32( 235, 177, 61 );
+				RarityColor = new Color32( 235, 177, 61 );
 				break;
 			default:
-				glowColor = new Color32( 176, 176, 176 );
+				RarityColor = new Color32( 176, 176, 176 );
 				break;
 		}
 
@@ -80,11 +57,11 @@ public partial class LootPickup : Prop
 		ClientModel.Position = Position;
 		ClientModel.SetModel( item.Model );
 
-		ClientModel.GlowState = GlowStates.GlowStateOff;
+		ClientModel.GlowState = GlowStates.GlowStateOn;
 		ClientModel.GlowDistanceStart = 0;
 		ClientModel.GlowDistanceEnd = 1000;
-		ClientModel.GlowColor = glowColor.ToColor();
-		ClientModel.GlowActive = false;
+		ClientModel.GlowColor = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
+		ClientModel.GlowActive = true;
 	}
 	
 	[Event( "client.tick" )]
@@ -109,16 +86,14 @@ public partial class LootPickup : Prop
 		ClientModel.Rotation = Rotation.From( 0f, ClientZRot, 0f );
 	}
 
-	public void EnableGlow()
+	public override void EnableGlow()
 	{
-		ClientModel.GlowState = GlowStates.GlowStateOn;
-		ClientModel.GlowActive = true;
+		ClientModel.GlowColor = RarityColor.ToColor();
 	}	
 	
-	public void DisableGlow()
+	public override void DisableGlow()
 	{
-		ClientModel.GlowState = GlowStates.GlowStateOff;
-		ClientModel.GlowActive = false;
+		ClientModel.GlowColor = new Color( 1.0f, 1.0f, 1.0f, .1f );
 	}
 
 	protected override void OnDestroy()
@@ -126,32 +101,16 @@ public partial class LootPickup : Prop
 		base.OnDestroy();
 
 		ClientModel?.Delete();
-		IndexEnts.Remove( Index );
 	}
 
-	public bool IsUsable( Entity user )
+	public override void Use( Player ply )
 	{
-		return true;
-	}
+		if ( ply.Position.Distance( Position ) > 200 ) return;
 
-	[ServerCmd( "request_loot_pickup" )]
-	public static void RequestPickup(int index)
-	{
-		var ply = ConsoleSystem.Caller.Pawn as BRPlayer;
+		LootItem item = LootItem.Items[ItemID];
 
-		if ( ply == null || ply.LifeState != LifeState.Alive || !IndexEnts.ContainsKey( index ) ) return;
+		item.GiveItem( ply, Position );
 
-		LootPickup ent = IndexEnts[index];
-		if ( ent == null || !ent.IsValid() || ply.Position.Distance( ent.Position ) > 200 ) return;
-
-		var pickupEffect = Particles.Create( "particles/money_pickup.vpcf" );
-		pickupEffect.SetPos( 0, ent.Position );
-
-		string itemID = ent.ItemID;
-		LootItem item = LootItem.Items[itemID];
-
-		item.GiveItem( ply, ent.Position );
-
-		ent.Delete();
+		Delete();
 	}
 }
