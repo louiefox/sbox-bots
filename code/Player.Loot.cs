@@ -8,12 +8,12 @@ partial class BRPlayer
 {
 	private LootPickup LootTarget;
 
-	private LootPickup GetNewTargetLoot()
+	public LootPickup GetNewTargetLoot()
 	{
 		BRThirdPersonCamera cam = Local.Pawn.Camera as BRThirdPersonCamera;
 		if ( cam == null ) return null;
 
-		var tr = Trace.Ray( cam.Pos, cam.Pos + cam.Rot.Forward * 300 )
+		var tr = Trace.Ray( cam.Pos, cam.Pos + cam.Rot.Forward * 250 )
 			.Ignore( Local.Pawn )
 			.Run();
 
@@ -25,7 +25,7 @@ partial class BRPlayer
 			if ( ent is LootPickup lootEnt )
 			{
 				float distance = startPos.Distance( lootEnt.Position );
-				if ( distance > 50 ) continue;
+				if ( distance > 30 ) continue;
 
 				sortedEnts.Add( new LootPickupDist( lootEnt as LootPickup, distance ) );
 			}

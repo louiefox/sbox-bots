@@ -14,33 +14,61 @@ partial class BRWeaponInventory
 		Owner = owner;
 	}
 
-	public bool Add( int slot, Entity ent, bool select )
+	public bool Add( int slot, Entity ent )
 	{
-		var weapon = ent as BaseBRWeapon;
-
-		if ( weapon == null || Weapons.Count >= 2 )
+		if ( ent as BaseBRWeapon == null )
 		{
 			ent.Delete();
 			return false;
 		}
+
+		if ( Weapons.ContainsKey( slot ) ) return false;
 
 		Weapons[slot] = ent;
 
 		ent.Parent = Owner;
 		ent.OnCarryStart( Owner );
 
-		if ( select )
-		{
-			CurrentSlot = slot;
-			Owner.ActiveChild = Weapons[slot];
-		}
+		CurrentSlot = slot;
+		Owner.ActiveChild = ent;
 
 		return true;
 	}
 
-	public bool Add( int slot, Entity ent )
+	public bool Remove( int slot, bool delete )
 	{
-		return Add( slot, ent, false );
+		if ( !Weapons.ContainsKey( slot ) ) return false;
+
+		if ( delete && Weapons[slot].IsValid() )
+		{
+			Weapons[slot].Delete();
+		}
+
+		Weapons.Remove( slot );
+
+		return true;
+	}	
+	
+	public Entity Drop( int slot, Vector3 pos )
+	{
+		if ( !Weapons.ContainsKey( slot ) ) return null;
+
+		Entity ent = Weapons[slot];
+		Remove( slot, false );
+
+		LootPickup lootEnt = new LootPickup
+		{
+			Position = pos
+		};
+
+		lootEnt.SetItem( ent.ClassInfo.Name );
+
+		return ent;
+	}
+
+	public Entity Drop( int slot )
+	{
+		return Drop( slot, Owner.Position + Owner.Rotation.Forward * 60 + new Vector3( 0, 0, 20f ) );
 	}
 
 	public void SelectNext()

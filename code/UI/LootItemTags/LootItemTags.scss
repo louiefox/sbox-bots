@@ -1,0 +1,53 @@
+﻿lootitemtags {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	left: 0px;
+	bottom: 0px;
+
+	baselootitemtag {
+		font-family: Poppins;
+		position: absolute;
+		background-color: rgba( #222, 0.95 );
+		transform-origin: 50% 0%;
+		padding: 20px 40px;
+		display: flex;
+		flex-wrap: wrap;
+		height: 150px;
+		border: 2px solid black;
+
+		&.common {
+			border: 2px solid red;
+		}
+
+		&.uncommon {
+			border: 2px solid green;
+		}
+
+		&.rare {
+			border: 2px solid blue;
+		}
+
+		&.epic {
+			border: 2px solid purple;
+		}
+
+		&.legendary {
+			border: 2px solid orange;
+		}
+
+		.name {
+			width: 100%;
+			color: white;
+			font-size: 30px;
+			font-weight: bold;
+		}
+
+		.type {
+			width: 100%;
+			color: white;
+			font-size: 20px;
+			font-weight: bold;
+		}
+	}
+}

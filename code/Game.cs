@@ -37,7 +37,7 @@ public partial class BRGame : Sandbox.Game
 	}
 
 	[ServerCmd( "test_loot" )]
-	public static void TestLOot()
+	public static void TestLoot( string itemID )
 	{
 		var owner = ConsoleSystem.Caller.Pawn;
 
@@ -50,9 +50,11 @@ public partial class BRGame : Sandbox.Game
 			.Size( 2 )
 			.Run();
 
-		new LootPickup
+		LootPickup lootEnt = new LootPickup
 		{
 			Position = tr.EndPos + new Vector3( 0, 0, 20f )
 		};
+
+		lootEnt.SetItem( itemID );
 	}	
 }

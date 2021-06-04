@@ -10,31 +10,36 @@ public partial class LootPickup : Prop
 	[Net]
 	public int Index { get; set; }
 
+	[Net]
+	public string ItemID { get; set; }
+
 	public override void Spawn()
 	{
 		base.Spawn();
 
-		SetModel( "weapons/rust_smg/rust_smg.vmdl_c" );
-		SetupPhysicsFromModel( PhysicsMotionType.Dynamic, false );
-
 		if ( !IsServer ) return;
 
-		int highestIndex = 0;
-		foreach( var data in IndexEnts )
+		int newIndex = -1;
+		for ( int i = 0; i < IndexEnts.Count; i++ )
 		{
-			highestIndex = Math.Max( highestIndex, data.Key );
+			if ( IndexEnts.ContainsKey( i ) ) continue;
+
+			newIndex = i;
+			break;
 		}
 
-		for( int i = 0; i <= highestIndex+1; i++ )
-		{
-			if( !IndexEnts.ContainsKey( i ) )
-			{
-				Index = i;
-				break;
-			}
-		}
-
+		Index = newIndex >= 0 ? newIndex : IndexEnts.Count;
 		IndexEnts.Add( Index, this );
+	}
+
+	public void SetItem(string itemID)
+	{
+		ItemID = itemID;
+
+		LootItem item = LootItem.Items[ItemID];
+
+		SetModel( item.Model );
+		SetupPhysicsFromModel( PhysicsMotionType.Dynamic, false );
 	}
 
 	protected override void OnDestroy()
@@ -66,7 +71,10 @@ public partial class LootPickup : Prop
 			var pickupEffect = Particles.Create( "particles/money_pickup.vpcf" );
 			pickupEffect.SetPos( 0, ent.Position );
 
-			ply.TakeDamage( DamageInfo.Generic( 1000f ) );
+			string itemID = ent.ItemID;
+			LootItem item = LootItem.Items[itemID];
+
+			item.GiveItem( ply, ent.Position );
 
 			ent.Delete();
 		}

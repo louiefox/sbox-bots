@@ -36,7 +36,7 @@ partial class BRPlayer : Player
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 
-		WeaponInventory.Add( 0, new Pistol(), true );
+		WeaponInventory.Add( 0, new Pistol() );
 		WeaponInventory.Add( 1, new SMG() );
 
 		GiveAmmo( AmmoType.Pistol, 100 );

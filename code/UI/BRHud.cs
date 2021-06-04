@@ -26,6 +26,8 @@ public partial class BRHud : HudEntity<RootPanel>
 		RootPanel.AddChild<KillFeed>();
 		RootPanel.AddChild<Scoreboard>();
 		RootPanel.AddChild<VoiceList>();
+
+		RootPanel.AddChild<LootItemTags>();
 	}
 
 	[ClientRpc]
