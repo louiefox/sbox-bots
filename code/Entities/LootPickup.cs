@@ -13,6 +13,9 @@ public partial class LootPickup : Prop
 	[Net]
 	public string ItemID { get; set; }
 
+	public Prop ClientModel;
+	public float CurrentZ = 0f;
+
 	public override void Spawn()
 	{
 		base.Spawn();
@@ -38,14 +41,55 @@ public partial class LootPickup : Prop
 
 		LootItem item = LootItem.Items[ItemID];
 
-		SetModel( item.Model );
-		SetupPhysicsFromModel( PhysicsMotionType.Dynamic, false );
+		//SetModel( item.Model );
+		//SetupPhysicsFromModel( PhysicsMotionType.Dynamic, false );
+
+		CreateClientModel();
+	}
+
+	[ClientRpc]
+	public void CreateClientModel()
+	{
+		ClientModel = new Prop();
+		ClientModel.Parent = this;
+		ClientModel.Position = Position;
+		ClientModel.SetModel( LootItem.Items[ItemID].Model );
+
+		ClientModel.GlowState = GlowStates.GlowStateOff;
+		ClientModel.GlowDistanceStart = 0;
+		ClientModel.GlowDistanceEnd = 1000;
+		ClientModel.GlowColor = new Color( 0.1f, 1.0f, 1.0f, 1.0f );
+		ClientModel.GlowActive = false;
+	}
+
+	[Event( "client.tick" )]
+	public void UpdateClientModel()
+	{
+		if ( ClientModel == null || !ClientModel.IsValid() ) return;
+
+		CurrentZ = CurrentZ + 1f;
+
+		ClientModel.Position = Position;
+		ClientModel.Rotation = Rotation.LookAt( Local.Pawn.Position );
+	}
+
+	public void EnableGlow()
+	{
+		ClientModel.GlowState = GlowStates.GlowStateOn;
+		ClientModel.GlowActive = true;
+	}	
+	
+	public void DisableGlow()
+	{
+		ClientModel.GlowState = GlowStates.GlowStateOff;
+		ClientModel.GlowActive = false;
 	}
 
 	protected override void OnDestroy()
 	{
 		base.OnDestroy();
 
+		ClientModel?.Delete();
 		IndexEnts.Remove( Index );
 	}
 

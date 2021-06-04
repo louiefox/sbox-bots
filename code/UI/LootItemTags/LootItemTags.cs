@@ -19,8 +19,13 @@ namespace Sandbox.UI
 		public BaseLootItemTag( LootPickup lootEnt )
 		{
 			LootEnt = lootEnt;
-			NameLabel = Add.Label( "", "name" );
-			TypeLabel = Add.Label( "", "type" );
+
+			Panel infoPanel = Add.Panel( "infoback" );
+			NameLabel = infoPanel.Add.Label( "", "name" );
+			TypeLabel = infoPanel.Add.Label( "", "type" );
+
+			Panel keyPanel = Add.Panel( "keyback" );
+			keyPanel.Add.Label( "E", "key" );
 		}
 
 		public override void Tick()

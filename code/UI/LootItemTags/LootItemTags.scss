@@ -6,48 +6,80 @@
 	bottom: 0px;
 
 	baselootitemtag {
-		font-family: Poppins;
+		font-family: Roboto;
 		position: absolute;
 		background-color: rgba( #222, 0.95 );
 		transform-origin: 50% 0%;
-		padding: 20px 40px;
-		display: flex;
-		flex-wrap: wrap;
-		height: 150px;
-		border: 2px solid black;
+		padding: 10px 20px;
+		height: 75px;
+		border-top: 2px solid black;
+		min-width: 250px;
 
 		&.common {
-			border: 2px solid red;
+			border-top: 3px solid #b0b0b0;
+			border-bottom: 3px solid #b0b0b0;
+			background: radial-gradient(#b0b0b000, #b0b0b000, #b0b0b030, #b0b0b070);
 		}
 
 		&.uncommon {
-			border: 2px solid green;
+			border-top: 3px solid #4beb3d;
+			border-bottom: 3px solid #4beb3d;
+			background: radial-gradient(#4beb3d00, #4beb3d00, #4beb3d30, #4beb3d70);
 		}
 
 		&.rare {
-			border: 2px solid blue;
+			border-top: 3px solid #433deb;
+			border-bottom: 3px solid #433deb;
+			background: radial-gradient(#433deb00, #433deb00, #433deb30, #433deb70);
 		}
 
 		&.epic {
-			border: 2px solid purple;
+			border-top: 3px solid #9a3deb;
+			border-bottom: 3px solid #9a3deb;
+			background: radial-gradient(#9a3deb00, #9a3deb00, #9a3deb30, #9a3deb70);
 		}
 
 		&.legendary {
-			border: 2px solid orange;
+			border-top: 3px solid #ebb13d;
+			border-bottom: 3px solid #ebb13d;
+			background: radial-gradient(#ebb13d00, #ebb13d00, #ebb13d30, #ebb13d70);
+		}
+
+		.infoback {
+			display: flex;
+			flex-wrap: wrap;
 		}
 
 		.name {
 			width: 100%;
-			color: white;
-			font-size: 30px;
+			color: #EEEEEE;
+			font-size: 22px;
 			font-weight: bold;
+			text-shadow: 0 0 4px black;
 		}
 
 		.type {
 			width: 100%;
-			color: white;
-			font-size: 20px;
+			color: #EEEEEE90;
+			font-size: 15px;
+			text-shadow: 0 0 4px black;
+		}
+
+		.keyback {
+			align-items: center;
+			justify-content: center;
+			width: 40px;
+		}
+
+		.key {
+			color: #292929;
+			font-size: 25px;
+			background-color: #EEEEEE;
+			padding: 0px 7px;
 			font-weight: bold;
+			border-radius: 5px;
+			text-shadow: 0 0 4px black;
+			box-shadow: 0 0 16px black;
 		}
 	}
 }

@@ -37,7 +37,7 @@ public class LootItem
 		
 		if( inventory.Weapons.ContainsKey( slot ) )
 		{
-			inventory.Drop( slot, pickupPos + new Vector3( 0, 0, 40f ) );
+			inventory.Drop( slot, pickupPos );
 		}
 
 		inventory.Add( slot, Library.Create<BaseBRWeapon>( WeaponClass ) );

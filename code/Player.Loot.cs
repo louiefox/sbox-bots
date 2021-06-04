@@ -52,17 +52,12 @@ partial class BRPlayer
 
 		if ( oldTarget != null && oldTarget.IsValid() )
 		{
-			oldTarget.GlowState = GlowStates.GlowStateOff;
-			oldTarget.GlowActive = false;
+			oldTarget.DisableGlow();
 		}
 
 		if ( LootTarget == null ) return;
 
-		LootTarget.GlowState = GlowStates.GlowStateOn;
-		LootTarget.GlowDistanceStart = 0;
-		LootTarget.GlowDistanceEnd = 1000;
-		LootTarget.GlowColor = new Color( 0.1f, 1.0f, 1.0f, 1.0f );
-		LootTarget.GlowActive = true;
+		LootTarget.EnableGlow();
 	}
 
 	public void RequestLootPickup()
