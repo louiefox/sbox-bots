@@ -68,7 +68,6 @@ partial class BRPlayer
 
 		if ( target == null ) return;
 
-		Log.Info( target.Index.ToString() );
 		ConsoleSystem.Run( "request_loot_pickup", target.Index );
 	}
 }

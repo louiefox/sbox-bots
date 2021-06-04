@@ -14,7 +14,10 @@ public partial class LootPickup : Prop
 	public string ItemID { get; set; }
 
 	public Prop ClientModel;
-	public float CurrentZ = 0f;
+	private float ClientZRot = 0f;
+
+	private bool ClientBobIncreasing = true;
+	private float ClientZBob = 0f;
 
 	public override void Spawn()
 	{
@@ -83,16 +86,27 @@ public partial class LootPickup : Prop
 		ClientModel.GlowColor = glowColor.ToColor();
 		ClientModel.GlowActive = false;
 	}
-
+	
 	[Event( "client.tick" )]
 	public void UpdateClientModel()
 	{
 		if ( ClientModel == null || !ClientModel.IsValid() ) return;
 
-		CurrentZ = CurrentZ + 1f;
+		
+		if( ClientBobIncreasing )
+		{
+			ClientZBob += .1f;
+			ClientBobIncreasing = ClientZBob >= 10f ? false : true;
+		} else
+		{
+			ClientZBob -= .1f;
+			ClientBobIncreasing = ClientZBob <= 0f ? true : false;
+		}
 
-		ClientModel.Position = Position;
-		ClientModel.Rotation = Rotation.LookAt( Local.Pawn.Position );
+		ClientModel.Position = Position + new Vector3( 0, 0, ClientZBob );
+
+		ClientZRot = ClientZRot >= 360 ? 0 : ClientZRot + .5f;
+		ClientModel.Rotation = Rotation.From( 0f, ClientZRot, 0f );
 	}
 
 	public void EnableGlow()
@@ -123,26 +137,21 @@ public partial class LootPickup : Prop
 	[ServerCmd( "request_loot_pickup" )]
 	public static void RequestPickup(int index)
 	{
-		var owner = ConsoleSystem.Caller.Pawn;
+		var ply = ConsoleSystem.Caller.Pawn as BRPlayer;
 
-		if ( owner == null )
-		if ( owner == null )
-			return;
+		if ( ply == null || ply.LifeState != LifeState.Alive || !IndexEnts.ContainsKey( index ) ) return;
 
-		if ( owner is BRPlayer ply && IndexEnts.ContainsKey( index ) )
-		{
-			LootPickup ent = IndexEnts[index];
-			if ( ent == null || !ent.IsValid() ) return;
+		LootPickup ent = IndexEnts[index];
+		if ( ent == null || !ent.IsValid() || ply.Position.Distance( ent.Position ) > 200 ) return;
 
-			var pickupEffect = Particles.Create( "particles/money_pickup.vpcf" );
-			pickupEffect.SetPos( 0, ent.Position );
+		var pickupEffect = Particles.Create( "particles/money_pickup.vpcf" );
+		pickupEffect.SetPos( 0, ent.Position );
 
-			string itemID = ent.ItemID;
-			LootItem item = LootItem.Items[itemID];
+		string itemID = ent.ItemID;
+		LootItem item = LootItem.Items[itemID];
 
-			item.GiveItem( ply, ent.Position );
+		item.GiveItem( ply, ent.Position );
 
-			ent.Delete();
-		}
+		ent.Delete();
 	}
 }
