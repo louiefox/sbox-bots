@@ -26,6 +26,8 @@ namespace Sandbox.UI
 
 			Panel keyPanel = Add.Panel( "keyback" );
 			keyPanel.Add.Label( "E", "key" );
+
+			ChangeRarity( ItemRarity.Common );
 		}
 
 		public override void Tick()

@@ -1,13 +1,13 @@
 ﻿using Sandbox;
 
 
-[Library( "dm_shotgun", Title = "Shotgun" )]
-partial class Shotgun : BaseBRWeapon
+[Library( "dm_pumpshotgun", Title = "Pump Shotgun" )]
+partial class PumpShotgun : BaseBRWeapon
 { 
 	public override float PrimaryRate => 1;
 	public override float SecondaryRate => 1;
 	public override AmmoType AmmoType => AmmoType.Buckshot;
-	public override int ClipSize => 1;
+	public override int ClipSize => 6;
 	public override float ReloadTime => 0.5f;
 	public override int Bucket => 2;
 
@@ -15,9 +15,9 @@ partial class Shotgun : BaseBRWeapon
 	{
 		base.Spawn();
 
-		SetModel( "weapons/rust_shotgun/rust_shotgun.vmdl" );  
+		SetModel( "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl" );  
 
-		AmmoClip = 1;
+		AmmoClip = 6;
 	}
 
 	public override void AttackPrimary() 

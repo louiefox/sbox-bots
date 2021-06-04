@@ -21,8 +21,8 @@
 	.el0 {
 		width: 2px;
 		height: 2px;
-	}	
-	
+	}
+
 	.el1, .el2 {
 		width: 10px;
 		height: 2px;
@@ -78,26 +78,26 @@
 	}
 
 
-	&.dm_shotgun {
+	&.dm_shotgun, &.dm_pumpshotgun {
 		opacity: 0.3;
 		transition: opacity 0.5s linear;
 
 		.el0 {
 			background-color: transparent;
 			border-radius: 1000px;
-			left: -100px;
-			top: -100px;
-			width: 200px;
-			height: 200px;
+			left: -50px;
+			top: -50px;
+			width: 100px;
+			height: 100px;
 			border: 6px solid #ff00;
-			border-left: 6px solid #ff0;
-			border-right: 6px solid #ff0;
+			border-left: 6px solid white;
+			border-right: 6px solid white;
 			transition: all 0.5s ease-out;
 		}
 
 		.el1 {
 			transition: all 0.5s ease-out;
-			background-color: #ff05;
+			background-color: white;
 			border-radius: 1000px;
 			width: 10px;
 			height: 10px;
@@ -105,11 +105,7 @@
 			top: -5px;
 		}
 
-		.el2 {
-			opacity: 0;
-		}
-
-		.el3 {
+		.el2, .el3, .el4 {
 			opacity: 0;
 		}
 
@@ -119,17 +115,17 @@
 
 			.el0 {
 				transition: all 0.01s ease-out;
-				left: -150px;
-				width: 300px;
+				left: -100px;
+				width: 200px;
 				border: 6px solid #0000;
-				border-left: 6px solid #fa0;
-				border-right: 6px solid #fa0;
+				border-left: 6px solid white;
+				border-right: 6px solid white;
 				opacity: 1.0;
 			}
 
 			.el1 {
 				transition: all 0.01s ease-out;
-				background-color: #ff0;
+				background-color: white;
 				width: 16px;
 				height: 16px;
 				left: -8px;

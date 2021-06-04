@@ -8,9 +8,9 @@ public class LootItem
 	{
 		{ "dm_pistol", new LootItem( ItemType.Weapon, "Pistol", ItemRarity.Common, "weapons/rust_pistol/rust_pistol.vmdl_c", "dm_pistol" ) {} },
 		{ "dm_shotgun", new LootItem( ItemType.Weapon, "Waterpipe Shotgun", ItemRarity.Uncommon, "weapons/rust_shotgun/rust_shotgun.vmdl_c", "dm_shotgun" ) {} },
-		{ "dm_pumpshotgun", new LootItem( ItemType.Weapon, "Pump Shotgun", ItemRarity.Rare, "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl_c", "dm_shotgun" ) {} },
-		{ "dm_smg", new LootItem( ItemType.Weapon, "Custom SMG", ItemRarity.Rare, "weapons/rust_smg/rust_smg.vmdl_c", "dm_smg" ) {} },
-		{ "dm_crossbow", new LootItem( ItemType.Weapon, "Crossbow", ItemRarity.Epic, "weapons/rust_crossbow/rust_crossbow.vmdl_c", "dm_crossbow" ) {} },
+		{ "dm_pumpshotgun", new LootItem( ItemType.Weapon, "Pump Shotgun", ItemRarity.Rare, "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl_c", "dm_pumpshotgun" ) {} },
+		{ "dm_smg", new LootItem( ItemType.Weapon, "Custom SMG", ItemRarity.Epic, "weapons/rust_smg/rust_smg.vmdl_c", "dm_smg" ) {} },
+		{ "dm_crossbow", new LootItem( ItemType.Weapon, "Crossbow", ItemRarity.Legendary, "weapons/rust_crossbow/rust_crossbow.vmdl_c", "dm_crossbow" ) {} },
     };
 
 	public ItemType Type;

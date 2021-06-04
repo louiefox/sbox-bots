@@ -50,15 +50,37 @@ public partial class LootPickup : Prop
 	[ClientRpc]
 	public void CreateClientModel()
 	{
+		LootItem item = LootItem.Items[ItemID];
+
+		Color32 glowColor;
+		switch (item.Rarity)
+		{
+			case ItemRarity.Uncommon:
+				glowColor = new Color32( 75, 235, 61 );
+				break;
+			case ItemRarity.Rare:
+				glowColor = new Color32( 67, 61, 235 );
+				break;			
+			case ItemRarity.Epic:
+				glowColor = new Color32( 154, 61, 235 );
+				break;			
+			case ItemRarity.Legendary:
+				glowColor = new Color32( 235, 177, 61 );
+				break;
+			default:
+				glowColor = new Color32( 176, 176, 176 );
+				break;
+		}
+
 		ClientModel = new Prop();
 		ClientModel.Parent = this;
 		ClientModel.Position = Position;
-		ClientModel.SetModel( LootItem.Items[ItemID].Model );
+		ClientModel.SetModel( item.Model );
 
 		ClientModel.GlowState = GlowStates.GlowStateOff;
 		ClientModel.GlowDistanceStart = 0;
 		ClientModel.GlowDistanceEnd = 1000;
-		ClientModel.GlowColor = new Color( 0.1f, 1.0f, 1.0f, 1.0f );
+		ClientModel.GlowColor = glowColor.ToColor();
 		ClientModel.GlowActive = false;
 	}
 

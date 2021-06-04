@@ -33,7 +33,7 @@ namespace BattleRoyale
 			Rot = client.Input.Rotation;
 
 			float distance = 130.0f * pawn.Scale;
-			targetPos = Pos + client.Input.Rotation.Right * ((pawn.CollisionBounds.Maxs.x + 15) * pawn.Scale);
+			targetPos = Pos + client.Input.Rotation.Right * ((pawn.CollisionBounds.Maxs.x + 1) * pawn.Scale);
 			targetPos += client.Input.Rotation.Forward * -distance;
 
 			if ( thirdperson_collision )

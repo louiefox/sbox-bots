@@ -183,7 +183,7 @@ partial class BaseBRWeapon : BaseWeapon
 		pos = center;
 
 		float distance = 130.0f * Owner.Scale;
-		targetPos = pos + Owner.Input.Rotation.Right * (((Owner as Player).CollisionBounds.Maxs.x + 15) * Owner.Scale);
+		targetPos = pos + Owner.Input.Rotation.Right * (((Owner as Player).CollisionBounds.Maxs.x + 1) * Owner.Scale);
 		targetPos += Owner.Input.Rotation.Forward * -distance;
 
 		if ( true )
