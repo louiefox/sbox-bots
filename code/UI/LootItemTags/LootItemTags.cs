@@ -83,7 +83,8 @@ namespace Sandbox.UI
 
 			if( Tag == null )
 			{
-				Tag = CreateNameTag( CurrentTarget );
+				Tag = new BaseLootItemTag( CurrentTarget );
+				Tag.Parent = this;
 			}
 
 			if( Tag.LootEnt != CurrentTarget )
@@ -92,13 +93,6 @@ namespace Sandbox.UI
 			}
 
 			UpdateTag();
-		}
-
-		public virtual BaseLootItemTag CreateNameTag( LootPickup lootEnt )
-		{
-			var tag = new BaseLootItemTag( lootEnt );
-			tag.Parent = this;
-			return tag;
 		}
 
 		public void UpdateTag()

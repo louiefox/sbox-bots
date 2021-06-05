@@ -76,19 +76,6 @@ partial class BRPlayer
 
 		ConsoleSystem.Run( "request_forusable_use", target.Index );
 	}	
-	
-	[ClientCmd( "test_client_loot" )]
-	public static void TestClientEnt()
-	{
-		BRThirdPersonCamera cam = Local.Pawn.Camera as BRThirdPersonCamera;
-		if ( cam == null ) return;
-
-		var tr = Trace.Ray( cam.Pos, cam.Pos + cam.Rot.Forward * 250 )
-			.Ignore( Local.Pawn )
-			.Run();
-
-		DebugOverlay.Line( tr.StartPos, tr.EndPos, 5f, true );
-	}
 }
 
 public struct LootPickupDist

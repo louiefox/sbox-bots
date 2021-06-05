@@ -54,21 +54,19 @@ partial class BRWeaponInventory
 		if ( !Weapons.ContainsKey( slot ) ) return null;
 
 		Entity ent = Weapons[slot];
-		Remove( slot, false );
 
-		LootPickup lootEnt = new LootPickup
-		{
-			Position = pos
-		};
-
+		LootPickup lootEnt = new LootPickup();
+		lootEnt.SetPosition( pos );
 		lootEnt.SetItem( ent.ClassInfo.Name );
+
+		Remove( slot, true );
 
 		return lootEnt;
 	}
 
 	public Entity Drop( int slot )
 	{
-		return Drop( slot, Owner.Position + new Vector3( 0, 0, 20f ) );
+		return Drop( slot, Owner.Position );
 	}
 
 	public void SelectNext()

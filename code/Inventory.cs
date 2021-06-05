@@ -61,11 +61,8 @@ partial class BRInventory
 		BRInventoryItem data = Slots[slot];
 		Remove( slot );
 
-		LootPickup lootEnt = new LootPickup
-		{
-			Position = pos
-		};
-
+		LootPickup lootEnt = new LootPickup();
+		lootEnt.SetPosition( pos );
 		lootEnt.SetItem( data.ItemID );
 
 		return lootEnt;
@@ -73,7 +70,7 @@ partial class BRInventory
 
 	public Entity Drop( int slot )
 	{
-		return Drop( slot, Owner.Position + new Vector3( 0, 0, 20f ) );
+		return Drop( slot, Owner.Position );
 	}
 }
 

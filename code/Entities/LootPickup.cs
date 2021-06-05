@@ -22,76 +22,84 @@ public partial class LootPickup : FloorUsable
 
 		SetupPhysicsFromModel( PhysicsMotionType.Static );
 
-		if( !CheckPosition( Position ) )
+		CreateClientModel();
+	}	
+	
+	public void SetPosition( Vector3 pos )
+	{
+		if ( CheckPosition( pos ) )
 		{
-			bool positionClear = false;
-			int checkCount = 0;
-			while ( !positionClear )
-			{
-				checkCount++;
-
-				int layerSize = 3;
-				while ( checkCount >= (layerSize * layerSize) )
-				{
-					layerSize += 2;
-				}
-
-
-				if ( layerSize > 9 )
-				{
-					Log.Info( "BattleRoyale ERROR: Cannot find position for loot pickup." );
-					break;
-				}
-
-				int totalLayerCount = (layerSize * 4) - 4;
-				int currentLayerCount = checkCount + 1 - ((layerSize - 2) * (layerSize - 2));
-				int currentSideCount = currentLayerCount;
-
-				int side = 1;
-				if ( currentLayerCount > totalLayerCount - layerSize )
-				{
-					side = 4;
-					currentSideCount -= ((layerSize - 2) * 2) + layerSize;
-				}
-				else if ( currentLayerCount > (layerSize - 2) + layerSize )
-				{
-					side = 3;
-					currentSideCount -= (layerSize - 2) + layerSize;
-				}
-				else if ( currentLayerCount > (layerSize - 2) )
-				{
-					side = 2;
-					currentSideCount -= (layerSize - 2);
-				}
-
-				int xDiff;
-				int yDiff;
-				int halfWay = (int)Math.Ceiling( (layerSize - 2) / 2f );
-				int fullHalfWay = (int)Math.Ceiling( layerSize / 2f );
-
-				if ( side == 1 || side == 3 )
-				{
-					xDiff = currentSideCount <= halfWay ? currentSideCount - 1 : -(currentSideCount - halfWay);
-					yDiff = side == 1 ? halfWay : -halfWay;
-				} else
-				{
-					xDiff = side == 2 ? halfWay : -halfWay;
-					yDiff = currentSideCount <= fullHalfWay ? currentSideCount - 1 : -(currentSideCount - fullHalfWay);
-				}
-
-				Log.Info( $"Layer: {layerSize}, Side: {side}, Count: {currentSideCount}, X: {xDiff}, Y {yDiff}" );
-
-				Vector3 checkPos = Position + new Vector3( MinLootDistance * xDiff, MinLootDistance * yDiff, 0 );
-
-				if( CheckPosition( checkPos ) )
-				{
-					Position = checkPos;
-					positionClear = true;
-				}
-			}
+			Position = DropToFloor( pos );
+			return;
 		}
 
-		CreateClientModel();
+		Position = pos;
+
+		bool positionClear = false;
+		int checkCount = 0;
+		while ( !positionClear )
+		{
+			checkCount++;
+
+			int layerSize = 3;
+			while ( checkCount >= (layerSize * layerSize) )
+			{
+				layerSize += 2;
+			}
+
+
+			if ( layerSize > 9 )
+			{
+				Log.Info( "BattleRoyale ERROR: Cannot find position for loot pickup." );
+				break;
+			}
+
+			int totalLayerCount = (layerSize * 4) - 4;
+			int currentLayerCount = checkCount + 1 - ((layerSize - 2) * (layerSize - 2));
+			int currentSideCount = currentLayerCount;
+
+			int side = 1;
+			if ( currentLayerCount > totalLayerCount - layerSize )
+			{
+				side = 4;
+				currentSideCount -= ((layerSize - 2) * 2) + layerSize;
+			}
+			else if ( currentLayerCount > (layerSize - 2) + layerSize )
+			{
+				side = 3;
+				currentSideCount -= (layerSize - 2) + layerSize;
+			}
+			else if ( currentLayerCount > (layerSize - 2) )
+			{
+				side = 2;
+				currentSideCount -= (layerSize - 2);
+			}
+
+			int xDiff;
+			int yDiff;
+			int halfWay = (int)Math.Ceiling( (layerSize - 2) / 2f );
+
+			if ( side == 1 || side == 3 )
+			{
+				xDiff = currentSideCount <= halfWay ? currentSideCount - 1 : -(currentSideCount - halfWay);
+				yDiff = side == 1 ? halfWay : -halfWay;
+			} else
+			{
+				xDiff = side == 2 ? halfWay : -halfWay;
+
+				int fullHalfWay = (int)Math.Ceiling( layerSize / 2f );
+				yDiff = currentSideCount <= fullHalfWay ? currentSideCount - 1 : -(currentSideCount - fullHalfWay);
+			}
+
+			Vector3 checkPos = Position + new Vector3( MinLootDistance * xDiff, MinLootDistance * yDiff, 0 );
+			if ( !CheckPosition( checkPos ) ) continue;
+
+			checkPos = DropToFloor( checkPos );
+			if ( !CheckForWall( Position, checkPos ) ) continue;
+
+			Position = checkPos;
+			positionClear = true;
+		}
 	}
 
 	public bool CheckPosition( Vector3 pos )
@@ -105,6 +113,25 @@ public partial class LootPickup : FloorUsable
 		}
 
 		return true;
+	}	
+	
+	public bool CheckForWall( Vector3 fromPos, Vector3 pos )
+	{
+		var tr = Trace.Ray( fromPos, pos )
+			.WorldOnly()
+			.Run();
+
+		return tr.EndPos == pos;
+	}	
+	
+	public Vector3 DropToFloor( Vector3 pos )
+	{
+		var tr = Trace.Ray( pos + new Vector3( 0, 0, 50f ), pos - new Vector3( 0, 0, 1000f ) )
+			.UseHitboxes()
+			.WorldOnly()
+			.Run();
+
+		return tr.EndPos + new Vector3( 0, 0, 20f );
 	}
 
 	[ClientRpc]
@@ -188,7 +215,12 @@ public partial class LootPickup : FloorUsable
 
 		LootItem item = LootItem.Items[ItemID];
 
-		if( item.GiveItem( ply, Position ) )
+		if( item.Type == ItemType.Weapon )
+		{
+			Delete();
+		}
+
+		if( item.GiveItem( ply, Position ) && this.IsValid() )
 		{
 			Delete();
 		}
