@@ -57,7 +57,7 @@ namespace Sandbox.UI
 	public class LootItemTags : Panel
 	{
 		private LootPickup CurrentTarget;
-		private BaseLootItemTag CurrentTag;
+		private BaseLootItemTag Tag;
 
 		public float MaxDrawDistance = 400;
 
@@ -72,23 +72,23 @@ namespace Sandbox.UI
 
 			CurrentTarget = (Local.Pawn as BRPlayer).GetNewTargetLoot() as LootPickup;
 
-			if( CurrentTarget == null && CurrentTag != null )
+			if( (CurrentTarget == null || !CurrentTarget.IsValid()) && Tag != null )
 			{
-				CurrentTag.Delete();
-				CurrentTag = null;
+				Tag.Delete();
+				Tag = null;
 				return;
 			}
 
-			if ( CurrentTarget == null ) return;
+			if ( CurrentTarget == null || !CurrentTarget.IsValid() ) return;
 
-			if( CurrentTag == null )
+			if( Tag == null )
 			{
-				CurrentTag = CreateNameTag( CurrentTarget );
+				Tag = CreateNameTag( CurrentTarget );
 			}
 
-			if( CurrentTag.LootEnt != CurrentTarget )
+			if( Tag.LootEnt != CurrentTarget )
 			{
-				CurrentTag.LootEnt = CurrentTarget;
+				Tag.LootEnt = CurrentTarget;
 			}
 
 			UpdateTag();
@@ -111,10 +111,8 @@ namespace Sandbox.UI
 			var alpha = dist.LerpInverse( MaxDrawDistance, MaxDrawDistance * 0.1f, true );
 			var screenPos = labelPos.ToScreen();
 
-			var tag = CurrentTag;
-
-			tag.Style.Left = Length.Fraction( screenPos.x );
-			tag.Style.Top = Length.Fraction( screenPos.y );
+			Tag.Style.Left = Length.Fraction( screenPos.x );
+			Tag.Style.Top = Length.Fraction( screenPos.y );
 			//tag.Style.Opacity = alpha;
 
 			var transform = new PanelTransform();
@@ -122,8 +120,8 @@ namespace Sandbox.UI
 			transform.AddScale( 1 );
 			transform.AddTranslateX( Length.Fraction( -0.5f ) );
 
-			tag.Style.Transform = transform;
-			tag.Style.Dirty();
+			Tag.Style.Transform = transform;
+			Tag.Style.Dirty();
 		}
 	}
 }

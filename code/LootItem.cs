@@ -51,6 +51,8 @@ public class LootItem
 				return inventory.Add( slot, Library.Create<BaseBRWeapon>( WeaponClass ) );
 			case ItemType.Consumable:
 				ply.Armour += 50;
+				return true;			
+			case ItemType.Ammo:
 				return true;
 		}
 

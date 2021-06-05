@@ -61,7 +61,7 @@ partial class BRPlayer
 			oldTarget.DisableGlow();
 		}
 
-		if ( LootTarget == null ) return;
+		if ( LootTarget == null || !LootTarget.IsValid() ) return;
 
 		LootTarget.EnableGlow();
 	}

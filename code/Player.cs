@@ -47,6 +47,10 @@ partial class BRPlayer : Player
 		
 		Inventory.Add( new BRInventoryItem( "armour_plate", 1 ) );
 		Inventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
+		Inventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
+		Inventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
+		Inventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
+		Inventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
 
 		GiveAmmo( AmmoType.Pistol, 100 );
 
@@ -90,7 +94,7 @@ partial class BRPlayer : Player
 
 		foreach( var data in WeaponInventory.Weapons )
 		{
-			WeaponInventory.Drop( data.Key, Position );
+			WeaponInventory.Drop( data.Key );
 		}		
 		
 		foreach( var data in Inventory.Slots )

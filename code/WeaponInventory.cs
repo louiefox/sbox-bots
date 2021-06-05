@@ -68,7 +68,7 @@ partial class BRWeaponInventory
 
 	public Entity Drop( int slot )
 	{
-		return Drop( slot, Owner.Position + Owner.Rotation.Forward * 60 );
+		return Drop( slot, Owner.Position + new Vector3( 0, 0, 20f ) );
 	}
 
 	public void SelectNext()

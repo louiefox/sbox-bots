@@ -26,34 +26,62 @@ public partial class LootPickup : FloorUsable
 		{
 			bool positionClear = false;
 			int checkCount = 0;
-			while( !positionClear )
+			while ( !positionClear )
 			{
 				checkCount++;
 
-				int layer = (int)Math.Floor( checkCount / 4f ) + 1;
-				if( layer > 10 )
+				int layerSize = 3;
+				while ( checkCount >= (layerSize * layerSize) )
+				{
+					layerSize += 2;
+				}
+
+
+				if ( layerSize > 9 )
 				{
 					Log.Info( "BattleRoyale ERROR: Cannot find position for loot pickup." );
 					break;
 				}
 
-				int side = checkCount - ((layer-1) * 4) + 1;
-				Vector3 checkPos = Position;
-				switch( side )
+				int totalLayerCount = (layerSize * 4) - 4;
+				int currentLayerCount = checkCount + 1 - ((layerSize - 2) * (layerSize - 2));
+				int currentSideCount = currentLayerCount;
+
+				int side = 1;
+				if ( currentLayerCount > totalLayerCount - layerSize )
 				{
-					case 1:
-						checkPos += new Vector3( MinLootDistance * layer, 0, 0 );
-						break;					
-					case 2:
-						checkPos -= new Vector3( MinLootDistance * layer, 0, 0 );
-						break;					
-					case 3:
-						checkPos += new Vector3( 0, MinLootDistance * layer, 0 );
-						break;
-					case 4:
-						checkPos -= new Vector3( 0, MinLootDistance * layer, 0 );
-						break;
+					side = 4;
+					currentSideCount -= ((layerSize - 2) * 2) + layerSize;
 				}
+				else if ( currentLayerCount > (layerSize - 2) + layerSize )
+				{
+					side = 3;
+					currentSideCount -= (layerSize - 2) + layerSize;
+				}
+				else if ( currentLayerCount > (layerSize - 2) )
+				{
+					side = 2;
+					currentSideCount -= (layerSize - 2);
+				}
+
+				int xDiff;
+				int yDiff;
+				int halfWay = (int)Math.Ceiling( (layerSize - 2) / 2f );
+				int fullHalfWay = (int)Math.Ceiling( layerSize / 2f );
+
+				if ( side == 1 || side == 3 )
+				{
+					xDiff = currentSideCount <= halfWay ? currentSideCount - 1 : -(currentSideCount - halfWay);
+					yDiff = side == 1 ? halfWay : -halfWay;
+				} else
+				{
+					xDiff = side == 2 ? halfWay : -halfWay;
+					yDiff = currentSideCount <= fullHalfWay ? currentSideCount - 1 : -(currentSideCount - fullHalfWay);
+				}
+
+				Log.Info( $"Layer: {layerSize}, Side: {side}, Count: {currentSideCount}, X: {xDiff}, Y {yDiff}" );
+
+				Vector3 checkPos = Position + new Vector3( MinLootDistance * xDiff, MinLootDistance * yDiff, 0 );
 
 				if( CheckPosition( checkPos ) )
 				{

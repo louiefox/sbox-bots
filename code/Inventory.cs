@@ -73,7 +73,7 @@ partial class BRInventory
 
 	public Entity Drop( int slot )
 	{
-		return Drop( slot, Owner.Position + Owner.Rotation.Forward * 60 + new Vector3( 0, 0, 20f ) );
+		return Drop( slot, Owner.Position + new Vector3( 0, 0, 20f ) );
 	}
 }
 
