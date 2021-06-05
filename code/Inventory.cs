@@ -23,6 +23,8 @@ partial class BRInventory
 
 		Slots[slot] = data;
 
+		(Owner as BRPlayer).UpdateInventory( To.Single( Owner ) );
+
 		return true;
 	}	
 	

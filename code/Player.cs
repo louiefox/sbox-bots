@@ -150,4 +150,10 @@ partial class BRPlayer : Player
 	{
 		DamageIndicator.Current?.OnHit( pos );
 	}
+
+	[ClientRpc]
+	public void UpdateInventory()
+	{
+		Event.Run( "battleroyale.updateinv" );
+	}
 }
