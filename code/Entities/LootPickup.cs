@@ -14,7 +14,7 @@ public partial class LootPickup : FloorUsable
 	private float ClientZBob = 0f;
 
 	private Color32 RarityColor;
-	private float MinLootDistance = 50f;
+	private float MinLootDistance = 30f;
 
 	public void SetItem(string itemID)
 	{
@@ -27,13 +27,8 @@ public partial class LootPickup : FloorUsable
 	
 	public void SetPosition( Vector3 pos )
 	{
-		if ( CheckPosition( pos ) )
-		{
-			Position = DropToFloor( pos );
-			return;
-		}
-
-		Position = pos;
+		Position = DropToFloor( pos );
+		if ( CheckPosition( Position ) ) return;
 
 		bool positionClear = false;
 		int checkCount = 0;
@@ -92,12 +87,10 @@ public partial class LootPickup : FloorUsable
 			}
 
 			Vector3 checkPos = Position + new Vector3( MinLootDistance * xDiff, MinLootDistance * yDiff, 0 );
-			if ( !CheckPosition( checkPos ) ) continue;
 
-			checkPos = DropToFloor( checkPos );
-			if ( !CheckForWall( Position, checkPos ) ) continue;
+			if ( !CheckPosition( checkPos ) || !CheckForWall( Position, checkPos ) ) continue;
 
-			Position = checkPos;
+			Position = DropToFloor( checkPos );
 			positionClear = true;
 		}
 	}
@@ -127,7 +120,6 @@ public partial class LootPickup : FloorUsable
 	public Vector3 DropToFloor( Vector3 pos )
 	{
 		var tr = Trace.Ray( pos + new Vector3( 0, 0, 50f ), pos - new Vector3( 0, 0, 1000f ) )
-			.UseHitboxes()
 			.WorldOnly()
 			.Run();
 
@@ -141,6 +133,9 @@ public partial class LootPickup : FloorUsable
 
 		switch (item.Rarity)
 		{
+			case ItemRarity.Common:
+				RarityColor = new Color32( 100, 100, 100 );
+				break;			
 			case ItemRarity.Uncommon:
 				RarityColor = new Color32( 75, 235, 61 );
 				break;
@@ -166,7 +161,7 @@ public partial class LootPickup : FloorUsable
 		ClientModel.GlowState = GlowStates.GlowStateOn;
 		ClientModel.GlowDistanceStart = 0;
 		ClientModel.GlowDistanceEnd = 1000;
-		ClientModel.GlowColor = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
+		ClientModel.GlowColor = new Color( 1.0f, 1.0f, 1.0f );
 		ClientModel.GlowActive = true;
 	}
 	
@@ -199,7 +194,7 @@ public partial class LootPickup : FloorUsable
 	
 	public override void DisableGlow()
 	{
-		ClientModel.GlowColor = new Color( 1.0f, 1.0f, 1.0f, .1f );
+		ClientModel.GlowColor = new Color( 1.0f, 1.0f, 1.0f );
 	}
 
 	protected override void OnDestroy()
