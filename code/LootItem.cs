@@ -12,7 +12,9 @@ public class LootItem
 		{ "dm_smg", new LootItem( ItemType.Weapon, "Custom SMG", ItemRarity.Epic, "weapons/rust_smg/rust_smg.vmdl_c" ) { WeaponClass  = "dm_smg" } },
 		{ "dm_crossbow", new LootItem( ItemType.Weapon, "Crossbow", ItemRarity.Legendary, "weapons/rust_crossbow/rust_crossbow.vmdl_c" ) { WeaponClass  = "dm_crossbow" } },
 
-		{ "armour_plate", new LootItem( ItemType.Consumable, "Armour Plate", ItemRarity.Rare, "models/citizen_clothes/vest/vest_securitykevlarnobadge.vmdl_c" ) {} },
+		{ "armour_plate", new LootItem( ItemType.Consumable, "Armour Plate", ItemRarity.Rare, "models/rust_props/small_junk/carton_box.vmdl_c" ) {} },
+
+		{ "ammo_pistol", new LootItem( ItemType.Ammo, "Pistol Ammo", ItemRarity.Common, "models/rust_props/small_junk/carton_box.vmdl_c" ) {} },
     };
 
 	public ItemType Type;
@@ -30,7 +32,7 @@ public class LootItem
 		Model = model;
 	}
 
-	public void GiveItem( Player player, Vector3 pickupPos )
+	public bool GiveItem( Player player, Vector3 pickupPos )
 	{
 		BRPlayer ply = player as BRPlayer;
 
@@ -39,19 +41,20 @@ public class LootItem
 			case ItemType.Weapon:
 				BRWeaponInventory inventory = ply.WeaponInventory;
 
-				int slot = inventory.CurrentSlot;
+				int slot = inventory.Weapons.Count >= 2 ? inventory.CurrentSlot : 1;
 
 				if ( inventory.Weapons.ContainsKey( slot ) )
 				{
 					inventory.Drop( slot, pickupPos );
 				}
 
-				inventory.Add( slot, Library.Create<BaseBRWeapon>( WeaponClass ) );
-				break;
+				return inventory.Add( slot, Library.Create<BaseBRWeapon>( WeaponClass ) );
 			case ItemType.Consumable:
 				ply.Armour += 50;
-				break;
+				return true;
 		}
+
+		return false;
 	}
 }
 

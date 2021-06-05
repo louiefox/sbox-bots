@@ -24,8 +24,14 @@ partial class BRPlayer
 		{
 			if ( ent is FloorUsable lootEnt )
 			{
+				bool lookingAtClientModel = false;
+				if( ent is LootPickup pickupEnt && tr.Entity == pickupEnt.ClientModel )
+				{
+					lookingAtClientModel = true;
+				}
+
 				float distance = startPos.Distance( lootEnt.Position );
-				if ( distance > 30 && tr.Entity != ent ) continue;
+				if ( distance > 30 && tr.Entity != ent && !lookingAtClientModel ) continue;
 
 				sortedEnts.Add( new LootPickupDist( lootEnt as FloorUsable, distance ) );
 			}
@@ -69,13 +75,26 @@ partial class BRPlayer
 		if ( target == null ) return;
 
 		ConsoleSystem.Run( "request_forusable_use", target.Index );
+	}	
+	
+	[ClientCmd( "test_client_loot" )]
+	public static void TestClientEnt()
+	{
+		BRThirdPersonCamera cam = Local.Pawn.Camera as BRThirdPersonCamera;
+		if ( cam == null ) return;
+
+		var tr = Trace.Ray( cam.Pos, cam.Pos + cam.Rot.Forward * 250 )
+			.Ignore( Local.Pawn )
+			.Run();
+
+		DebugOverlay.Line( tr.StartPos, tr.EndPos, 5f, true );
 	}
 }
 
 public struct LootPickupDist
 {
-	public FloorUsable Ent { set; get; }
-	public float Distance { set; get; }
+	public FloorUsable Ent;
+	public float Distance;
 
 	public LootPickupDist( FloorUsable ent, float distance)
 	{

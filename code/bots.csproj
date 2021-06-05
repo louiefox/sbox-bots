@@ -39,6 +39,9 @@
     <None Update="UI\LootItemTags\LootItemTags.scss">
       <DependentUpon>LootItemTags.cs</DependentUpon>
     </None>
+    <None Update="UI\TabMenu.scss">
+      <DependentUpon>TabMenu.cs</DependentUpon>
+    </None>
   </ItemGroup>
 
 </Project>

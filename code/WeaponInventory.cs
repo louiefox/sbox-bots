@@ -63,12 +63,12 @@ partial class BRWeaponInventory
 
 		lootEnt.SetItem( ent.ClassInfo.Name );
 
-		return ent;
+		return lootEnt;
 	}
 
 	public Entity Drop( int slot )
 	{
-		return Drop( slot, Owner.Position + Owner.Rotation.Forward * 60 + new Vector3( 0, 0, 20f ) );
+		return Drop( slot, Owner.Position + Owner.Rotation.Forward * 60 );
 	}
 
 	public void SelectNext()

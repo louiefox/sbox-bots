@@ -8,10 +8,13 @@ using BattleRoyale;
 partial class BRPlayer : Player
 {
 	public BRWeaponInventory WeaponInventory;
+	public new BRInventory Inventory;
 
 	public BRPlayer()
 	{
 		WeaponInventory = new BRWeaponInventory( this );
+		Inventory = new BRInventory( this );
+
 		MaxHealth = 100;
 		MaxArmour = 150;
 	}
@@ -19,6 +22,7 @@ partial class BRPlayer : Player
 	public override void Respawn()
 	{
 		SetModel( "models/citizen/citizen.vmdl" );
+		//SetModel( "models/bots/warzone_doggo/doggo.vmdl" );
 
 		// Use WalkController for movement (you can make your own PlayerController for 100% control)
 		Controller = new WalkController();
@@ -36,15 +40,15 @@ partial class BRPlayer : Player
 		EnableHideInFirstPerson = true;
 		EnableShadowInFirstPerson = true;
 
-		WeaponInventory.Add( 0, new Pistol() );
-		WeaponInventory.Add( 1, new SMG() );
-
-		GiveAmmo( AmmoType.Pistol, 100 );
-		GiveAmmo( AmmoType.Buckshot, 8 );
-		GiveAmmo( AmmoType.Crossbow, 4 );
-
 		Health = MaxHealth;
 		Armour = 100;
+
+		WeaponInventory.Add( 0, new Pistol() );
+		
+		Inventory.Add( new BRInventoryItem( "armour_plate", 1 ) );
+		Inventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
+
+		GiveAmmo( AmmoType.Pistol, 100 );
 
 		base.Respawn();
 	}
@@ -83,6 +87,16 @@ partial class BRPlayer : Player
 
 		EnableAllCollisions = false;
 		EnableDrawing = false;
+
+		foreach( var data in WeaponInventory.Weapons )
+		{
+			WeaponInventory.Drop( data.Key, Position );
+		}		
+		
+		foreach( var data in Inventory.Slots )
+		{
+			Inventory.Drop( data.Key );
+		}
 	}
 
 	DamageInfo LastDamage;

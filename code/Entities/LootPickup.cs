@@ -10,22 +10,73 @@ public partial class LootPickup : FloorUsable
 
 	public Prop ClientModel;
 	private float ClientZRot = 0f;
-
 	private bool ClientBobIncreasing = true;
 	private float ClientZBob = 0f;
 
 	private Color32 RarityColor;
+	private float MinLootDistance = 50f;
 
 	public void SetItem(string itemID)
 	{
 		ItemID = itemID;
 
-		LootItem item = LootItem.Items[ItemID];
+		SetupPhysicsFromModel( PhysicsMotionType.Static );
 
-		//SetModel( item.Model );
-		//SetupPhysicsFromModel( PhysicsMotionType.Dynamic, false );
+		if( !CheckPosition( Position ) )
+		{
+			bool positionClear = false;
+			int checkCount = 0;
+			while( !positionClear )
+			{
+				checkCount++;
+
+				int layer = (int)Math.Floor( checkCount / 4f ) + 1;
+				if( layer > 10 )
+				{
+					Log.Info( "BattleRoyale ERROR: Cannot find position for loot pickup." );
+					break;
+				}
+
+				int side = checkCount - ((layer-1) * 4) + 1;
+				Vector3 checkPos = Position;
+				switch( side )
+				{
+					case 1:
+						checkPos += new Vector3( MinLootDistance * layer, 0, 0 );
+						break;					
+					case 2:
+						checkPos -= new Vector3( MinLootDistance * layer, 0, 0 );
+						break;					
+					case 3:
+						checkPos += new Vector3( 0, MinLootDistance * layer, 0 );
+						break;
+					case 4:
+						checkPos -= new Vector3( 0, MinLootDistance * layer, 0 );
+						break;
+				}
+
+				if( CheckPosition( checkPos ) )
+				{
+					Position = checkPos;
+					positionClear = true;
+				}
+			}
+		}
 
 		CreateClientModel();
+	}
+
+	public bool CheckPosition( Vector3 pos )
+	{
+		foreach( var data in IndexEnts )
+		{
+			if( data.Value is LootPickup lootEnt && lootEnt != this && pos.Distance( lootEnt.Position ) < MinLootDistance )
+			{
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	[ClientRpc]
@@ -109,8 +160,9 @@ public partial class LootPickup : FloorUsable
 
 		LootItem item = LootItem.Items[ItemID];
 
-		item.GiveItem( ply, Position );
-
-		Delete();
+		if( item.GiveItem( ply, Position ) )
+		{
+			Delete();
+		}
 	}
 }

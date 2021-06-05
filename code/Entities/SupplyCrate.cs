@@ -28,10 +28,10 @@ public partial class SupplyCrate : FloorUsable
 
 		Dictionary<string, float> lootTable = new Dictionary<string, float>()
 		{
-			{ "dm_pumpshotgun", 25 },
-			{ "dm_smg", 25 },
-			{ "dm_pistol", 25 },
-			{ "armour_plate", 25 },
+			{ "dm_pumpshotgun", 15 },
+			{ "dm_smg", 5 },
+			{ "dm_pistol", 40 },
+			{ "armour_plate", 40 },
 		};
 
 		Random random = new Random();

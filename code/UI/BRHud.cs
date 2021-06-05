@@ -1,9 +1,7 @@
 ﻿
 using Sandbox;
 using Sandbox.UI;
-using Sandbox.UI.Construct;
-using System;
-using System.Threading.Tasks;
+using BattleRoyale.UI;
 
 [Library]
 public partial class BRHud : HudEntity<RootPanel>
@@ -24,7 +22,7 @@ public partial class BRHud : HudEntity<RootPanel>
 		
 		RootPanel.AddChild<ChatBox>();
 		RootPanel.AddChild<KillFeed>();
-		RootPanel.AddChild<Scoreboard>();
+		RootPanel.AddChild<TabMenu>();
 		RootPanel.AddChild<VoiceList>();
 
 		RootPanel.AddChild<LootItemTags>();
