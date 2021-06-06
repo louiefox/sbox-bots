@@ -7,153 +7,147 @@ using BattleRoyale;
 
 partial class BRPlayer : Player
 {
-	public BRWeaponInventory WeaponInventory;
-	public new BRInventory Inventory;
+    public BRWeaponInventory WeaponInventory;
+    public BRInventory ItemInventory;
 
-	public BRPlayer()
-	{
-		WeaponInventory = new BRWeaponInventory( this );
-		Inventory = new BRInventory( this );
+    public BRPlayer()
+    {
+        WeaponInventory = new BRWeaponInventory( this );
+        ItemInventory = new BRInventory( this );
 
-		MaxHealth = 100;
-		MaxArmour = 150;
-	}
+        MaxHealth = 100;
+        MaxArmour = 150;
+    }
 
-	public override void Respawn()
-	{
-		SetModel( "models/citizen/citizen.vmdl" );
-		//SetModel( "models/bots/warzone_doggo/doggo.vmdl" );
+    public override void Respawn()
+    {
+        SetModel( "models/citizen/citizen.vmdl" );
+        //SetModel( "models/bots/warzone_doggo/doggo.vmdl" );
 
-		// Use WalkController for movement (you can make your own PlayerController for 100% control)
-		Controller = new WalkController();
-		/*(Controller as WalkController).WalkSpeed = 150f;
+        // Use WalkController for movement (you can make your own PlayerController for 100% control)
+        Controller = new WalkController();
+        /*(Controller as WalkController).WalkSpeed = 150f;
 		(Controller as WalkController).DefaultSpeed = 100f;
 		(Controller as WalkController).SprintSpeed = 220f;*/
 
-		// Use StandardPlayerAnimator  (you can make your own PlayerAnimator for 100% control)
-		Animator = new StandardPlayerAnimator();
+        // Use StandardPlayerAnimator  (you can make your own PlayerAnimator for 100% control)
+        Animator = new StandardPlayerAnimator();
 
-		Camera = new BRThirdPersonCamera();
+        Camera = new BRThirdPersonCamera();
 
-		EnableAllCollisions = true;
-		EnableDrawing = true;
-		EnableHideInFirstPerson = true;
-		EnableShadowInFirstPerson = true;
+        EnableAllCollisions = true;
+        EnableDrawing = true;
+        EnableHideInFirstPerson = true;
+        EnableShadowInFirstPerson = true;
 
-		Health = MaxHealth;
-		Armour = 100;
+        Health = MaxHealth;
+        Armour = 100;
 
-		WeaponInventory.Add( 0, new Pistol() );
-		
-		Inventory.Add( new BRInventoryItem( "armour_plate", 1 ) );
-		Inventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
-		Inventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
-		Inventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
-		Inventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
-		Inventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
+        WeaponInventory.Add( 0, new Pistol() );
 
-		GiveAmmo( AmmoType.Pistol, 100 );
+        ItemInventory.Add( new BRInventoryItem( "armour_plate", 1 ) );
+        ItemInventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
+        ItemInventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
+        ItemInventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
+        ItemInventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
+        ItemInventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
 
-		base.Respawn();
-	}
+        GiveAmmo( AmmoType.Pistol, 100 );
 
-	public override void Simulate( Client cl )
-	{
-		base.Simulate( cl );
+        base.Respawn();
+    }
+
+    public override void Simulate( Client cl )
+    {
+        base.Simulate( cl );
 
 
-		if ( LifeState != LifeState.Alive )
-			return;
+        if ( LifeState != LifeState.Alive )
+            return;
 
-		if ( Input.MouseWheel != 0 || Input.Pressed( InputButton.Slot1 ) || Input.Pressed( InputButton.Slot2 ) )
-		{
-			WeaponInventory.SelectNext();
-		}
+        if ( Input.MouseWheel != 0 || Input.Pressed( InputButton.Slot1 ) || Input.Pressed( InputButton.Slot2 ) )
+        {
+            WeaponInventory.SelectNext();
+        }
 
-		if( IsClient && Input.Pressed( InputButton.Use ) )
-		{
-			RequestLootPickup();
-		}
+        if ( IsClient && Input.Pressed( InputButton.Use ) )
+        {
+            RequestLootPickup();
+        }
 
-		TickPlayerUse();
+        TickPlayerUse();
 
-		SimulateActiveChild( cl, ActiveChild );
-	}
+        SimulateActiveChild( cl, ActiveChild );
+    }
 
-	public override void OnKilled()
-	{
-		base.OnKilled();
+    public override void OnKilled()
+    {
+        base.OnKilled();
 
-		BecomeRagdollOnClient( LastDamage.Force, GetHitboxBone( LastDamage.HitboxIndex ) );
+        BecomeRagdollOnClient( LastDamage.Force, GetHitboxBone( LastDamage.HitboxIndex ) );
 
-		Controller = null;
-		Camera = new SpectateRagdollCamera();
+        Controller = null;
+        Camera = new SpectateRagdollCamera();
 
-		EnableAllCollisions = false;
-		EnableDrawing = false;
+        EnableAllCollisions = false;
+        EnableDrawing = false;
 
-		foreach( var data in WeaponInventory.Weapons )
-		{
-			WeaponInventory.Drop( data.Key );
-		}		
-		
-		foreach( var data in Inventory.Slots )
-		{
-			Inventory.Drop( data.Key );
-		}
-	}
+        foreach ( var data in WeaponInventory.Weapons )
+        {
+            WeaponInventory.Drop( data.Key );
+        }
 
-	DamageInfo LastDamage;
+        foreach ( var data in ItemInventory.Slots )
+        {
+            ItemInventory.Drop( data.Key );
+        }
+    }
 
-	public override void TakeDamage( DamageInfo info )
-	{
-		ResetRegen();
-		LastDamage = info;
+    DamageInfo LastDamage;
 
-		// hack - hitbox 0 is head
-		// we should be able to get this from somewhere
-		if ( info.HitboxIndex == 0 )
-		{
-			info.Damage *= 2.0f;
-		}
+    public override void TakeDamage( DamageInfo info )
+    {
+        ResetRegen();
+        LastDamage = info;
 
-		if ( Armour > 0 )
-		{
-			int oldArmour = Armour;
-			Armour = Math.Max( Armour-( int)info.Damage, 0 );
+        // hack - hitbox 0 is head
+        // we should be able to get this from somewhere
+        if ( info.HitboxIndex == 0 )
+        {
+            info.Damage *= 2.0f;
+        }
 
-			info.Damage -= oldArmour - Armour;
-		}
+        if ( Armour > 0 )
+        {
+            int oldArmour = Armour;
+            Armour = Math.Max( Armour - (int)info.Damage, 0 );
 
-		base.TakeDamage( info );
+            info.Damage -= oldArmour - Armour;
+        }
 
-		if ( info.Attacker is BRPlayer attacker && attacker != this )
-		{
-			// Note - sending this only to the attacker!
-			attacker.DidDamage( To.Single( attacker ), info.Position, info.Damage, ((float)Health).LerpInverse( 100, 0 ) );
+        base.TakeDamage( info );
 
-			TookDamage( To.Single( this ), info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position );
-		}
-	}
+        if ( info.Attacker is BRPlayer attacker && attacker != this )
+        {
+            // Note - sending this only to the attacker!
+            attacker.DidDamage( To.Single( attacker ), info.Position, info.Damage, ((float)Health).LerpInverse( 100, 0 ) );
 
-	[ClientRpc]
-	public void DidDamage( Vector3 pos, float amount, float healthinv )
-	{
-		Sound.FromScreen( "dm.ui_attacker" )
-			.SetPitch( 1 + healthinv * 1 );
+            TookDamage( To.Single( this ), info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position );
+        }
+    }
 
-		HitIndicator.Current?.OnHit( pos, amount );
-	}
+    [ClientRpc]
+    public void DidDamage( Vector3 pos, float amount, float healthinv )
+    {
+        Sound.FromScreen( "dm.ui_attacker" )
+            .SetPitch( 1 + healthinv * 1 );
 
-	[ClientRpc]
-	public void TookDamage( Vector3 pos )
-	{
-		DamageIndicator.Current?.OnHit( pos );
-	}
+        HitIndicator.Current?.OnHit( pos, amount );
+    }
 
-	[ClientRpc]
-	public void UpdateInventory()
-	{
-		Event.Run( "battleroyale.updateinv" );
-	}
+    [ClientRpc]
+    public void TookDamage( Vector3 pos )
+    {
+        DamageIndicator.Current?.OnHit( pos );
+    }
 }

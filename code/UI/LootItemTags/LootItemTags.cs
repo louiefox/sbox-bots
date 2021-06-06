@@ -8,114 +8,114 @@ using System.Runtime.InteropServices;
 
 namespace Sandbox.UI
 {
-	public class BaseLootItemTag : Panel
-	{
-		public Label NameLabel;
-		public Label TypeLabel;
-		public LootPickup LootEnt;
+    public class BaseLootItemTag : Panel
+    {
+        public Label NameLabel;
+        public Label TypeLabel;
+        public LootPickup LootEnt;
 
-		private ItemRarity CurrentRarity;
+        private ItemRarity CurrentRarity;
 
-		public BaseLootItemTag( LootPickup lootEnt )
-		{
-			LootEnt = lootEnt;
+        public BaseLootItemTag( LootPickup lootEnt )
+        {
+            LootEnt = lootEnt;
 
-			Panel infoPanel = Add.Panel( "infoback" );
-			NameLabel = infoPanel.Add.Label( "", "name" );
-			TypeLabel = infoPanel.Add.Label( "", "type" );
+            Panel infoPanel = Add.Panel( "infoback" );
+            NameLabel = infoPanel.Add.Label( "", "name" );
+            TypeLabel = infoPanel.Add.Label( "", "type" );
 
-			Panel keyPanel = Add.Panel( "keyback" );
-			keyPanel.Add.Label( "E", "key" );
+            Panel keyPanel = Add.Panel( "keyback" );
+            keyPanel.Add.Label( "E", "key" );
 
-			ChangeRarity( ItemRarity.Common );
-		}
+            ChangeRarity( ItemRarity.Common );
+        }
 
-		public override void Tick()
-		{
-			base.Tick();
+        public override void Tick()
+        {
+            base.Tick();
 
-			LootItem item = LootItem.Items[LootEnt.ItemID];
+            LootItem item = LootItem.Items[LootEnt.ItemID];
 
-			NameLabel.Text = $"{item.Name}";
-			TypeLabel.Text = $"{item.Type}";
+            NameLabel.Text = $"{item.Name}";
+            TypeLabel.Text = $"{item.Type}";
 
-			if( CurrentRarity != item.Rarity )
-			{
-				ChangeRarity( item.Rarity );
-			}
-		}
+            if ( CurrentRarity != item.Rarity )
+            {
+                ChangeRarity( item.Rarity );
+            }
+        }
 
-		private void ChangeRarity( ItemRarity rarity )
-		{
-			RemoveClass( CurrentRarity.ToString().ToLower() );
+        private void ChangeRarity( ItemRarity rarity )
+        {
+            RemoveClass( CurrentRarity.ToString().ToLower() );
 
-			CurrentRarity = rarity;
-			AddClass( rarity.ToString().ToLower() );
-		}
-	}
+            CurrentRarity = rarity;
+            AddClass( rarity.ToString().ToLower() );
+        }
+    }
 
-	public class LootItemTags : Panel
-	{
-		private LootPickup CurrentTarget;
-		private BaseLootItemTag Tag;
+    public class LootItemTags : Panel
+    {
+        private LootPickup CurrentTarget;
+        private BaseLootItemTag Tag;
 
-		public float MaxDrawDistance = 400;
+        public float MaxDrawDistance = 400;
 
-		public LootItemTags()
-		{
-			StyleSheet.Load( "/ui/lootitemtags/LootItemTags.scss" );
-		}
+        public LootItemTags()
+        {
+            StyleSheet.Load( "/ui/lootitemtags/LootItemTags.scss" );
+        }
 
-		public override void Tick()
-		{
-			base.Tick();
+        public override void Tick()
+        {
+            base.Tick();
 
-			CurrentTarget = (Local.Pawn as BRPlayer).GetNewTargetLoot() as LootPickup;
+            CurrentTarget = BRPlayer.GetNewTargetLoot() as LootPickup;
 
-			if( (CurrentTarget == null || !CurrentTarget.IsValid()) && Tag != null )
-			{
-				Tag.Delete();
-				Tag = null;
-				return;
-			}
+            if ( (CurrentTarget == null || !CurrentTarget.IsValid()) && Tag != null )
+            {
+                Tag.Delete();
+                Tag = null;
+                return;
+            }
 
-			if ( CurrentTarget == null || !CurrentTarget.IsValid() ) return;
+            if ( CurrentTarget == null || !CurrentTarget.IsValid() ) return;
 
-			if( Tag == null )
-			{
-				Tag = new BaseLootItemTag( CurrentTarget );
-				Tag.Parent = this;
-			}
+            if ( Tag == null )
+            {
+                Tag = new BaseLootItemTag( CurrentTarget );
+                Tag.Parent = this;
+            }
 
-			if( Tag.LootEnt != CurrentTarget )
-			{
-				Tag.LootEnt = CurrentTarget;
-			}
+            if ( Tag.LootEnt != CurrentTarget )
+            {
+                Tag.LootEnt = CurrentTarget;
+            }
 
-			UpdateTag();
-		}
+            UpdateTag();
+        }
 
-		public void UpdateTag()
-		{
-			var labelPos = CurrentTarget.Position + new Vector3( 0, 0, 20f );
+        public void UpdateTag()
+        {
+            var labelPos = CurrentTarget.Position + new Vector3( 0, 0, 20f );
 
-			float dist = labelPos.Distance( CurrentView.Position );
-			if ( dist > MaxDrawDistance ) return;
+            float dist = labelPos.Distance( CurrentView.Position );
+            if ( dist > MaxDrawDistance ) return;
 
-			var alpha = dist.LerpInverse( MaxDrawDistance, MaxDrawDistance * 0.1f, true );
-			var screenPos = labelPos.ToScreen();
+            var alpha = dist.LerpInverse( MaxDrawDistance, MaxDrawDistance * 0.1f, true );
+            var screenPos = labelPos.ToScreen();
 
-			Tag.Style.Left = Length.Fraction( screenPos.x );
-			Tag.Style.Top = Length.Fraction( screenPos.y );
-			//tag.Style.Opacity = alpha;
+            Tag.Style.Left = Length.Fraction( screenPos.x );
+            Tag.Style.Top = Length.Fraction( screenPos.y );
+            //tag.Style.Opacity = alpha;
 
-			var transform = new PanelTransform();
-			transform.AddTranslateY( Length.Fraction( -1.0f ) );
-			transform.AddScale( 1 );
-			transform.AddTranslateX( Length.Fraction( -0.5f ) );
+            var transform = new PanelTransform();
+            transform.AddTranslateY( Length.Fraction( -1.0f ) );
+            transform.AddScale( 1 );
+            transform.AddTranslateX( Length.Fraction( -0.5f ) );
 
-			Tag.Style.Transform = transform;
-			Tag.Style.Dirty();
-		}
-	}
+            Tag.Style.Transform = transform;
+            Tag.Style.Dirty();
+        }
+    }
 }

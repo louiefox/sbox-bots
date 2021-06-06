@@ -3,87 +3,92 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-partial class BRInventory
+namespace BattleRoyale
 {
-	public Entity Owner { get; init; }
+    public partial class BRInventory
+    {
+        public Entity Owner { get; init; }
+        public IDictionary<int, BRInventoryItem> Slots { get; set; } = new Dictionary<int, BRInventoryItem>();
 
-	[Net, Local]
-	public IDictionary<int, BRInventoryItem> Slots { get; set; } = new Dictionary<int, BRInventoryItem>();
+        public int MaxSlots { get; set; } = 12;
 
-	public int MaxSlots { get; set; } = 16;
+        public BRInventory( Entity owner )
+        {
+            Owner = owner;
+        }
 
-	public BRInventory( Entity owner )
-	{
-		Owner = owner;
-	}
+        public bool Add( BRInventoryItem data, int slot )
+        {
+            if ( Slots.ContainsKey( slot ) || slot > MaxSlots ) return false;
 
-	public bool Add( BRInventoryItem data, int slot )
-	{
-		if ( Slots.ContainsKey( slot ) || slot > MaxSlots ) return false;
+            Slots[slot] = data;
 
-		Slots[slot] = data;
+            BRPlayer player = Owner as BRPlayer;
+            player.CLAddInventoryItem( To.Single( Owner.GetClientOwner() ), slot, data.ItemID, data.Amount );
 
-		(Owner as BRPlayer).UpdateInventory( To.Single( Owner ) );
+            return true;
+        }
 
-		return true;
-	}	
-	
-	public bool Add( BRInventoryItem data )
-	{
-		return Add( data, GetNewSlot() );
-	}
+        public bool Add( BRInventoryItem data )
+        {
+            return Add( data, GetNewSlot() );
+        }
 
-	public int GetNewSlot()
-	{
-		int newIndex = 0;
-		for ( int i = 1; i <= Slots.Count; i++ )
-		{
-			if ( Slots.ContainsKey( i ) ) continue;
+        public int GetNewSlot()
+        {
+            int newIndex = 0;
+            for ( int i = 1; i <= Slots.Count; i++ )
+            {
+                if ( Slots.ContainsKey( i ) ) continue;
 
-			newIndex = i;
-			break;
-		}
+                newIndex = i;
+                break;
+            }
 
-		return newIndex >= 1 ? newIndex : Slots.Count+1;
-	}
+            return newIndex >= 1 ? newIndex : Slots.Count + 1;
+        }
 
-	public bool Remove( int slot )
-	{
-		if ( !Slots.ContainsKey( slot ) ) return false;
+        public bool Remove( int slot )
+        {
+            if ( !Slots.ContainsKey( slot ) ) return false;
 
-		Slots.Remove( slot );
+            Slots.Remove( slot );
 
-		return true;
-	}	
-	
-	public Entity Drop( int slot, Vector3 pos )
-	{
-		if ( !Slots.ContainsKey( slot ) ) return null;
+            BRPlayer player = Owner as BRPlayer;
+            player.CLRemoveInventoryItem( To.Single( Owner.GetClientOwner() ), slot );
 
-		BRInventoryItem data = Slots[slot];
-		Remove( slot );
+            return true;
+        }
 
-		LootPickup lootEnt = new LootPickup();
-		lootEnt.SetPosition( pos );
-		lootEnt.SetItem( data.ItemID );
+        public Entity Drop( int slot, Vector3 pos )
+        {
+            if ( !Slots.ContainsKey( slot ) ) return null;
 
-		return lootEnt;
-	}
+            BRInventoryItem data = Slots[slot];
+            Remove( slot );
 
-	public Entity Drop( int slot )
-	{
-		return Drop( slot, Owner.Position );
-	}
-}
+            LootPickup lootEnt = new();
+            lootEnt.SetPosition( pos );
+            lootEnt.SetItem( data.ItemID );
 
-public struct BRInventoryItem
-{
-	public string ItemID;
-	public int Amount;
+            return lootEnt;
+        }
 
-	public BRInventoryItem( string itemID, int amount )
-	{
-		ItemID = itemID;
-		Amount = amount;
-	}
+        public Entity Drop( int slot )
+        {
+            return Drop( slot, Owner.Position );
+        }
+    }
+
+    public struct BRInventoryItem
+    {
+        public string ItemID { get; set; }
+        public int Amount { get; set; }
+
+        public BRInventoryItem( string itemID, int amount )
+        {
+            ItemID = itemID;
+            Amount = amount;
+        }
+    }
 }

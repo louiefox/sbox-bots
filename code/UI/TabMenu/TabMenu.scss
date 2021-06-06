@@ -1,5 +1,4 @@
-﻿tabmenu
-{
+﻿tabmenu {
 	position: absolute;
 	z-index: 100;
 	width: 100%;
@@ -11,9 +10,8 @@
 	background-size: 100% 100%;
 	background-position: center center;
 
-	&.open
-	{
+	&.open {
 		opacity: 1;
-		transform: scale( 1 );
+		transform: scale(1);
 	}
 }
