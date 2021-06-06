@@ -1,0 +1,14 @@
+C:\Program Files (x86)\Steam\steamapps\common\sbox\addons\bots\code\obj\Debug\net5.0\bots.GeneratedMSBuildEditorConfig.editorconfig
+C:\Program Files (x86)\Steam\steamapps\common\sbox\addons\bots\code\obj\Debug\net5.0\bots.AssemblyInfoInputs.cache
+C:\Program Files (x86)\Steam\steamapps\common\sbox\addons\bots\code\obj\Debug\net5.0\bots.AssemblyInfo.cs
+C:\Program Files (x86)\Steam\steamapps\common\sbox\addons\bots\code\obj\Debug\net5.0\bots.csproj.CoreCompileInputs.cache
+C:\Program Files (x86)\Steam\steamapps\common\sbox\addons\bots\.intermediate\net5.0\bots.deps.json
+C:\Program Files (x86)\Steam\steamapps\common\sbox\addons\bots\.intermediate\net5.0\bots.dll
+C:\Program Files (x86)\Steam\steamapps\common\sbox\addons\bots\.intermediate\net5.0\ref\bots.dll
+C:\Program Files (x86)\Steam\steamapps\common\sbox\addons\bots\.intermediate\net5.0\bots.pdb
+C:\Program Files (x86)\Steam\steamapps\common\sbox\addons\bots\.intermediate\net5.0\bots.xml
+C:\Program Files (x86)\Steam\steamapps\common\sbox\addons\bots\code\obj\Debug\net5.0\bots.csproj.AssemblyReference.cache
+C:\Program Files (x86)\Steam\steamapps\common\sbox\addons\bots\code\obj\Debug\net5.0\bots.csproj.CopyComplete
+C:\Program Files (x86)\Steam\steamapps\common\sbox\addons\bots\code\obj\Debug\net5.0\bots.dll
+C:\Program Files (x86)\Steam\steamapps\common\sbox\addons\bots\code\obj\Debug\net5.0\ref\bots.dll
+C:\Program Files (x86)\Steam\steamapps\common\sbox\addons\bots\code\obj\Debug\net5.0\bots.pdb

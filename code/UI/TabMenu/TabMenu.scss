@@ -9,6 +9,7 @@
 	transform-origin: 50% 50%;
 	background-size: 100% 100%;
 	background-position: center center;
+	pointer-events: all;
 
 	&.open {
 		opacity: 1;

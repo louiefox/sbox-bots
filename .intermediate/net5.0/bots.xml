@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>bots</name>
+    </assembly>
+    <members>
+        <member name="M:BattleRoyale.UI.Inventory.UpdateInventory">
+            <summary>
+                I am not conforming to your standards Alex.
+            </summary>
+        </member>
+        <member name="M:BaseBRWeapon.ShootBullet(System.Single,System.Single,System.Single,System.Single)">
+            <summary>
+            Shoot a single bullet
+            </summary>
+        </member>
+    </members>
+</doc>

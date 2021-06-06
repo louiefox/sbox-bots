@@ -13,9 +13,9 @@ public class LootItem
         { "dm_smg", new( ItemType.Weapon, "Custom SMG", ItemRarity.Epic, "weapons/rust_smg/rust_smg.vmdl_c" ) { WeaponClass = "dm_smg" } },
         { "dm_crossbow", new( ItemType.Weapon, "Crossbow", ItemRarity.Legendary, "weapons/rust_crossbow/rust_crossbow.vmdl_c" ) { WeaponClass = "dm_crossbow" } },
 
-        { "armour_plate", new( ItemType.Consumable, "Armour Plate", ItemRarity.Rare, "models/rust_props/small_junk/carton_box.vmdl_c" ) { ItemID = "armour_plate" } },
+        { "armour_plate", new( ItemType.Consumable, "Armour Plate", ItemRarity.Rare, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "armour_plate" } },
 
-        { "ammo_pistol", new( ItemType.Ammo, "Pistol Ammo", ItemRarity.Common, "models/rust_props/small_junk/carton_box.vmdl_c" ) { ItemID = "ammo_pistol" } },
+        { "ammo_pistol", new( ItemType.Ammo, "Pistol Ammo", ItemRarity.Common, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "ammo_pistol" } },
     };
 
     public ItemType Type;

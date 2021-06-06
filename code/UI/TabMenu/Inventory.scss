@@ -1,8 +1,9 @@
 ﻿inventory {
-    width: 50%;
+    width: 775px;
     height: 100%;
     background-color: rgba(10, 10, 10, 0.8);
     align-items: center;
+    font-family: Roboto;
 
     .rowcontainer {
         width: 100%;
@@ -17,15 +18,69 @@
         height: 100px;
     }
 
-    .slot {
-        background-color: red;
-        font-size: 30px;
-        text-align: center;
+    .slotback {
+        background-color: rgba( #222, 0.95 );
         width: 100px;
         margin-right: 15px;
     }
 
+    .slot {
+        text-align: center;
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+        transition: all 0.02s all;
+
+        &.common {
+            border-top: 3px solid #b0b0b0;
+            border-bottom: 3px solid #b0b0b0;
+            background: radial-gradient(#b0b0b000, #b0b0b000, #b0b0b030, #b0b0b070);
+        }
+
+        &.uncommon {
+            border-top: 3px solid #4beb3d;
+            border-bottom: 3px solid #4beb3d;
+            background: radial-gradient(#4beb3d00, #4beb3d00, #4beb3d30, #4beb3d70);
+        }
+
+        &.rare {
+            border-top: 3px solid #433deb;
+            border-bottom: 3px solid #433deb;
+            background: radial-gradient(#433deb00, #433deb00, #433deb30, #433deb70);
+        }
+
+        &.epic {
+            border-top: 3px solid #9a3deb;
+            border-bottom: 3px solid #9a3deb;
+            background: radial-gradient(#9a3deb00, #9a3deb00, #9a3deb30, #9a3deb70);
+        }
+
+        &.legendary {
+            border-top: 3px solid #ebb13d;
+            border-bottom: 3px solid #ebb13d;
+            background: radial-gradient(#ebb13d00, #ebb13d00, #ebb13d30, #ebb13d70);
+        }
+
+        &:hover {
+            background-color: rgba( #222, 0.9 );
+        }
+    }
+
     .name {
-        color: white;
+        color: rgba(238, 238, 238, 0.8);
+        font-size: 15px;
+        font-weight: bold;
+        text-shadow: 0 0 4px black;
+        width: 100%;
+    }
+
+    .amount {
+        color: rgba(238, 238, 238, 0.8);
+        font-size: 22px;
+        font-weight: bold;
+        text-shadow: 0 0 4px black;
+        position: absolute;
+        right: 5px;
+        bottom: 0;
     }
 }
