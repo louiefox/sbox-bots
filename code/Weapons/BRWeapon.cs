@@ -58,18 +58,11 @@ partial class BaseBRWeapon : BaseWeapon
 
 		TimeSinceReload = 0;
 
-		if ( Owner is BRPlayer player )
-		{
-			if ( AvailableAmmo() <= 0 ) return;
+        if ( AvailableAmmo() <= 0 ) return;
 
-			StartReloadEffects();
-		}
-
-		IsReloading = true;
+        IsReloading = true;
 
 		(Owner as AnimEntity).SetAnimBool( "b_reload", true );
-
-		StartReloadEffects();
     }
 
 	public override void Simulate( Client owner ) 
@@ -112,12 +105,6 @@ partial class BaseBRWeapon : BaseWeapon
                 AmmoClip += ammo;
             }
 		}
-	}
-
-	[ClientRpc]
-	public virtual void StartReloadEffects()
-	{
-	
 	}
 
 	public override void AttackPrimary()

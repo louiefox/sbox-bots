@@ -11,7 +11,7 @@ public partial class LootPickup : FloorUsable
     [Net]
 	public int Amount { get; set; }
 
-	public Prop ClientModel;
+	public ModelEntity ClientModel;
 	private float ClientZRot = 0f;
 	private bool ClientBobIncreasing = true;
 	private float ClientZBob = 0f;
@@ -162,7 +162,7 @@ public partial class LootPickup : FloorUsable
 				break;
 		}
 
-		ClientModel = new Prop();
+		ClientModel = new ModelEntity();
 		ClientModel.Parent = this;
 		ClientModel.Position = Position;
 		ClientModel.SetModel( item.Model );
