@@ -70,12 +70,6 @@ partial class BaseBRWeapon : BaseWeapon
 		(Owner as AnimEntity).SetAnimBool( "b_reload", true );
 
 		StartReloadEffects();
-
-        if ( Owner is BRPlayer ply && IsServer )
-        {
-            Log.Info( "Reload called on server" );
-            ply.TestRPC( To.Single( ply.GetClientOwner() ) );
-        }
     }
 
 	public override void Simulate( Client owner ) 
@@ -107,13 +101,16 @@ partial class BaseBRWeapon : BaseWeapon
 	{
 		IsReloading = false;
 
-		if ( Owner is BRPlayer player && IsServer )
+		if ( Owner is BRPlayer player )
 		{
-            var ammo = player.TakeInvItems( AmmoItemID, ClipSize - AmmoClip );
-			if ( ammo == 0 )
-				return;
+            using( Prediction.Off() )
+            {
+                var ammo = player.TakeInvItems( AmmoItemID, ClipSize - AmmoClip );
+                if ( ammo == 0 )
+                    return;
 
-			AmmoClip += ammo;
+                AmmoClip += ammo;
+            }
 		}
 	}
 

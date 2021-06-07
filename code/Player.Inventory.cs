@@ -60,21 +60,7 @@ partial class BRPlayer
         ItemInventory.Slots[slot] = itemData;
 
         Event.Run( "battleroyale.updateinv" );
-    }    
-    
-    [ClientRpc]
-    public void TestRPC()
-    {
-        Log.Info( "RPC Ran" );
-    }
-
-    [ServerCmd( "test_rpc_cmd" )]
-    public static void TestRPCCmd()
-    {
-        if ( ConsoleSystem.Caller.Pawn is not BRPlayer ply || ply == null || ply.LifeState != LifeState.Alive ) return;
-
-        ply.TestRPC( To.Single( ply.GetClientOwner() ) );
-    }    
+    }     
     
     [ServerCmd( "request_inventory_drop" )]
     public static void RequestDrop( int slot )
@@ -84,7 +70,5 @@ partial class BRPlayer
         if ( ply == null || ply.LifeState != LifeState.Alive || ply.ItemInventory is not BRInventory inventory || !inventory.Slots.ContainsKey( slot ) ) return;
 
         inventory.Drop( slot, ply.Position + ply.EyeRot.Forward * 20 );
-
-        ply.TestRPC( To.Single( ply.GetClientOwner() ) );
     }
 }
