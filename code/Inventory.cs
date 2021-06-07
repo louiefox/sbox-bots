@@ -104,7 +104,7 @@ namespace BattleRoyale
                 player.CLTakeInventoryItemAmount( To.Single( Owner.GetClientOwner() ), slot, itemData.Amount );
             } else
             {
-                Slots.Remove( slot );
+                Remove( slot );
             }
         }
     }

@@ -77,20 +77,23 @@ partial class PumpShotgun : BaseBRWeapon
 
 		if ( Owner is BRPlayer player )
 		{
-			var ammo = player.TakeInvItems( AmmoItemID, 1 );
-			if ( ammo == 0 )
-				return;
+            using ( Prediction.Off() )
+            {
+                var ammo = player.TakeInvItems( AmmoItemID, 1 );
+                if ( ammo == 0 )
+                    return;
 
-			AmmoClip += ammo;
+                AmmoClip += ammo;
 
-			if ( AmmoClip < ClipSize )
-			{
-				Reload();
-			}
-			else
-			{
-				FinishReload();
-			}
+                if ( AmmoClip < ClipSize )
+                {
+                    Reload();
+                }
+                else
+                {
+                    FinishReload();
+                }
+            }
 		}
 	}
 

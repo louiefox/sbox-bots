@@ -15,7 +15,10 @@ public class LootItem
 
         { "armour_plate", new( ItemType.Consumable, "Armour Plate", ItemRarity.Rare, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "armour_plate", MaxStack = 5 } },
 
-        { "ammo_pistol", new( ItemType.Ammo, "Pistol Ammo", ItemRarity.Common, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "ammo_pistol", MaxStack = 30 } },
+        { "ammo_pistol", new( ItemType.Ammo, "Pistol Ammo", ItemRarity.Common, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "ammo_pistol", MaxStack = 60 } },
+        { "ammo_shotgun", new( ItemType.Ammo, "Shotgun Ammo", ItemRarity.Common, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "ammo_shotgun", MaxStack = 24 } },
+        { "ammo_crossbow", new( ItemType.Ammo, "Crossbow Ammo", ItemRarity.Common, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "ammo_crossbow", MaxStack = 8 } },
+        { "ammo_rifle", new( ItemType.Ammo, "Rifle Ammo", ItemRarity.Common, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "ammo_rifle", MaxStack = 60 } },
     };
 
     public ItemType Type;

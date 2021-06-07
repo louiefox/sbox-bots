@@ -28,14 +28,21 @@ public partial class SupplyCrate : FloorUsable
 
 		Dictionary<string, float> lootTable = new Dictionary<string, float>()
 		{
+			{ "dm_shotgun", 10 },
 			{ "dm_pumpshotgun", 15 },
-			{ "dm_smg", 5 },
-			{ "dm_pistol", 40 },
-			{ "armour_plate", 40 },
+			{ "dm_smg", 10 },
+			{ "dm_crossbow", 5 },
+
+			{ "armour_plate", 20 },
+
+			{ "ammo_pistol", 10 },
+			{ "ammo_rifle", 10 },
+			{ "ammo_shotgun", 10 },
+			{ "ammo_crossbow", 10 },
 		};
 
 		Random random = new Random();
-		for ( int i = 0; i < 1; i++ )
+		for ( int i = 0; i < 3; i++ )
 		{
 			string itemID = "";
 			double randomNum = random.NextDouble();
@@ -57,8 +64,8 @@ public partial class SupplyCrate : FloorUsable
 			}
 
 			LootPickup lootEnt = new LootPickup();
-			lootEnt.Position = Position + new Vector3( 0, 0, 20f );
-			lootEnt.SetItem( itemID );
+            lootEnt.SetPosition( Position );
+            lootEnt.SetItem( itemID );
 		}
 
 		Delete();

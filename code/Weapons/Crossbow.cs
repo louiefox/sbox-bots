@@ -6,15 +6,16 @@ partial class Crossbow : BaseBRWeapon
 	public override float PrimaryRate => 1;
 	public override int Bucket => 3;
 	public override string AmmoItemID => "ammo_crossbow";
+    public override int ClipSize => 1;
 
-	[Net]
+    [Net]
 	public bool Zoomed { get; set; }
 
 	public override void Spawn()
 	{
 		base.Spawn();
 
-		AmmoClip = 3;
+		AmmoClip = ClipSize;
 		SetModel( "weapons/rust_crossbow/rust_crossbow.vmdl" );
 	}
 
@@ -27,15 +28,43 @@ partial class Crossbow : BaseBRWeapon
 		}
 
 		ShootEffects();
+        PlaySound( "rust_crossbow.shoot" );
 
-		if ( IsServer )
+        if ( IsServer )
 		using ( Prediction.Off() )
 		{
-			var bolt = new CrossbowBolt();
+            Vector3 pos = Owner.Position;
+            Vector3 targetPos;
+
+            var center = pos + Vector3.Up * 64;
+
+            if ( ((Owner as Player).Controller as WalkController).Duck.IsActive )
+            {
+                center -= Vector3.Up * 25;
+            }
+
+            pos = center;
+
+            float distance = 130.0f * Owner.Scale;
+            targetPos = pos + Owner.Input.Rotation.Right * (((Owner as Player).CollisionBounds.Maxs.x + 1) * Owner.Scale);
+            targetPos += Owner.Input.Rotation.Forward * -distance;
+
+            pos = Trace.Ray( pos, targetPos )
+                .Ignore( Owner )
+                .Radius( 8 )
+                .Run().EndPos;
+
+            var camTrace = Trace.Ray( pos, pos + Owner.Input.Rotation.Forward * 5000 )
+                .UseHitboxes()
+                .Ignore( Owner )
+                .Ignore( this )
+                .Run();
+
+            var bolt = new CrossbowBolt();
 			bolt.Position = Owner.EyePos;
-			bolt.Rotation = Owner.EyeRot;
+            bolt.Rotation = Owner.EyeRot;
 			bolt.Owner = Owner;
-			bolt.Velocity = Owner.EyeRot.Forward * 100;
+			bolt.Velocity = camTrace.EndPos;
 		}
 	}
 

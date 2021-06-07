@@ -161,7 +161,7 @@ partial class BaseBRWeapon : BaseWeapon
 		Vector3 pos = Owner.Position;
 		Vector3 targetPos;
 
-		var center = Owner.Position + Vector3.Up * 64;
+		var center = pos + Vector3.Up * 64;
 
 		if ( ((Owner as Player).Controller as WalkController).Duck.IsActive )
 		{
