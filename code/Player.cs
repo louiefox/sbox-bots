@@ -47,10 +47,10 @@ partial class BRPlayer : Player
 
         ItemInventory.Add( new BRInventoryItem( "armour_plate", 1 ) );
         ItemInventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
-        ItemInventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
-        ItemInventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
-        ItemInventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
-        ItemInventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
+        ItemInventory.Add( new BRInventoryItem( "ammo_pistol", 25 ) );
+        ItemInventory.Add( new BRInventoryItem( "ammo_pistol", 5 ) );
+        ItemInventory.Add( new BRInventoryItem( "ammo_pistol", 20 ) );
+        ItemInventory.Add( new BRInventoryItem( "ammo_pistol", 10 ) );
 
         GiveAmmo( AmmoType.Pistol, 100 );
 

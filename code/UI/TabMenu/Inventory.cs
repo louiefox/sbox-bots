@@ -8,12 +8,14 @@ namespace BattleRoyale.UI
 {
     public class Inventory : Panel
     {
-        private IDictionary<int, Panel> Slots { get; set; } = new Dictionary<int, Panel>();
+        private IDictionary<int, InventorySlotBack> Slots { get; set; } = new Dictionary<int, InventorySlotBack>();
+        private Panel RowContainer;
 
         public Inventory()
         {
             StyleSheet.Load( "/ui/TabMenu/Inventory.scss" );
 
+            RowContainer = Add.Panel( "rowcontainer" );
             UpdateInventory();
         }
 
@@ -29,24 +31,22 @@ namespace BattleRoyale.UI
 
             if ( Slots.Count != inventory.MaxSlots )
             {
-                Panel rowContainer = Add.Panel( "rowcontainer" );
+                RowContainer.DeleteChildren();
 
                 Panel currentRow = null;
                 int rowSlots = 0;
 
                 for ( int i = 1; i <= inventory.MaxSlots; i++ )
                 {
-                    int slotKey = i;
-
                     if ( currentRow == null || rowSlots >= 6 )
                     {
-                        currentRow = rowContainer.Add.Panel( "row" );
+                        currentRow = RowContainer.Add.Panel( "row" );
                         rowSlots = 0;
                     }
 
                     rowSlots++;
 
-                    InventorySlot slot = currentRow.AddChild<InventorySlot>( "slotback" );
+                    InventorySlotBack slot = currentRow.AddChild<InventorySlotBack>( "slotback" );
 
                     if ( rowSlots == 6 )
                     {
@@ -61,14 +61,22 @@ namespace BattleRoyale.UI
             {
                 if ( !Slots.ContainsKey( i ) ) continue;
 
-                Slots[i].DeleteChildren();
-
-                if ( !inventory.Slots.ContainsKey( i ) ) continue;
+                if ( !inventory.Slots.ContainsKey( i ) )
+                {
+                    Slots[i].Slot?.Delete();
+                    Slots[i].Slot = null;
+                    continue;
+                }
 
                 BRInventoryItem itemData = inventory.Slots[i];
                 LootItem item = LootItem.Items[itemData.ItemID];
 
-                InventorySlot slot = Slots[i].AddChild<InventorySlot>( "slot" );
+                if( Slots[i].Slot == null )
+                {
+                    Slots[i].Slot = Slots[i].AddChild<InventorySlot>( "slot" );
+                }
+
+                InventorySlot slot = Slots[i].Slot;
                 slot.SlotKey = i;
                 slot.Name.Text = item.Name;
                 slot.Amount.Text = $"x{itemData.Amount}";
@@ -76,6 +84,11 @@ namespace BattleRoyale.UI
                 //slot.SetModel( item.Model );
             }
         }
+    }
+
+    public class InventorySlotBack : Panel
+    {
+        public InventorySlot Slot;
     }
 
     public class InventorySlot : Panel

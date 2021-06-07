@@ -13,9 +13,9 @@ public class LootItem
         { "dm_smg", new( ItemType.Weapon, "Custom SMG", ItemRarity.Epic, "weapons/rust_smg/rust_smg.vmdl_c" ) { WeaponClass = "dm_smg" } },
         { "dm_crossbow", new( ItemType.Weapon, "Crossbow", ItemRarity.Legendary, "weapons/rust_crossbow/rust_crossbow.vmdl_c" ) { WeaponClass = "dm_crossbow" } },
 
-        { "armour_plate", new( ItemType.Consumable, "Armour Plate", ItemRarity.Rare, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "armour_plate" } },
+        { "armour_plate", new( ItemType.Consumable, "Armour Plate", ItemRarity.Rare, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "armour_plate", MaxStack = 5 } },
 
-        { "ammo_pistol", new( ItemType.Ammo, "Pistol Ammo", ItemRarity.Common, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "ammo_pistol" } },
+        { "ammo_pistol", new( ItemType.Ammo, "Pistol Ammo", ItemRarity.Common, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "ammo_pistol", MaxStack = 30 } },
     };
 
     public ItemType Type;
@@ -25,6 +25,7 @@ public class LootItem
 
     public string WeaponClass;
     public string ItemID;
+    public int MaxStack;
 
     public LootItem( ItemType type, string name, ItemRarity rarity, string model )
     {
@@ -34,7 +35,7 @@ public class LootItem
         Model = model;
     }
 
-    public bool GiveItem( Player player, Vector3 pickupPos )
+    public bool GiveItem( Player player, Vector3 pickupPos, int amount )
     {
         BRPlayer ply = player as BRPlayer;
 
@@ -53,9 +54,28 @@ public class LootItem
         }
         else if ( Type == ItemType.Consumable || Type == ItemType.Ammo )
         {
-            return ply.ItemInventory.Add( new BRInventoryItem( ItemID, 1 ) );
+            return ply.ItemInventory.Add( new BRInventoryItem( ItemID, amount ) );
         }
 
+
+        return false;
+    }
+
+    public bool CombineItem(LootPickup ent1, LootPickup ent2)
+    {
+        if ( (Type == ItemType.Consumable || Type == ItemType.Ammo) && ent1.Amount < MaxStack )
+        {
+            int change = Math.Min( MaxStack - ent1.Amount, ent2.Amount );
+            ent1.Amount += change;
+            ent2.Amount -= change;
+
+            if( ent2.Amount <= 0 )
+            {
+                ent2.Delete();
+            }
+
+            return true;
+        }
 
         return false;
     }

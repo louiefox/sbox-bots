@@ -8,14 +8,15 @@ partial class Pistol : BaseBRWeapon
 	public override float SecondaryRate => 1.0f;
 	public override float ReloadTime => 2f;
 	public override int Bucket => 1;
+	public override int ClipSize => 12;
 
 	public override void Spawn()
 	{
 		base.Spawn();
 
 		SetModel( "weapons/rust_pistol/rust_pistol.vmdl" );
-		AmmoClip = 12;
-	}
+        AmmoClip = ClipSize;
+    }
 
 	public override bool CanPrimaryAttack()
 	{

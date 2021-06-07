@@ -6,8 +6,8 @@ partial class Shotgun : BaseBRWeapon
 { 
 	public override float PrimaryRate => 1;
 	public override float SecondaryRate => 1;
-	public override AmmoType AmmoType => AmmoType.Buckshot;
-	public override int ClipSize => 1;
+    public override string AmmoItemID => "ammo_shotgun";
+    public override int ClipSize => 1;
 	public override float ReloadTime => 0.5f;
 	public override int Bucket => 2;
 
@@ -78,7 +78,7 @@ partial class Shotgun : BaseBRWeapon
 
 		if ( Owner is BRPlayer player )
 		{
-			var ammo = player.TakeAmmo( AmmoType, 1 );
+			var ammo = player.TakeInvItems( AmmoItemID, 1 );
 			if ( ammo == 0 )
 				return;
 

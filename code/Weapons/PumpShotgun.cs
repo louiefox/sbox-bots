@@ -6,8 +6,8 @@ partial class PumpShotgun : BaseBRWeapon
 { 
 	public override float PrimaryRate => 1;
 	public override float SecondaryRate => 1;
-	public override AmmoType AmmoType => AmmoType.Buckshot;
-	public override int ClipSize => 6;
+    public override string AmmoItemID => "ammo_shotgun";
+    public override int ClipSize => 6;
 	public override float ReloadTime => 0.5f;
 	public override int Bucket => 2;
 
@@ -16,8 +16,7 @@ partial class PumpShotgun : BaseBRWeapon
 		base.Spawn();
 
 		SetModel( "weapons/rust_pumpshotgun/rust_pumpshotgun.vmdl" );  
-
-		AmmoClip = 6;
+		AmmoClip = ClipSize;
 	}
 
 	public override void AttackPrimary() 
@@ -78,7 +77,7 @@ partial class PumpShotgun : BaseBRWeapon
 
 		if ( Owner is BRPlayer player )
 		{
-			var ammo = player.TakeAmmo( AmmoType, 1 );
+			var ammo = player.TakeInvItems( AmmoItemID, 1 );
 			if ( ammo == 0 )
 				return;
 

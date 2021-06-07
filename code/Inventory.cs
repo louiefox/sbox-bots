@@ -69,7 +69,18 @@ namespace BattleRoyale
 
             LootPickup lootEnt = new();
             lootEnt.SetPosition( pos );
-            lootEnt.SetItem( data.ItemID );
+            lootEnt.SetItem( data.ItemID, data.Amount );
+
+            LootItem item = LootItem.Items[data.ItemID];
+
+            foreach ( var kv in FloorUsable.IndexEnts )
+            {
+                if ( kv.Value is LootPickup ent && ent != lootEnt && data.ItemID == ent.ItemID && lootEnt.Position.Distance( ent.Position ) < 60f )
+                {
+                    item.CombineItem( ent, lootEnt );
+                    break;
+                }
+            }
 
             return lootEnt;
         }
@@ -77,6 +88,24 @@ namespace BattleRoyale
         public Entity Drop( int slot )
         {
             return Drop( slot, Owner.Position );
+        }
+
+        public void TakeAmount( int slot, int amount )
+        {
+            if ( !Slots.ContainsKey( slot ) ) return;
+
+            BRInventoryItem itemData = Slots[slot];
+            itemData.Amount -= amount;
+            Slots[slot] = itemData;
+
+            if ( itemData.Amount > 0 )
+            {
+                BRPlayer player = Owner as BRPlayer;
+                player.CLTakeInventoryItemAmount( To.Single( Owner.GetClientOwner() ), slot, itemData.Amount );
+            } else
+            {
+                Slots.Remove( slot );
+            }
         }
     }
 

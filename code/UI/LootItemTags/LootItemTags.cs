@@ -36,7 +36,7 @@ namespace Sandbox.UI
 
             LootItem item = LootItem.Items[LootEnt.ItemID];
 
-            NameLabel.Text = $"{item.Name}";
+            NameLabel.Text = LootEnt.Amount > 1 ? $"x{LootEnt.Amount} {item.Name}" : $"{item.Name}";
             TypeLabel.Text = $"{item.Type}";
 
             if ( CurrentRarity != item.Rarity )

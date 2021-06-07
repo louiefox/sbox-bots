@@ -6,7 +6,10 @@ using System.Collections.Generic;
 public partial class LootPickup : FloorUsable
 {
 	[Net]
-	public string ItemID { get; set; }
+	public string ItemID { get; set; }	
+    
+    [Net]
+	public int Amount { get; set; }
 
 	public Prop ClientModel;
 	private float ClientZRot = 0f;
@@ -16,16 +19,22 @@ public partial class LootPickup : FloorUsable
 	private Color32 RarityColor;
 	private float MinLootDistance = 30f;
 
-	public void SetItem(string itemID)
+	public void SetItem(string itemID, int amount)
 	{
 		ItemID = itemID;
+        Amount = amount;
 
-		SetupPhysicsFromModel( PhysicsMotionType.Static );
+        SetupPhysicsFromModel( PhysicsMotionType.Static );
 
 		CreateClientModel();
-	}	
-	
-	public void SetPosition( Vector3 pos )
+	}
+
+    public void SetItem( string itemID )
+    {
+        SetItem( itemID, 1 );
+    }
+
+    public void SetPosition( Vector3 pos )
 	{
 		Position = DropToFloor( pos );
 		if ( CheckPosition( Position ) ) return;
@@ -215,7 +224,7 @@ public partial class LootPickup : FloorUsable
 			Delete();
 		}
 
-		if( item.GiveItem( ply, Position ) && this.IsValid() )
+		if( item.GiveItem( ply, Position, Amount ) && this.IsValid() )
 		{
 			Delete();
 		}

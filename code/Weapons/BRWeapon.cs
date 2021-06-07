@@ -10,7 +10,7 @@ using BattleRoyale;
 
 partial class BaseBRWeapon : BaseWeapon
 {
-	public virtual AmmoType AmmoType => AmmoType.Pistol;
+	public virtual string AmmoItemID => "ammo_pistol";
 	public virtual int ClipSize => 16;
 	public virtual float ReloadTime => 3.0f;
 	public virtual int Bucket => 1;
@@ -28,13 +28,6 @@ partial class BaseBRWeapon : BaseWeapon
 	[Net, Predicted]
 	public TimeSince TimeSinceDeployed { get; set; }
 
-	public int AvailableAmmo()
-	{
-		var owner = Owner as BRPlayer;
-		if ( owner == null ) return 0;
-		return owner.AmmoCount( AmmoType );
-	}
-
 	public override void ActiveStart( Entity ent )
 	{
 		base.ActiveStart( ent );
@@ -49,6 +42,12 @@ partial class BaseBRWeapon : BaseWeapon
 		SetModel( "weapons/rust_pistol/rust_pistol.vmdl" );
 	}
 
+    public int AvailableAmmo()
+    {
+        if ( Owner is not BRPlayer player ) return 0;
+        return player.GetInvItemCount( AmmoItemID );
+    }
+
 	public override void Reload()
 	{
 		if ( IsReloading )
@@ -61,8 +60,7 @@ partial class BaseBRWeapon : BaseWeapon
 
 		if ( Owner is BRPlayer player )
 		{
-			if ( player.AmmoCount( AmmoType ) <= 0 )
-				return;
+			if ( AvailableAmmo() <= 0 ) return;
 
 			StartReloadEffects();
 		}
@@ -72,7 +70,13 @@ partial class BaseBRWeapon : BaseWeapon
 		(Owner as AnimEntity).SetAnimBool( "b_reload", true );
 
 		StartReloadEffects();
-	}
+
+        if ( Owner is BRPlayer ply && IsServer )
+        {
+            Log.Info( "Reload called on server" );
+            ply.TestRPC( To.Single( ply.GetClientOwner() ) );
+        }
+    }
 
 	public override void Simulate( Client owner ) 
 	{
@@ -103,9 +107,9 @@ partial class BaseBRWeapon : BaseWeapon
 	{
 		IsReloading = false;
 
-		if ( Owner is BRPlayer player )
+		if ( Owner is BRPlayer player && IsServer )
 		{
-			var ammo = player.TakeAmmo( AmmoType, ClipSize - AmmoClip );
+            var ammo = player.TakeInvItems( AmmoItemID, ClipSize - AmmoClip );
 			if ( ammo == 0 )
 				return;
 
@@ -121,7 +125,7 @@ partial class BaseBRWeapon : BaseWeapon
 
 	public override void AttackPrimary()
 	{
-		TimeSincePrimaryAttack = 0;
+        TimeSincePrimaryAttack = 0;
 		TimeSinceSecondaryAttack = 0;
 
 		//
@@ -186,19 +190,10 @@ partial class BaseBRWeapon : BaseWeapon
 		targetPos = pos + Owner.Input.Rotation.Right * (((Owner as Player).CollisionBounds.Maxs.x + 1) * Owner.Scale);
 		targetPos += Owner.Input.Rotation.Forward * -distance;
 
-		if ( true )
-		{
-			var tr = Trace.Ray( pos, targetPos )
-				.Ignore( Owner )
-				.Radius( 8 )
-				.Run();
-
-			pos = tr.EndPos;
-		}
-		else
-		{
-			pos = targetPos;
-		}
+		pos = Trace.Ray( pos, targetPos )
+            .Ignore( Owner )
+            .Radius( 8 )
+            .Run().EndPos;
 
 		var forward = Owner.Input.Rotation.Forward;
 		forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
@@ -261,8 +256,7 @@ partial class BaseBRWeapon : BaseWeapon
 
 	public bool IsUsable()
 	{
-		if ( AmmoClip > 0 ) return true;
-		return AvailableAmmo() > 0;
+		return AmmoClip > 0 || AvailableAmmo() > 0;
 	}
 
 	public override void OnCarryStart( Entity carrier )
