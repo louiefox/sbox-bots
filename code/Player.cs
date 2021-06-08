@@ -45,11 +45,14 @@ partial class BRPlayer : Player
 
         WeaponInventory.Add( 0, new Pistol() );
 
-        ItemInventory.Add( new BRInventoryItem( "armour_plate", 1 ) );
-        ItemInventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
-        ItemInventory.Add( new BRInventoryItem( "ammo_shotgun", 10 ) );
-        ItemInventory.Add( new BRInventoryItem( "ammo_crossbow", 4 ) );
-        ItemInventory.Add( new BRInventoryItem( "ammo_rifle", 20 ) );
+        using( Prediction.Off() )
+        {
+            ItemInventory.Add( new BRInventoryItem( "armour_plate", 1 ) );
+            ItemInventory.Add( new BRInventoryItem( "ammo_pistol", 30 ) );
+            ItemInventory.Add( new BRInventoryItem( "ammo_shotgun", 10 ) );
+            ItemInventory.Add( new BRInventoryItem( "ammo_crossbow", 4 ) );
+            ItemInventory.Add( new BRInventoryItem( "ammo_rifle", 20 ) );
+        }
 
         GiveAmmo( AmmoType.Pistol, 100 );
 
@@ -99,6 +102,11 @@ partial class BRPlayer : Player
         foreach ( var data in ItemInventory.Slots )
         {
             ItemInventory.Drop( data.Key );
+        }
+
+        if ( LastAttacker is BRPlayer attacker )
+        {
+            PlayerInfo.UpdateKills( attacker, 1 );
         }
     }
 

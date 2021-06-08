@@ -1,4 +1,5 @@
 using Sandbox;
+using BattleRoyale;
 
 [Library( "bots" )]
 public partial class BRGame : Sandbox.Game
@@ -34,6 +35,15 @@ public partial class BRGame : Sandbox.Game
         client.Pawn = player;
 
         player.Respawn();
+
+        PlayerInfo.AddPlayer( client );
+    }
+
+    public override void ClientDisconnect( Client cl, NetworkDisconnectionReason reason )
+    {
+        base.ClientDisconnect( cl, reason );
+
+        PlayerInfo.RemovePlayer( cl );
     }
 
     [ServerCmd( "test_spawnloot" )]

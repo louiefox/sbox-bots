@@ -1,38 +1,96 @@
 ﻿scoreboard {
-	width: 50%;
-	height: 100%;
-	align-items: center;
-	justify-content: center;
 	font-family: Roboto;
-	font-size: 23px;
-	font-weight: 500;
 	color: white;
+	position: absolute;
+	right: 50px;
+	top: 50px;
+	height: 50%;
+	display: flex;
+	flex-wrap: wrap;
+	width: 30%;
+
+	.section {
+		width: 100%;
+		margin-bottom: 10px;
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.titlepanel {
+		width: 100%;
+		padding: 5px 15px;
+		box-shadow: 0 0 8px black;
+
+		&.alive {
+			color: rgb( 100, 255, 100 );
+			background-color: rgba( 100, 255, 100, 0.5 );
+			border-top: 3px solid rgb( 100, 255, 100 );
+			border-bottom: 3px solid rgb( 100, 255, 100 );
+		}
+
+		&.dead {
+			color: rgb( 255, 100, 100 );
+			background-color: rgba( 255, 100, 100, 0.5 );
+			border-top: 3px solid rgb( 255, 100, 100 );
+			border-bottom: 3px solid rgb( 255, 100, 100 );
+		}
+
+		&.spectating {
+			color: rgb( 150, 150, 150 );
+			background-color: rgba( 120, 120, 120, 0.5 );
+			border-top: 3px solid rgb( 120, 120, 120 );
+			border-bottom: 3px solid rgb( 120, 120, 120 );
+		}
+	}
+
+	.title {
+		font-weight: 500;
+		font-size: 20px;
+		text-shadow: 0 0 4px black;
+	}
+
+	.header {
+		width: 100%;
+		padding: 5px 15px;
+		background-color: rgba( 200, 200, 200, 0.5 );
+		border-top: 3px solid white;
+		border-bottom: 3px solid white;
+		margin: 0 5px;
+		margin-top: 5px;
+		text-shadow: 0 0 4px black;
+		box-shadow: 0 0 8px black;
+		color: rgb( 200, 200, 200 );
+		background-color: rgba( 180, 180, 180, 0.5 );
+		border-top: 3px solid rgb( 180, 180, 180 );
+		border-bottom: 3px solid rgb( 180, 180, 180 );
+	}
+
+	.player {
+		width: 100%;
+		padding: 5px 15px;
+		background-color: rgba( 200, 200, 200, 0.5 );
+		border-top: 3px solid white;
+		border-bottom: 3px solid white;
+		margin: 0 5px;
+		margin-top: 5px;
+		text-shadow: 0 0 4px black;
+		box-shadow: 0 0 8px black;
+		color: rgb( 180, 180, 180 );
+		background-color: rgba( 150, 150, 150, 0.5 );
+		border-top: 3px solid rgb( 150, 150, 150 );
+		border-bottom: 3px solid rgb( 150, 150, 150 );
+	}
 
 	.name {
 		flex-grow: 1;
 	}
 
-	.deaths, .kills, .ping, .fps {
-		width: 90px;
+	.kills, .survived, .ping {
+		width: 150px;
 		text-align: right;
 	}
 
-	.ping, .fps {
-		opacity: 0.3;
-		width: 50px;
-	}
-
-	.deaths {
-		margin-right: 50px;
-	}
-
-	.header {
-		font-weight: 500;
-		border-bottom: 3px solid #fc0;
-		min-width: 30%;
-		margin-bottom: 10px;
-		padding-bottom: 5px;
-		color: #fc0;
-		mix-blend-mode: lighten;
+	.ping {
+		opacity: 0.6;
 	}
 }

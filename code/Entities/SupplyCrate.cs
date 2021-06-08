@@ -8,6 +8,8 @@ public partial class SupplyCrate : FloorUsable
 	[Net]
 	public bool Looted { get; set; } = false;
 
+    public bool AllowDamage = false;
+
 	public override void Spawn()
 	{
 		base.Spawn();
@@ -15,18 +17,33 @@ public partial class SupplyCrate : FloorUsable
 		SetModel( "models/citizen_props/crate01.vmdl_c" );
 		SetupPhysicsFromModel( PhysicsMotionType.Static, false );
 
-		GlowState = GlowStates.GlowStateOn;
+        CreateModelCL();
+
+        GlowState = GlowStates.GlowStateOn;
 		GlowDistanceStart = 0;
 		GlowDistanceEnd = 1000;
 		GlowColor = new Color( 1.0f, 1.0f, 1.0f, 1.0f );
 		GlowActive = true;
 	}
 
-	public override void Use( Player ply )
+    [ClientRpc]
+    public void CreateModelCL()
+    {
+        SetModel( "models/citizen_props/crate01.vmdl_c" );
+        SetupPhysicsFromModel( PhysicsMotionType.Static, false );
+    }
+
+    public override void TakeDamage( DamageInfo info )
+    {
+        if ( !AllowDamage ) return;
+        base.TakeDamage( info );
+    }
+
+    public override void Use( Player ply )
 	{
 		if ( ply.Position.Distance( Position ) > 200 ) return;
 
-		Dictionary<string, float> lootTable = new Dictionary<string, float>()
+        Dictionary<string, float> lootTable = new Dictionary<string, float>()
 		{
 			{ "dm_shotgun", 10 },
 			{ "dm_pumpshotgun", 15 },
@@ -68,6 +85,17 @@ public partial class SupplyCrate : FloorUsable
             lootEnt.SetItem( itemID );
 		}
 
-		Delete();
+        CreateParticleEffect();
+        AllowDamage = true;
+        TakeDamage( DamageInfo.Generic( 100 ) );
+
+        Delete();
 	}
+
+    [ClientRpc]
+    public void CreateParticleEffect()
+    {
+        var pickupEffect = Particles.Create( "particles/loot_pickup.vpcf" );
+        pickupEffect.SetPos( 0, Position );
+    }
 }

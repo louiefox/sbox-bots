@@ -1,7 +1,6 @@
 ﻿inventory {
     width: 775px;
     height: 100%;
-    background-color: rgba(10, 10, 10, 0.8);
     align-items: center;
     font-family: Roboto;
 
@@ -19,9 +18,10 @@
     }
 
     .slotback {
-        background-color: rgba( #222, 0.95 );
+        background-color: rgb( 40, 40, 40 );
         width: 100px;
         margin-right: 15px;
+        box-shadow: 0 0 8px black;
     }
 
     .slot {
