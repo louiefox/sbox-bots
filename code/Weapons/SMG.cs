@@ -40,8 +40,7 @@ partial class SMG : BaseBRWeapon
 		//
 		// Shoot the bullets
 		//
-		ShootBullet( 0.0f, 1.5f, 1.0f, 3.0f );
-
+		ShootBullet( 0.0f, 1.5f, 15.0f, 3.0f );
 	}
 
 	public override void AttackSecondary()

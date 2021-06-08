@@ -29,9 +29,54 @@ namespace BattleRoyale
             return true;
         }
 
-        public bool Add( BRInventoryItem data )
+        public int Add( BRInventoryItem data )
         {
-            return Add( data, GetNewSlot() );
+            int maxStack = LootItem.Items[data.ItemID].MaxStack;
+            if ( maxStack > 1 || data.Amount > maxStack )
+            {
+                int remainingAmount = data.Amount;
+                for ( int i = 1; i <= MaxSlots; i++ )
+                {
+                    if ( Slots.ContainsKey( i ) )
+                    {
+                        BRInventoryItem itemData = Slots[i];
+                        if ( itemData.ItemID == data.ItemID && itemData.Amount < maxStack )
+                        {
+                            int addAmount = Math.Min( maxStack - itemData.Amount, remainingAmount );
+
+                            if ( !UpdateSlotAmount( i, itemData.Amount + addAmount ) ) continue;
+                            remainingAmount -= addAmount;
+
+                            if ( remainingAmount <= 0 ) break;
+                        }
+
+                        continue;
+                    }
+
+                    int amount = Math.Min( remainingAmount, maxStack );
+                    remainingAmount -= amount;
+
+                    Add( new BRInventoryItem( data.ItemID, amount ), i );
+                    if ( remainingAmount <= 0 ) break;
+                }
+
+                if ( remainingAmount <= 0 ) return data.Amount;
+                return data.Amount - remainingAmount;
+            }
+
+            return Add( data, GetNewSlot() ) ? data.Amount : 0;
+        }
+
+        public bool UpdateSlotAmount( int slot, int amount )
+        {
+            if ( !Slots.ContainsKey( slot ) || slot > MaxSlots ) return false;
+
+            Slots[slot] = new BRInventoryItem( Slots[slot].ItemID, amount );
+
+            BRPlayer player = Owner as BRPlayer;
+            player.CLUpdateInventoryItem( To.Single( Owner.GetClientOwner() ), slot, Slots[slot].ItemID, amount );
+
+            return true;
         }
 
         public int GetNewSlot()

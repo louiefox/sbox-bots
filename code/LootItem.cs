@@ -15,10 +15,10 @@ public class LootItem
 
         { "armour_plate", new( ItemType.Consumable, "Armour Plate", ItemRarity.Rare, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "armour_plate", MaxStack = 5 } },
 
-        { "ammo_pistol", new( ItemType.Ammo, "Pistol Ammo", ItemRarity.Common, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "ammo_pistol", MaxStack = 60 } },
-        { "ammo_shotgun", new( ItemType.Ammo, "Shotgun Ammo", ItemRarity.Common, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "ammo_shotgun", MaxStack = 24 } },
-        { "ammo_crossbow", new( ItemType.Ammo, "Crossbow Ammo", ItemRarity.Common, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "ammo_crossbow", MaxStack = 8 } },
-        { "ammo_rifle", new( ItemType.Ammo, "Rifle Ammo", ItemRarity.Common, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "ammo_rifle", MaxStack = 60 } },
+        { "ammo_pistol", new( ItemType.Ammo, "Pistol Ammo", ItemRarity.Common, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "ammo_pistol", MaxStack = 60, SpawnAmount = 30 } },
+        { "ammo_shotgun", new( ItemType.Ammo, "Shotgun Ammo", ItemRarity.Common, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "ammo_shotgun", MaxStack = 24, SpawnAmount = 8 } },
+        { "ammo_crossbow", new( ItemType.Ammo, "Crossbow Ammo", ItemRarity.Common, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "ammo_crossbow", MaxStack = 8, SpawnAmount = 4 } },
+        { "ammo_rifle", new( ItemType.Ammo, "Rifle Ammo", ItemRarity.Common, "models/rust_props/small_junk/carton_box.vmdl" ) { ItemID = "ammo_rifle", MaxStack = 60, SpawnAmount = 30 } },
     };
 
     public ItemType Type;
@@ -28,7 +28,8 @@ public class LootItem
 
     public string WeaponClass;
     public string ItemID;
-    public int MaxStack;
+    public int MaxStack = 1;
+    public int SpawnAmount = 1;
 
     public LootItem( ItemType type, string name, ItemRarity rarity, string model )
     {
@@ -38,7 +39,7 @@ public class LootItem
         Model = model;
     }
 
-    public bool GiveItem( Player player, Vector3 pickupPos, int amount )
+    public int GiveItem( Player player, Vector3 pickupPos, int amount )
     {
         BRPlayer ply = player as BRPlayer;
 
@@ -53,7 +54,7 @@ public class LootItem
                 inventory.Drop( slot, pickupPos );
             }
 
-            return inventory.Add( slot, Library.Create<BaseBRWeapon>( WeaponClass ) );
+            return inventory.Add( slot, Library.Create<BaseBRWeapon>( WeaponClass ) ) ? 1 : 0;
         }
         else if ( Type == ItemType.Consumable || Type == ItemType.Ammo )
         {
@@ -61,7 +62,7 @@ public class LootItem
         }
 
 
-        return false;
+        return 0;
     }
 
     public bool CombineItem(LootPickup ent1, LootPickup ent2)

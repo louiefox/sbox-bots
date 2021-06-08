@@ -224,9 +224,13 @@ public partial class LootPickup : FloorUsable
 			Delete();
 		}
 
-		if( item.GiveItem( ply, Position, Amount ) && this.IsValid() )
+        int removedAmount = item.GiveItem( ply, Position, Amount );
+		if( removedAmount >= Amount && this.IsValid() )
 		{
 			Delete();
-		}
+		} else
+        {
+            Amount -= removedAmount;
+        }
 	}
 }

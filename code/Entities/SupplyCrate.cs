@@ -43,18 +43,21 @@ public partial class SupplyCrate : FloorUsable
 	{
 		if ( ply.Position.Distance( Position ) > 200 ) return;
 
-        Dictionary<string, float> lootTable = new Dictionary<string, float>()
+        Dictionary<string, float> weaponLoot = new Dictionary<string, float>()
 		{
-			{ "dm_shotgun", 10 },
-			{ "dm_pumpshotgun", 15 },
-			{ "dm_smg", 10 },
-			{ "dm_crossbow", 5 },
+			{ "dm_shotgun", 40 },
+			{ "dm_pumpshotgun", 25 },
+			{ "dm_smg", 20 },
+			{ "dm_crossbow", 15 },
+		};        
+        
+        Dictionary<string, float> itemLoot = new Dictionary<string, float>()
+		{
+			{ "armour_plate", 30 },
 
-			{ "armour_plate", 20 },
-
-			{ "ammo_pistol", 10 },
-			{ "ammo_rifle", 10 },
-			{ "ammo_shotgun", 10 },
+			{ "ammo_pistol", 20 },
+			{ "ammo_rifle", 20 },
+			{ "ammo_shotgun", 20 },
 			{ "ammo_crossbow", 10 },
 		};
 
@@ -64,7 +67,7 @@ public partial class SupplyCrate : FloorUsable
 			string itemID = "";
 			double randomNum = random.NextDouble();
 			double currentChance = 0f;
-			foreach( var data in lootTable )
+			foreach( var data in (i == 0 ? weaponLoot : itemLoot) )
 			{
 				currentChance += data.Value/100f;
 				if ( randomNum <= currentChance )
@@ -74,7 +77,7 @@ public partial class SupplyCrate : FloorUsable
 				}
 			}
 
-			if( !LootItem.Items.ContainsKey( itemID ) )
+			if( !LootItem.Items.ContainsKey( itemID ) || LootItem.Items[itemID] is not LootItem lootItem )
 			{
 				Log.Info( "BattleRoyale ERROR: Item ID generated from supply crate doesn't exist." );
 				continue;
@@ -82,7 +85,7 @@ public partial class SupplyCrate : FloorUsable
 
 			LootPickup lootEnt = new LootPickup();
             lootEnt.SetPosition( Position );
-            lootEnt.SetItem( itemID );
+            lootEnt.SetItem( itemID, lootItem.SpawnAmount );
 		}
 
         CreateParticleEffect();

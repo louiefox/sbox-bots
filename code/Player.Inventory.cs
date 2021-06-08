@@ -60,6 +60,14 @@ partial class BRPlayer
         ItemInventory.Slots[slot] = itemData;
 
         Event.Run( "battleroyale.updateinv" );
+    }        
+    
+    [ClientRpc]
+    public void CLUpdateInventoryItem( int slot, string itemID, int amount )
+    {
+        ItemInventory.Slots[slot] = new BRInventoryItem( itemID, amount );
+
+        Event.Run( "battleroyale.updateinv" );
     }     
     
     [ServerCmd( "request_inventory_drop" )]
