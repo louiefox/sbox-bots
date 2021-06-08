@@ -22,19 +22,11 @@ partial class BRPlayer : Player
     public override void Respawn()
     {
         SetModel( "models/citizen/citizen.vmdl" );
-        //SetModel( "models/bots/warzone_doggo/doggo.vmdl" );
 
-        // Use WalkController for movement (you can make your own PlayerController for 100% control)
         Controller = new WalkController();
-        /*(Controller as WalkController).WalkSpeed = 150f;
-		(Controller as WalkController).DefaultSpeed = 100f;
-		(Controller as WalkController).SprintSpeed = 220f;*/
-
-        // Use StandardPlayerAnimator  (you can make your own PlayerAnimator for 100% control)
         Animator = new StandardPlayerAnimator();
-
         Camera = new BRThirdPersonCamera();
-
+        
         EnableAllCollisions = true;
         EnableDrawing = true;
         EnableHideInFirstPerson = true;
@@ -53,8 +45,6 @@ partial class BRPlayer : Player
             ItemInventory.Add( new BRInventoryItem( "ammo_crossbow", 4 ) );
             ItemInventory.Add( new BRInventoryItem( "ammo_rifle", 20 ) );
         }
-
-        GiveAmmo( AmmoType.Pistol, 100 );
 
         base.Respawn();
     }
@@ -107,6 +97,11 @@ partial class BRPlayer : Player
         if ( LastAttacker is BRPlayer attacker )
         {
             PlayerInfo.UpdateKills( attacker, 1 );
+        }
+
+        if( PlayerInfo.GetPlayerInfo( this ).State == PlayerGameState.Alive )
+        {
+            PlayerInfo.UpdateGameState( this, PlayerGameState.Dead );
         }
     }
 

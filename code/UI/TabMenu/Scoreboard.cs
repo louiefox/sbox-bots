@@ -17,8 +17,8 @@ namespace BattleRoyale.UI
             StyleSheet.Load( "/ui/TabMenu/Scoreboard.scss" );
 
             AddSection( "Alive", "alive" );
-            AddSection( "Dead", "Dead" );
-            AddSection( "Spectating", "Spectating" );
+            AddSection( "Dead", "dead" );
+            AddSection( "Spectating", "spectating" );
 
             foreach ( var kv in PlayerInfo.Players )
             {
@@ -49,7 +49,7 @@ namespace BattleRoyale.UI
             if ( Players.ContainsKey( steamID ) ) return;
             PlayerInfo playerInfo = PlayerInfo.Players[steamID];
 
-            ScoreboardEntry panel = Sections["alive"].AddChild<ScoreboardEntry>( "player" );
+            ScoreboardEntry panel = Sections[playerInfo.State.ToString().ToLower()].AddChild<ScoreboardEntry>( "player" );
             panel.SetInfo( playerInfo );
 
             Players.Add( steamID, panel );
@@ -68,7 +68,10 @@ namespace BattleRoyale.UI
         private void UpdatePlayer( ulong steamID )
         {
             if ( !Players.ContainsKey( steamID ) ) return;
-            Players[steamID]?.UpdateInfo();
+            ScoreboardEntry entry = Players[steamID];
+
+            entry.Parent = Sections[entry.Info.State.ToString().ToLower()];
+            entry.UpdateInfo();
         }
     }
 

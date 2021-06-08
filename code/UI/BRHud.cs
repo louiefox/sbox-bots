@@ -11,7 +11,9 @@ public partial class BRHud : HudEntity<RootPanel>
 		if ( !IsClient )
 			return;
 
-		RootPanel.StyleSheet.Load( "/ui/BRHud.scss" );
+        RootPanel.AddChild<GameStatus>();
+
+        RootPanel.StyleSheet.Load( "/ui/BRHud.scss" );
 
 		RootPanel.AddChild<Vitals>();
 		RootPanel.AddChild<Ammo>();

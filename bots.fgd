@@ -1,0 +1,86 @@
+// 
+// BRGame : Sandbox.Game 
+// 
+@PointClass = bots : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+
+// 
+// FloorUsable : Sandbox.Prop 
+// 
+@SolidClass = ent_floorusable : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	collisiongroupoverride(integer) : "CollisionGroupOverride" :  : ""
+
+]
+
+// 
+// LootPickup : FloorUsable 
+// 
+@SolidClass = ent_lootpickup : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	collisiongroupoverride(integer) : "CollisionGroupOverride" :  : ""
+
+]
+
+// 
+// SupplyCrate : FloorUsable 
+// 
+@SolidClass = ent_supplycrate : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	collisiongroupoverride(integer) : "CollisionGroupOverride" :  : ""
+
+]
+
+// 
+// Crossbow : BaseBRWeapon 
+// 
+@SolidClass = dm_crossbow : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+
+// 
+// CrossbowBolt : Sandbox.ModelEntity 
+// 
+@SolidClass = crossbow_bolt : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+
+// 
+// Pistol : BaseBRWeapon 
+// 
+@SolidClass = dm_pistol : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+
+// 
+// PumpShotgun : BaseBRWeapon 
+// 
+@SolidClass = dm_pumpshotgun : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+
+// 
+// Shotgun : BaseBRWeapon 
+// 
+@SolidClass = dm_shotgun : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+
+// 
+// SMG : BaseBRWeapon 
+// 
+@SolidClass = dm_smg : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+

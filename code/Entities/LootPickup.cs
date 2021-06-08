@@ -18,6 +18,7 @@ public partial class LootPickup : FloorUsable
 
 	private Color32 RarityColor;
 	private float MinLootDistance = 30f;
+    private TimeSince LastInteraction;
 
 	public void SetItem(string itemID, int amount)
 	{
@@ -27,7 +28,9 @@ public partial class LootPickup : FloorUsable
         SetupPhysicsFromModel( PhysicsMotionType.Static );
 
 		CreateClientModel();
-	}
+
+        LastInteraction = 0;
+    }
 
     public void SetItem( string itemID )
     {
@@ -217,7 +220,9 @@ public partial class LootPickup : FloorUsable
 	{
 		if ( ply.Position.Distance( Position ) > 200 ) return;
 
-		LootItem item = LootItem.Items[ItemID];
+        LastInteraction = 0;
+
+        LootItem item = LootItem.Items[ItemID];
 
 		if( item.Type == ItemType.Weapon )
 		{
@@ -233,4 +238,11 @@ public partial class LootPickup : FloorUsable
             Amount -= removedAmount;
         }
 	}
+
+    [Event( "server.tick" )]
+    public void CheckLastInteraction()
+    {
+        if ( LastInteraction < 300 ) return;
+        Delete();
+    }
 }

@@ -24,7 +24,7 @@ namespace BattleRoyale
             if ( Players.ContainsKey( client.SteamId ) ) return;
 
             Players.Add( client.SteamId, new( client ) );
-            SendAddPlayer( client.SteamId );
+            SendAddPlayer( To.Everyone, client.SteamId );
 
             foreach( var kv in Players )
             {
@@ -38,7 +38,7 @@ namespace BattleRoyale
             if ( !Players.ContainsKey( client.SteamId ) ) return;
 
             Players.Remove( client.SteamId );
-            SendRemovePlayer( client.SteamId );
+            SendRemovePlayer( To.Everyone, client.SteamId );
         }
         
         public static PlayerInfo GetPlayerInfo( ulong steamID )
@@ -52,12 +52,29 @@ namespace BattleRoyale
             return GetPlayerInfo( player.GetClientOwner().SteamId );
         }
 
+        public static void UpdateGameState( Player player, PlayerGameState state )
+        {
+            if ( GetPlayerInfo( player ) is not PlayerInfo playerInfo ) return;
+            playerInfo.State = state;
+
+            UpdateGameState( To.Everyone, playerInfo.Client.SteamId, state );
+        }
+
+        [ClientRpc]
+        public static void UpdateGameState( ulong steamID, PlayerGameState state )
+        {
+            if ( GetPlayerInfo( steamID ) is not PlayerInfo playerInfo ) return;
+            playerInfo.State = state;
+
+            Event.Run( "battleroyale.updateplayer", steamID );
+        }
+
         public static void UpdateKills( Player player, int kills, bool setKills )
         {
             if ( GetPlayerInfo( player ) is not PlayerInfo playerInfo ) return;
             playerInfo.Kills = setKills ? kills : playerInfo.Kills + kills;
 
-            UpdateKills( playerInfo.Client.SteamId, playerInfo.Kills );
+            UpdateKills( To.Everyone, playerInfo.Client.SteamId, playerInfo.Kills );
         }        
         
         public static void UpdateKills( Player player, int kills )
@@ -106,7 +123,7 @@ namespace BattleRoyale
 
     public enum PlayerGameState
     {
-        Active,
+        Alive,
         Dead,
         Spectating
     }

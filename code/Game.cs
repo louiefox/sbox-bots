@@ -4,18 +4,17 @@ using BattleRoyale;
 [Library( "bots" )]
 public partial class BRGame : Sandbox.Game
 {
-    BRHud BRHUD;
+    public static GameState CurrentState = GameState.Waiting;
+    public static TimeSince StartingTime;
+    public static TimeSince EndedTime;
+    public static float StartDuration = 10f;
+    public static float EndDuration = 15f;
+
+    private BRHud BRHUD;
+
     public BRGame()
     {
-        //
-        // Create the HUD entity. This is always broadcast to all clients
-        // and will create the UI panels clientside. It's accessible 
-        // globally via Hud.Current, so we don't need to store it.
-        //
-        if ( IsClient )
-        {
-            BRHUD = new BRHud();
-        }
+        if ( IsClient ) BRHUD = new BRHud();
     }
 
     [Event.Hotload]
@@ -24,6 +23,65 @@ public partial class BRGame : Sandbox.Game
         if ( !IsClient || BRHUD == null ) { return; }
         BRHUD.Delete();
         BRHUD = new BRHud();
+    }
+
+    [Event.Tick]
+    public void GameTick()
+    {
+        if ( CurrentState == GameState.Waiting )
+        {
+            if ( Client.All.Count > 1 )
+            {
+                StartingTime = 0;
+                CurrentState = GameState.Starting;
+            }
+        }
+        else if ( CurrentState == GameState.Starting )
+        {
+            if ( Client.All.Count <= 1 ) CurrentState = GameState.Waiting;
+
+            if ( StartingTime >= StartDuration ) StartGame();
+        }
+        else if ( CurrentState == GameState.Active )
+        {
+            int alivePlayers = 0;
+            foreach( var kv in PlayerInfo.Players )
+            {
+                if ( kv.Value.State != PlayerGameState.Alive ) continue;
+                alivePlayers++;
+            }    
+
+            if ( Client.All.Count <= 1 || alivePlayers <= 1 ) EndGame();
+        }        
+        else if ( CurrentState == GameState.Ended )
+        {
+            if ( EndedTime > EndDuration ) CurrentState = GameState.Waiting;
+        }
+    }
+
+    public void StartGame()
+    {
+        CurrentState = GameState.Active;
+
+        foreach ( Client client in Client.All )
+        {
+            PlayerInfo.UpdateGameState( client.Pawn as Player, PlayerGameState.Alive );
+        }
+
+        Log.Info( "Game Started" );
+    }    
+    
+    public void EndGame()
+    {
+        EndedTime = 0;
+        CurrentState = GameState.Ended;
+
+        foreach ( Client client in Client.All )
+        {
+            PlayerInfo.UpdateGameState( client.Pawn as Player, PlayerGameState.Spectating );
+        }
+
+        Log.Info( "Game Ended" );
     }
 
     public override void ClientJoined( Client client )
@@ -37,6 +95,7 @@ public partial class BRGame : Sandbox.Game
         player.Respawn();
 
         PlayerInfo.AddPlayer( client );
+        PlayerInfo.UpdateGameState( client.Pawn as Player, PlayerGameState.Spectating );
     }
 
     public override void ClientDisconnect( Client cl, NetworkDisconnectionReason reason )
@@ -86,4 +145,12 @@ public partial class BRGame : Sandbox.Game
             Position = tr.EndPos
         };
     }
+}
+
+public enum GameState
+{
+    Waiting,
+    Starting,
+    Active,
+    Ended
 }
