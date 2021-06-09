@@ -10,7 +10,7 @@ partial class BRPlayer
 
     public static FloorUsable GetNewTargetLoot()
     {
-        if ( Local.Pawn.Camera is not BRThirdPersonCamera cam ) return null;
+        if ( Local.Pawn == null || Local.Pawn.Camera is not BRThirdPersonCamera cam ) return null;
 
         var tr = Trace.Ray( cam.Pos, cam.Pos + cam.Rot.Forward * 250 )
             .Ignore( Local.Pawn )

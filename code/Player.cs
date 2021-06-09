@@ -29,8 +29,6 @@ partial class BRPlayer : Player
         
         EnableAllCollisions = true;
         EnableDrawing = true;
-        EnableHideInFirstPerson = true;
-        EnableShadowInFirstPerson = true;
 
         Health = MaxHealth;
         Armour = 100;
@@ -53,7 +51,6 @@ partial class BRPlayer : Player
     {
         base.Simulate( cl );
 
-
         if ( LifeState != LifeState.Alive )
             return;
 
@@ -66,8 +63,6 @@ partial class BRPlayer : Player
         {
             RequestLootPickup();
         }
-
-        TickPlayerUse();
 
         SimulateActiveChild( cl, ActiveChild );
     }
@@ -151,5 +146,5 @@ partial class BRPlayer : Player
     public void TookDamage( Vector3 pos )
     {
         DamageIndicator.Current?.OnHit( pos );
-    }
+    }   
 }

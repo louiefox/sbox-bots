@@ -1,7 +1,8 @@
 using Sandbox;
 using BattleRoyale;
+using System.Collections.Generic;
 
-[Library( "bots" )]
+[Library( "bots", Title = "Battle of Terrys" )]
 public partial class BRGame : Sandbox.Game
 {
     public static GameState CurrentState = GameState.Waiting;
@@ -84,18 +85,39 @@ public partial class BRGame : Sandbox.Game
         Log.Info( "Game Ended" );
     }
 
+    Dictionary<Client, TimeSince> DelayedClients = new();
     public override void ClientJoined( Client client )
     {
         base.ClientJoined( client );
 
-        // Create a pawn and assign it to the client.
-        var player = new BRPlayer();
-        client.Pawn = player;
+        DelayedClients.Add( client, 0 );
+    }
 
-        player.Respawn();
+    [Event.Tick]
+    private void ClientJoinDelay()
+    {
+        List<Client> toDelete = new();
+        foreach( var kv in DelayedClients )
+        {
+            if ( kv.Value < 2 ) return;
+            Log.Info( "Delayed client loaded" );
 
-        PlayerInfo.AddPlayer( client );
-        PlayerInfo.UpdateGameState( client.Pawn as Player, PlayerGameState.Spectating );
+            Client client = kv.Key;
+
+            var player = new BRPlayer();
+            client.Pawn = player;
+            player.Respawn();
+
+            PlayerInfo.AddPlayer( client );
+            PlayerInfo.UpdateGameState( player, PlayerGameState.Spectating );
+
+            toDelete.Add( client );
+        }
+
+        foreach( Client client in toDelete )
+        {
+            DelayedClients.Remove( client );
+        }
     }
 
     public override void ClientDisconnect( Client cl, NetworkDisconnectionReason reason )

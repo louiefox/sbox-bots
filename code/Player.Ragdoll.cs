@@ -9,7 +9,7 @@ partial class BRPlayer
 	static EntityLimit RagdollLimit = new EntityLimit { MaxTotal = 20 };
 
 	[ClientRpc]
-	void BecomeRagdollOnClient( Vector3 force, int forceBone )
+	private void BecomeRagdollOnClient( Vector3 force, int forceBone )
 	{
 		// TODO - lets not make everyone write this shit out all the time
 		// maybe a CreateRagdoll<T>() on ModelEntity?
