@@ -73,6 +73,7 @@ partial class BRPlayer
     [ServerCmd( "request_inventory_drop" )]
     public static void RequestDrop( int slot )
     {
+        if ( BRGame.CurrentState != GameState.Active ) return;
         var ply = ConsoleSystem.Caller.Pawn as BRPlayer;
 
         if ( ply == null || ply.LifeState != LifeState.Alive || ply.ItemInventory is not BRInventory inventory || !inventory.Slots.ContainsKey( slot ) ) return;

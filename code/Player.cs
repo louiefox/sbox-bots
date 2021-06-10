@@ -79,14 +79,28 @@ partial class BRPlayer : Player
         EnableAllCollisions = false;
         EnableDrawing = false;
 
-        foreach ( var data in WeaponInventory.Weapons )
+        if( BRGame.CurrentState == GameState.Active )
         {
-            WeaponInventory.Drop( data.Key );
-        }
+            foreach ( var data in WeaponInventory.Weapons )
+            {
+                WeaponInventory.Drop( data.Key );
+            }
 
-        foreach ( var data in ItemInventory.Slots )
+            foreach ( var data in ItemInventory.Slots )
+            {
+                ItemInventory.Drop( data.Key );
+            }
+        } else
         {
-            ItemInventory.Drop( data.Key );
+            foreach ( var data in WeaponInventory.Weapons )
+            {
+                WeaponInventory.Remove( data.Key, true );
+            }
+
+            foreach ( var data in ItemInventory.Slots )
+            {
+                ItemInventory.Remove( data.Key );
+            }
         }
 
         if ( LastAttacker is BRPlayer attacker )
@@ -96,7 +110,9 @@ partial class BRPlayer : Player
 
         if( PlayerInfo.GetPlayerInfo( this ).State == PlayerGameState.Alive )
         {
+            CreateDeadCamera();
             PlayerInfo.UpdateGameState( this, PlayerGameState.Dead );
+            if( IsServer ) Delete();
         }
     }
 
@@ -104,6 +120,8 @@ partial class BRPlayer : Player
 
     public override void TakeDamage( DamageInfo info )
     {
+        if( BRGame.CurrentState == GameState.Starting || BRGame.CurrentState == GameState.Ended ) return;
+
         ResetRegen();
         LastDamage = info;
 
@@ -146,5 +164,11 @@ partial class BRPlayer : Player
     public void TookDamage( Vector3 pos )
     {
         DamageIndicator.Current?.OnHit( pos );
-    }   
+    }
+
+    public void CreateDeadCamera()
+    {
+        Client client = GetClientOwner();
+        client.Camera = new BRSpectateCamera();
+    }
 }

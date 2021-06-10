@@ -8,22 +8,23 @@ public partial class BRGame : Sandbox.Game
     public static GameState CurrentState = GameState.Waiting;
     public static TimeSince StartingTime;
     public static TimeSince EndedTime;
-    public static float StartDuration = 10f;
-    public static float EndDuration = 15f;
+    public static float StartDuration = 5f;
+    public static float EndDuration = 5f;
 
-    private BRHud BRHUD;
+    private BattleRoyaleHUD BattleRoyaleHUD;
+    private Dictionary<Client, TimeSince> DelayedClients = new();
 
     public BRGame()
     {
-        if ( IsClient ) BRHUD = new BRHud();
+        if ( IsClient ) BattleRoyaleHUD = new BattleRoyaleHUD();
     }
 
     [Event.Hotload]
     public void UpdateHUD()
     {
-        if ( !IsClient || BRHUD == null ) { return; }
-        BRHUD.Delete();
-        BRHUD = new BRHud();
+        if ( !IsClient || BattleRoyaleHUD == null ) { return; }
+        BattleRoyaleHUD.Delete();
+        BattleRoyaleHUD = new BattleRoyaleHUD();
     }
 
     [Event.Tick]
@@ -56,7 +57,30 @@ public partial class BRGame : Sandbox.Game
         }        
         else if ( CurrentState == GameState.Ended )
         {
-            if ( EndedTime > EndDuration ) CurrentState = GameState.Waiting;
+            if ( EndedTime > EndDuration ) StartWaiting();
+        }
+    }
+
+    public void StartWaiting()
+    {
+        CurrentState = GameState.Waiting;
+
+        foreach ( Client client in Client.All )
+        {
+            PlayerInfo.UpdateGameState( client, PlayerGameState.Spectating );
+
+            if( client.Camera != null )
+            {
+                client.Camera = null;
+            }
+
+            if ( !IsServer ) continue;
+
+            if ( client.Pawn != null || client.Pawn.IsValid() ) client.Pawn.Delete();
+
+            var player = new BRPlayer();
+            client.Pawn = player;
+            player.Respawn();
         }
     }
 
@@ -67,6 +91,20 @@ public partial class BRGame : Sandbox.Game
         foreach ( Client client in Client.All )
         {
             PlayerInfo.UpdateGameState( client.Pawn as Player, PlayerGameState.Alive );
+
+            if ( IsServer ) (client.Pawn as Player).Respawn();
+        }
+
+        if ( IsServer )
+        {
+            foreach ( var data in SupplyCrate.SpawnLocations )
+            {
+                new SupplyCrate
+                {
+                    Position = data.Item1,
+                    WorldAng = data.Item2
+                };
+            }
         }
 
         Log.Info( "Game Started" );
@@ -77,39 +115,47 @@ public partial class BRGame : Sandbox.Game
         EndedTime = 0;
         CurrentState = GameState.Ended;
 
-        foreach ( Client client in Client.All )
+        if( IsServer )
         {
-            PlayerInfo.UpdateGameState( client.Pawn as Player, PlayerGameState.Spectating );
+            foreach ( Entity ent in All )
+            {
+                if ( ent is not FloorUsable usableEnt ) continue;
+                usableEnt.Delete();
+            }
         }
 
         Log.Info( "Game Ended" );
     }
 
-    Dictionary<Client, TimeSince> DelayedClients = new();
     public override void ClientJoined( Client client )
     {
         base.ClientJoined( client );
 
-        DelayedClients.Add( client, 0 );
+        PlayerInfo.AddPlayer( client );
+        PlayerInfo.UpdateGameState( client, PlayerGameState.Spectating );
+
+        if( CurrentState == GameState.Waiting || CurrentState == GameState.Starting ) 
+            DelayedClients.Add( client, 0 );
     }
 
-    [Event.Tick]
+    [Event( "server.tick" )]
     private void ClientJoinDelay()
     {
         List<Client> toDelete = new();
         foreach( var kv in DelayedClients )
         {
-            if ( kv.Value < 2 ) return;
-            Log.Info( "Delayed client loaded" );
-
+            if ( kv.Value < .5f ) continue;
             Client client = kv.Key;
+
+            if( client == null || !client.IsValid() )
+            {
+                toDelete.Add( client );
+                continue;
+            }
 
             var player = new BRPlayer();
             client.Pawn = player;
             player.Respawn();
-
-            PlayerInfo.AddPlayer( client );
-            PlayerInfo.UpdateGameState( player, PlayerGameState.Spectating );
 
             toDelete.Add( client );
         }
@@ -127,45 +173,10 @@ public partial class BRGame : Sandbox.Game
         PlayerInfo.RemovePlayer( cl );
     }
 
-    [ServerCmd( "test_spawnloot" )]
-    public static void TestSpawnLoot( string itemID )
+    public static bool IsSpectating()
     {
-        var owner = ConsoleSystem.Caller.Pawn;
-
-        if ( owner == null )
-            return;
-
-        var tr = Trace.Ray( owner.EyePos, owner.EyePos + owner.EyeRot.Forward * 200 )
-            .UseHitboxes()
-            .Ignore( owner )
-            .Size( 2 )
-            .Run();
-
-        LootPickup lootEnt = new LootPickup
-        {
-            Position = tr.EndPos + new Vector3( 0, 0, 20f )
-        };
-
-        lootEnt.SetItem( itemID );
-    }
-
-    [ServerCmd( "test_spawncrate" )]
-    public static void TestSpawnCrate()
-    {
-        var owner = ConsoleSystem.Caller.Pawn;
-
-        if ( owner == null )
-            return;
-
-        var tr = Trace.Ray( owner.EyePos, owner.EyePos + owner.EyeRot.Forward * 200 )
-            .UseHitboxes()
-            .Ignore( owner )
-            .Run();
-
-        new SupplyCrate
-        {
-            Position = tr.EndPos
-        };
+        if ( !Host.IsClient ) return false;
+        return PlayerInfo.GetPlayerInfo( Local.Client ).State != PlayerGameState.Alive && (BRGame.CurrentState == GameState.Active || BRGame.CurrentState == GameState.Ended);
     }
 }
 

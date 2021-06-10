@@ -218,7 +218,8 @@ public partial class LootPickup : FloorUsable
 
 	public override void Use( Player ply )
 	{
-		if ( ply.Position.Distance( Position ) > 200 ) return;
+        if ( ply.Position.Distance( Position ) > 200 ) return;
+        PlaySound( "player_use_fail" );
 
         LastInteraction = 0;
 
@@ -237,7 +238,7 @@ public partial class LootPickup : FloorUsable
         {
             Amount -= removedAmount;
         }
-	}
+    }
 
     [Event( "server.tick" )]
     public void CheckLastInteraction()

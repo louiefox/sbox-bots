@@ -1,0 +1,60 @@
+﻿
+using Sandbox;
+using Sandbox.UI;
+using BattleRoyale;
+using BattleRoyale.UI;
+using System.Collections.Generic;
+
+[Library]
+public partial class BattleRoyaleHUD : HudEntity<RootPanel>
+{
+    private Dictionary<Panel, bool> PanelList = new();
+
+	public BattleRoyaleHUD()
+	{
+		if ( !IsClient ) return;
+
+        PanelList.Add( RootPanel.AddChild<GameStatus>(), true );
+        PanelList.Add( RootPanel.AddChild<SpectatingInfo>(), true );
+        PanelList.Add( RootPanel.AddChild<TabMenu>(), true );
+
+        PanelList.Add( RootPanel.AddChild<DamageIndicator>(), false );
+        PanelList.Add( RootPanel.AddChild<HitIndicator>(), false );
+
+        PanelList.Add( RootPanel.AddChild<ChatBox>(), true );
+        PanelList.Add( RootPanel.AddChild<VoiceList>(), true );
+        PanelList.Add( RootPanel.AddChild<KillFeed>(), true );
+
+        PanelList.Add( RootPanel.AddChild<NameTags>(), true );
+        PanelList.Add( RootPanel.AddChild<LootItemTags>(), false );
+
+        RootPanel.StyleSheet.Load( "/ui/BattleRoyaleHUD.scss" );
+
+        PanelList.Add( RootPanel.AddChild<Vitals>(), false );
+        PanelList.Add( RootPanel.AddChild<Ammo>(), false );
+    }
+
+    [Event( "client.tick" )]
+    public void SpectatingUpdate()
+    {
+        if ( RootPanel == null ) return;
+
+        foreach( var kv in PanelList )
+        {
+            if ( kv.Value == true ) continue;
+            kv.Key.SetClass( "disableelement", BRGame.IsSpectating() && true );
+        }
+    }
+
+	[ClientRpc]
+	public void OnPlayerDied( string victim, string attacker = null )
+	{
+		Host.AssertClient();
+	}
+
+	[ClientRpc]
+	public void ShowDeathScreen( string attackerName )
+	{
+		Host.AssertClient();
+	}
+}

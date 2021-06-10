@@ -50,14 +50,24 @@ namespace BattleRoyale
         public static PlayerInfo GetPlayerInfo( Player player )
         {
             return GetPlayerInfo( player.GetClientOwner().SteamId );
+        }        
+        
+        public static PlayerInfo GetPlayerInfo( Client client )
+        {
+            return GetPlayerInfo( client.SteamId );
+        }    
+        
+        public static void UpdateGameState( Client client, PlayerGameState state )
+        {
+            if ( GetPlayerInfo( client ) is not PlayerInfo playerInfo ) return;
+            playerInfo.State = state;
+
+            UpdateGameState( To.Everyone, playerInfo.Client.SteamId, state );
         }
 
         public static void UpdateGameState( Player player, PlayerGameState state )
         {
-            if ( GetPlayerInfo( player ) is not PlayerInfo playerInfo ) return;
-            playerInfo.State = state;
-
-            UpdateGameState( To.Everyone, playerInfo.Client.SteamId, state );
+            UpdateGameState( player.GetClientOwner(), state );
         }
 
         [ClientRpc]

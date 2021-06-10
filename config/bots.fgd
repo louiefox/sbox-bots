@@ -1,0 +1,110 @@
+// 
+// BRGame : Sandbox.Game 
+// 
+@PointClass = bots : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+
+// 
+// FloorUsable : Sandbox.Prop 
+// 
+@SolidClass  model() 
+metadata
+{
+}
+= ent_floorusable : ""
+[
+	model(studio) [report]: "World Model"
+	skin(materialgroup) [ group="Render Properties" ] : "Skin" : "default" : "Some models have multiple versions of their textures, called skins."
+	bodygroups(bodygroupchoices) [ group="Render Properties" ] : "Body Groups" : "" 
+	disableshadows(boolean) [ group="Misc" ] : "Disable Shadows" : 0 : "Used to disable dynamic shadows on this entity." 
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	collisiongroupoverride(integer) : "CollisionGroupOverride" :  : ""
+
+]
+
+// 
+// LootPickup : FloorUsable 
+// 
+@SolidClass  model() 
+metadata
+{
+}
+= ent_lootpickup : ""
+[
+	model(studio) [report]: "World Model"
+	skin(materialgroup) [ group="Render Properties" ] : "Skin" : "default" : "Some models have multiple versions of their textures, called skins."
+	bodygroups(bodygroupchoices) [ group="Render Properties" ] : "Body Groups" : "" 
+	disableshadows(boolean) [ group="Misc" ] : "Disable Shadows" : 0 : "Used to disable dynamic shadows on this entity." 
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	collisiongroupoverride(integer) : "CollisionGroupOverride" :  : ""
+
+]
+
+// 
+// SupplyCrate : FloorUsable 
+// 
+@SolidClass  model() 
+metadata
+{
+}
+= ent_supplycrate : ""
+[
+	model(studio) [report]: "World Model"
+	skin(materialgroup) [ group="Render Properties" ] : "Skin" : "default" : "Some models have multiple versions of their textures, called skins."
+	bodygroups(bodygroupchoices) [ group="Render Properties" ] : "Body Groups" : "" 
+	disableshadows(boolean) [ group="Misc" ] : "Disable Shadows" : 0 : "Used to disable dynamic shadows on this entity." 
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	collisiongroupoverride(integer) : "CollisionGroupOverride" :  : ""
+
+]
+
+// 
+// Crossbow : BaseBRWeapon 
+// 
+@SolidClass = dm_crossbow : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+
+// 
+// CrossbowBolt : Sandbox.ModelEntity 
+// 
+@SolidClass = crossbow_bolt : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+
+// 
+// Pistol : BaseBRWeapon 
+// 
+@SolidClass = dm_pistol : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+
+// 
+// PumpShotgun : BaseBRWeapon 
+// 
+@SolidClass = dm_pumpshotgun : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+
+// 
+// Shotgun : BaseBRWeapon 
+// 
+@SolidClass = dm_shotgun : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+
+// 
+// SMG : BaseBRWeapon 
+// 
+@SolidClass = dm_smg : ""
+[
+	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+]
+

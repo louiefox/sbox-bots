@@ -36,6 +36,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="UI\BattleRoyaleHUD.scss">
+      <DependentUpon>BattleRoyaleHUD.cs</DependentUpon>
+    </None>
+    <None Update="UI\SpectatingInfo.scss">
+      <DependentUpon>SpectatingInfo.cs</DependentUpon>
+    </None>
     <None Update="UI\GameStatus.scss">
       <DependentUpon>%(Filename).cs</DependentUpon>
     </None>

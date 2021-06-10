@@ -9,6 +9,11 @@ public partial class SupplyCrate : FloorUsable
 	public bool Looted { get; set; } = false;
 
     public bool AllowDamage = false;
+    public static List<(Vector3, Angles)> SpawnLocations = new()
+    {
+        (new Vector3( -4733, 2368, 619 ), new Angles( 0, 134, 0 )),
+        (new Vector3( -4922, 2558, 619 ), new Angles( 0, -6, 0 )),
+    };
 
 	public override void Spawn()
 	{
