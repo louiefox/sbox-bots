@@ -5,35 +5,36 @@
 
 	.waiting {
 		position: absolute;
-		left: 25%;
+		left: 50%;
 		top: 100px;
+		transform: translateX(-50%) scale( 1.05 );
 		display: flex;
-		flex-wrap: wrap;
-		width: 50%;
+		flex-direction: column;
 		text-align: center;
+		background-color: #232931;
+		font-family: Roboto;
+		font-weight: 500;
+		text-shadow: 0 0 3px black;
+		border-radius: 10px;
+		box-shadow: 0 0 8px black;
+		padding: 5px 20px;
+		min-width: 150px;
 		transition: all 0.1s ease-out;
 		opacity: 0;
-		transform: scale( 1.05 );
-		background-color: unset;
 
 		&.active {
 			opacity: 1;
-			transform: scale(1);
+			transform: translateX(-50%) scale(1);
 		}
 
-		font-family: Roboto;
-		font-weight: 500;
-		color: #2980b9;
-		text-shadow: 0 0 3px black;
-
 		.waitingplayers {
-			width: 100%;
-			font-size: 30px;
+			font-size: 25px;
+			color: #eeeeee;
 		}
 
 		.waitingtitle {
-			width: 100%;
-			font-size: 25px;
+			font-size: 15px;
+			color: #4ecca3;
 		}
 	}
 

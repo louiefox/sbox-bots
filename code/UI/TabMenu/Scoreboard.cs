@@ -100,8 +100,7 @@ namespace BattleRoyale.UI
             Kills.Text = Info.Kills.ToString();
         }
 
-        [Event.Tick]
-        private void Update()
+        public override void Tick()
         {
             if ( LastUpdate < 5 ) return;
             LastUpdate = 0;

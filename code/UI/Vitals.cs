@@ -1,48 +1,76 @@
 ﻿
+using System;
+using System.Collections.Generic;
 using Sandbox;
 using Sandbox.UI;
 using Sandbox.UI.Construct;
 
 public class Vitals : Panel
 {
-	public Panel Armour1;
-	public Panel Armour2;
-	public Panel Armour3;
-	public Panel Health;
+    public Panel ArmourRow;
+    public List<Panel> ArmourBars = new();
+    public Panel Health;
 
 	public Vitals()
 	{
-		Panel ArmourBarsBack = Add.Panel( "armourBarsBack" );
+        StyleSheet.Load( "/ui/Vitals.scss" );
 
-		Panel Armour1Bar = ArmourBarsBack.Add.Panel( "armourBar" );
-		Armour1 = Armour1Bar.Add.Panel( "armour" );		
-		
-		Panel Armour2Bar = ArmourBarsBack.Add.Panel( "armourBar" );
-		Armour2 = Armour2Bar.Add.Panel( "armour" );		
-		
-		Panel Armour3Bar = ArmourBarsBack.Add.Panel( "armourBar" );
-		Armour3Bar.Style.MarginRight = 0;
-		Armour3 = Armour3Bar.Add.Panel( "armour" );
-		
-		Panel HealthBar = Add.Panel( "healthBar" );
-		Health = HealthBar.Add.Panel( "health" );
+        ArmourRow = Add.Panel( "armourrow" );
+
+        Panel healthBar = Add.Panel( "healthbar" );
+        Health = healthBar.Add.Panel( "health" );   
 	}
 
-	public override void Tick()
+    private void UpdateArmourBars( int barCount )
+    {
+        foreach ( Panel panel in ArmourBars )
+        {
+            panel?.Delete();
+        }
+
+        ArmourBars = new();
+
+        for ( int i = 0; i < barCount; i++ )
+        {
+            Panel armourBar = ArmourRow.Add.Panel( "armourbar" );
+
+            if ( i == barCount - 1 )
+            {
+                armourBar.Style.MarginRight = 0;
+                armourBar.Style.BorderTopRightRadius = 12;
+            }
+            else if ( i == 0 )
+            {
+                armourBar.Style.BorderTopLeftRadius = 12;
+            }
+
+            ArmourBars.Add( armourBar.Add.Panel( "armour" ) );
+        }
+    }
+
+    public override void Tick()
 	{
 		BRPlayer player = Local.Pawn as BRPlayer;
 		if ( player == null ) return;
 
-		Armour1.Style.Dirty();
-		Armour1.Style.Width = Length.Percent( MathX.Clamp( (player.Armour / 50f) * 100f, 0f, 100f ) );		
-		
-		Armour2.Style.Dirty();
-		Armour2.Style.Width = Length.Percent( MathX.Clamp( ((player.Armour-50) / 50f) * 100f, 0f, 100f ) );		
-		
-		Armour3.Style.Dirty();
-		Armour3.Style.Width = Length.Percent( MathX.Clamp( ((player.Armour-100) / 50f) * 100f, 0f, 100f ) );
+        int barCount = (int)Math.Ceiling( player.MaxArmour / 50f );
+        if ( ArmourBars.Count != barCount )
+        {
+            UpdateArmourBars( barCount );
+        }
 
-		float extraHealth = 0f;
+        int currentCount = 0;
+        foreach ( Panel panel in ArmourBars )
+        {
+            panel.Style.Dirty();
+            panel.Style.Width = Length.Percent( Math.Clamp( (player.Armour - (currentCount * 50f)) / 50f * 100f, 0f, 100f ) );
+            panel.Style.BorderTopLeftRadius = currentCount == 0 ? 12 : 0;
+            panel.Style.BorderTopRightRadius = currentCount == (ArmourBars.Count - 1) ? 12 : 0;
+
+            currentCount++;
+        }
+
+        float extraHealth = 0f;
 		if( player.RegenActive && Time.Now >= player.RegenStartTime+player.RegenStartDelay )
 		{
 			float regenProgress = (Time.Now - player.RegenStartTime - player.RegenStartDelay) / player.RegenTime;

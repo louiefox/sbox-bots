@@ -8,12 +8,12 @@ using BattleRoyale;
 
 public class SpectatingInfo : Panel
 {
-	public Label CurrentTarget;
-	public Panel Health;
 	public Panel ArmourRow;
 	public List<Panel> ArmourBars = new();
+    public Panel Health;
+    public Label CurrentTarget;
 
-	public SpectatingInfo()
+    public SpectatingInfo()
 	{
         StyleSheet.Load( "/ui/SpectatingInfo.scss" );
 

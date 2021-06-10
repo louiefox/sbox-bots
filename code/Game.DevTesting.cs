@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public partial class BRGame
 {
     [ServerCmd( "test_spawnloot" )]
-    public static void TestSpawnLoot( string itemID )
+    public static void TestSpawnLoot( string itemID, int amount )
     {
         var owner = ConsoleSystem.Caller.Pawn;
 
@@ -23,7 +23,7 @@ public partial class BRGame
             Position = tr.EndPos + new Vector3( 0, 0, 20f )
         };
 
-        lootEnt.SetItem( itemID );
+        lootEnt.SetItem( itemID, amount );
     }
 
     [ServerCmd( "test_spawncrate" )]

@@ -1,0 +1,58 @@
+﻿ammo {
+	position: absolute;
+	bottom: 100px;
+	right: 100px;
+	display: flex;
+	flex-direction: column;
+
+	.ammorow {
+		justify-content: flex-end;
+		height: 30px;
+	}
+
+	.ammoicon {
+		width: 10px;
+		height: 30px;
+		background-image: url( /ui/ammo/pistol.png );
+		background-repeat: no-repeat;
+		background-size: contain;
+	}
+
+	.textrow {
+		justify-content: flex-end;
+		color: #4ecca3;
+		font-size: 40px;
+		font-family: Roboto;
+		font-weight: 500;
+		text-shadow: 0 0 3px black;
+	}
+
+	.weapon {
+		font-size: 30px;
+	}
+
+	.inventory {
+		font-size: 20px;
+	}
+}
+
+ammoicon {
+	position: absolute;
+	right: 100px;
+	bottom: 100px;
+	width: 10px;
+	height: 30px;
+	background-image: url( /ui/ammo/pistol.png );
+	background-repeat: no-repeat;
+	background-size: contain;
+
+	&.ammomoveright {
+		transition: all 0.1s all;
+		right: 90px;
+	}	
+	
+	&.ammofalling {
+		transition: all 0.3s all;
+		bottom: -30px;
+	}
+}

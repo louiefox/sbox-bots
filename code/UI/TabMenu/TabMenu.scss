@@ -7,7 +7,7 @@
 	transition: all 0.1s ease-out;
 	transform: scale( 1.05 );
 	pointer-events: all;
-
+	
 	&.open {
 		opacity: 1;
 		transform: scale(1);
