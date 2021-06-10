@@ -34,22 +34,22 @@ public class Vitals : Panel
 		if ( player == null ) return;
 
 		Armour1.Style.Dirty();
-		Armour1.Style.Width = Length.Percent( MathX.Clamp( ((float)player.Armour / 50f) * 100f, 0f, 100f ) );		
+		Armour1.Style.Width = Length.Percent( MathX.Clamp( (player.Armour / 50f) * 100f, 0f, 100f ) );		
 		
 		Armour2.Style.Dirty();
-		Armour2.Style.Width = Length.Percent( MathX.Clamp( ((float)(player.Armour-50) / 50f) * 100f, 0f, 100f ) );		
+		Armour2.Style.Width = Length.Percent( MathX.Clamp( ((player.Armour-50) / 50f) * 100f, 0f, 100f ) );		
 		
 		Armour3.Style.Dirty();
-		Armour3.Style.Width = Length.Percent( MathX.Clamp( ((float)(player.Armour-100) / 50f) * 100f, 0f, 100f ) );
+		Armour3.Style.Width = Length.Percent( MathX.Clamp( ((player.Armour-100) / 50f) * 100f, 0f, 100f ) );
 
 		float extraHealth = 0f;
 		if( player.RegenActive && Time.Now >= player.RegenStartTime+player.RegenStartDelay )
 		{
 			float regenProgress = (Time.Now - player.RegenStartTime - player.RegenStartDelay) / player.RegenTime;
-			extraHealth = ((player.MaxHealth - player.Health) * regenProgress);
+			extraHealth = ((100f - player.Health) * regenProgress);
 		}
 
 		Health.Style.Dirty();
-		Health.Style.Width = Length.Percent( MathX.Clamp( (((float)player.Health + extraHealth) / (float)player.MaxHealth) * 100f, 0f, 100f ) );
+		Health.Style.Width = Length.Percent( MathX.Clamp( ((player.Health + extraHealth) / 100f) * 100f, 0f, 100f ) );
 	}
 }

@@ -5,14 +5,11 @@ using System.Linq;
 
 partial class BRPlayer
 {
-	[Net, Local]
-	public int MaxHealth { get; set; }
-
-	[Net, Local]
-	public int Armour { get; set; }	
+	[Net]
+	public float Armour { get; set; }
 	
-	[Net, Local]
-	public int MaxArmour { get; set; }
+	[Net]
+	public float MaxArmour { get; set; }
 
 	public float FullRegenTime = 6.0f;
 	public float RegenStartDelay = 3.0f;
@@ -33,15 +30,15 @@ partial class BRPlayer
 			if(Time.Now >= RegenStartTime+RegenStartDelay)
 			{
 				float regenProgress = (Time.Now - RegenStartTime - RegenStartDelay) / RegenTime;
-				Health = Math.Clamp( Health + ((MaxHealth - Health) * regenProgress), 0, MaxHealth );
+				Health = Math.Clamp( Health + ((100f - Health) * regenProgress), 0, 100f );
 			}
 
 			RegenActive = false;
 		}
 
-		if ( Health <= 0 || Health >= MaxHealth ) { return; }
+		if ( Health <= 0 || Health >= 100f ) { return; }
 
-		RegenTime = (1-((float)Health / (float)MaxHealth))*FullRegenTime;
+		RegenTime = (1-(Health / 100f))*FullRegenTime;
 		RegenStartTime = Time.Now;
 		RegenActive = true;
 	}
@@ -51,14 +48,14 @@ partial class BRPlayer
 	{
 		if( !RegenActive ) { return; }
 
-		if( Health >= MaxHealth )
+		if( Health >= 100f )
 		{
 			RegenActive = false;
 		}
 
 		if( Time.Now >= RegenStartTime+RegenStartDelay+RegenTime )
 		{
-			Health = MaxHealth;
+			Health = 100f;
 			RegenActive = false;
 		}
 	}

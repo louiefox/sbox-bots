@@ -8,32 +8,79 @@
 		opacity: 1;
 	}
 
+	.vitals {
+		position: absolute;
+		left: 50%;
+		bottom: 200px;
+		transform: translateX(-50%);
+		display: flex;
+		flex-direction: column;
+		width: 300px;
+
+		.armourrow {
+			height: 12px;
+			display: flex;
+			margin-bottom: 5px;
+		}
+
+		.armourbar {
+			flex-grow: 1;
+			height: 100%;
+			margin-right: 5px;
+			background-color: #232931;
+			border: 1.5px solid #393e46;
+			box-shadow: 0 0 10px black;
+			width: 0;
+		}
+
+		.armour {
+			height: 100%;
+			min-width: 0.1px;
+			background-color: #2a51de;
+		}
+
+		.healthbar {
+			height: 12px;
+			background-color: #232931;
+			border-bottom-left-radius: 12px;
+			border-bottom-right-radius: 12px;
+			border: 1.5px solid #393e46;
+			box-shadow: 0 0 10px black;
+		}
+
+		.health {
+			min-width: 0.1px;
+			height: 100%;
+			background-color: #c0392b;
+			border-bottom-left-radius: 12px;
+			border-bottom-right-radius: 12px;
+		}
+	}
+
 	.current {
 		position: absolute;
-		left: 45%;
-		width: 10%;
+		left: 50%;
 		bottom: 100px;
+		transform: translateX(-50%);
 		display: flex;
-		flex-wrap: wrap;
+		flex-direction: column;
 		text-align: center;
-		transition: all 0.1s ease-out;
 		background-color: #232931;
 		font-family: Roboto;
 		font-weight: 500;
 		text-shadow: 0 0 3px black;
 		border-radius: 10px;
-		padding: 5px 0;
 		box-shadow: 0 0 8px black;
+		padding: 5px 20px;
+		min-width: 150px;
 
 		.currenttarget {
-			width: 100%;
-			font-size: 30px;
+			font-size: 25px;
 			color: #eeeeee;
 		}
 
 		.currenttitle {
-			width: 100%;
-			font-size: 17px;
+			font-size: 15px;
 			color: #4ecca3;
 		}
 	}

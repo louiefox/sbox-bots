@@ -31,6 +31,7 @@ namespace BattleRoyale
                 FindTarget();
             }
 
+            if ( CurrentTarget == null ) return;
             Rotation targetRot = CurrentTarget.EyeRot;
 
             Vector3 targetPos;

@@ -15,7 +15,6 @@ partial class BRPlayer : Player
         WeaponInventory = new BRWeaponInventory( this );
         ItemInventory = new BRInventory( this );
 
-        MaxHealth = 100;
         MaxArmour = 150;
     }
 
@@ -30,7 +29,7 @@ partial class BRPlayer : Player
         EnableAllCollisions = true;
         EnableDrawing = true;
 
-        Health = MaxHealth;
+        Health = 100f;
         Armour = 100;
 
         WeaponInventory.Add( 0, new Pistol() );
@@ -134,8 +133,8 @@ partial class BRPlayer : Player
 
         if ( Armour > 0 )
         {
-            int oldArmour = Armour;
-            Armour = Math.Max( Armour - (int)info.Damage, 0 );
+            float oldArmour = Armour;
+            Armour = Math.Max( Armour - info.Damage, 0 );
 
             info.Damage -= oldArmour - Armour;
         }
@@ -145,7 +144,7 @@ partial class BRPlayer : Player
         if ( info.Attacker is BRPlayer attacker && attacker != this )
         {
             // Note - sending this only to the attacker!
-            attacker.DidDamage( To.Single( attacker ), info.Position, info.Damage, ((float)Health).LerpInverse( 100, 0 ) );
+            attacker.DidDamage( To.Single( attacker ), info.Position, info.Damage, Health.LerpInverse( 100, 0 ) );
 
             TookDamage( To.Single( this ), info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position );
         }
