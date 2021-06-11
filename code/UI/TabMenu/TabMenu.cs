@@ -22,7 +22,7 @@ namespace BattleRoyale.UI
 		{
 			base.Tick();
 
-			SetClass( "open", Local.Client.Input.Down( InputButton.Score ) );
+			SetClass( "open", Input.Down( InputButton.Score ) );
 		}
 	}
 }

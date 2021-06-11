@@ -46,15 +46,15 @@ partial class Crossbow : BaseBRWeapon
             pos = center;
 
             float distance = 130.0f * Owner.Scale;
-            targetPos = pos + Owner.Input.Rotation.Right * (((Owner as Player).CollisionBounds.Maxs.x + 1) * Owner.Scale);
-            targetPos += Owner.Input.Rotation.Forward * -distance;
+            targetPos = pos + Input.Rotation.Right * (((Owner as Player).CollisionBounds.Maxs.x + 1) * Owner.Scale);
+            targetPos += Input.Rotation.Forward * -distance;
 
             pos = Trace.Ray( pos, targetPos )
                 .Ignore( Owner )
                 .Radius( 8 )
                 .Run().EndPos;
 
-            var camTrace = Trace.Ray( pos, pos + Owner.Input.Rotation.Forward * 5000 )
+            var camTrace = Trace.Ray( pos, pos + Input.Rotation.Forward * 5000 )
                 .UseHitboxes()
                 .Ignore( Owner )
                 .Ignore( this )

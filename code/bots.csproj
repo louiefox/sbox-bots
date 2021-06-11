@@ -36,6 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="UI\BattleRoyaleHUD - Copy.scss">
+      <DependentUpon>BattleRoyaleHUD.cs</DependentUpon>
+    </None>
     <None Update="UI\BattleRoyaleHUD.scss">
       <DependentUpon>BattleRoyaleHUD.cs</DependentUpon>
     </None>
