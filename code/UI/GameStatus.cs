@@ -65,7 +65,7 @@ public class GameStatus : Panel
                 int count = currentCount;
 
                 float percent = ((float)time - (BRGame.StartDuration - slotDuration * count)) / 1f;
-                if ( panel.Style.Opacity <= 0f ) continue;
+                if ( (panel.Style.Opacity <= 0f && percent <= 0f) || (panel.Style.Opacity >= 1f && percent >= 1f) ) continue;
 
                 panel.Style.Dirty();
                 panel.Style.Opacity = Math.Clamp( percent, 0f, 1f );
