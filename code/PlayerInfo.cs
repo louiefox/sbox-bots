@@ -11,7 +11,19 @@ namespace BattleRoyale
         public Client Client;
         public PlayerGameState State;
         public int Kills = 0;
-        public TimeSince Survived = 0;
+        public float Survived
+        {
+            get
+            {
+                if ( State == PlayerGameState.Alive ) return AliveSince;
+                else if ( State == PlayerGameState.Dead ) return survived;
+
+                return 0;
+            }
+        }
+
+        private float survived;
+        private TimeSince AliveSince = 0;
 
         public PlayerInfo( Client client )
         {
@@ -61,6 +73,15 @@ namespace BattleRoyale
         {
             if ( GetPlayerInfo( client ) is not PlayerInfo playerInfo ) return;
             playerInfo.State = state;
+
+            if ( state == PlayerGameState.Alive )
+            {
+                playerInfo.AliveSince = 0;
+            }
+            else if ( state == PlayerGameState.Dead )
+            {
+                playerInfo.survived = playerInfo.AliveSince;
+            }
 
             UpdateGameState( To.Everyone, playerInfo.Client.SteamId, state );
         }

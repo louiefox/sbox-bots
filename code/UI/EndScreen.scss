@@ -1,0 +1,48 @@
+﻿endscreen {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	transform: scale( 1.05 );
+	transition: all 0.1s ease-out;
+	opacity: 0;
+	z-index: 1000;
+	background-color: rgba(50, 50, 50, 0.5);
+
+	&.active {
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	.toppanel {
+		position: absolute;
+		left: 50%;
+		top: 200px;
+		transform: translateX(-50%);
+		display: flex;
+		flex-direction: column;
+		font-family: Roboto;
+		font-weight: 500;
+		text-shadow: 0 0 8px black;
+		font-size: 100px;
+		color: #eeeeee;
+	}
+
+	.timetext {
+		font-size: 15px;
+		color: #4ecca3;
+		text-align: center;
+		margin-bottom: 5px;
+	}
+
+	.timebarback {
+		height: 4px;
+		background-color: #232931;
+		box-shadow: 0 0 4px black;
+		margin: 0 50px;
+	}
+
+	.timebar {
+		background-color: #4ecca3;
+		min-width: .1px;
+	}
+}

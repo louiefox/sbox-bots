@@ -1,4 +1,5 @@
 ﻿gamestatus {
+	position: absolute;
 	width: 100%;
 	height: 100%;
 	background-color: unset;
@@ -40,35 +41,62 @@
 
 	.starting {
 		position: absolute;
-		left: 25%;
+		left: 50%;
 		top: 100px;
-		display: flex;
-		flex-wrap: wrap;
-		width: 50%;
-		text-align: center;
+		transform: translateX(-50%) scale( 1.05 );
+		background-color: #232931;
+		font-family: Roboto;
+		font-weight: 500;
+		text-shadow: 0 0 3px black;
+		border-radius: 10px;
+		box-shadow: 0 0 8px black;
+		padding: 5px 20px;
+		min-width: 150px;
 		transition: all 0.1s ease-out;
 		opacity: 0;
-		transform: scale( 1.05 );
-		background-color: unset;
 
 		&.active {
 			opacity: 1;
-			transform: scale(1);
+			transform: translateX(-50%) scale(1);
 		}
 
-		font-family: Roboto;
-		font-weight: 500;
-		color: #7f8c8d;
-		text-shadow: 0 0 3px black;
+		.timercolumn {
+			width: 30px;
+			margin: 5px 0;
+			margin-right: 10px;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.timerbarslot {
+			width: 100%;
+			flex-grow: 1;
+			background-color: #393e46;
+			box-shadow: 0 0 4px #393e46;
+		}
+
+		.timerbar {
+			opacity: 0;
+			width: 100%;
+			height: 100%;
+			background-color: #4ecca3;
+			box-shadow: 0 0 4px #4ecca3;
+		}
+
+		.startingtext {
+			display: flex;
+			flex-direction: column;
+			text-align: center;
+		}
 
 		.startingtime {
-			width: 100%;
-			font-size: 30px;
+			font-size: 25px;
+			color: #eeeeee;
 		}
 
 		.startingtitle {
-			width: 100%;
-			font-size: 25px;
+			font-size: 15px;
+			color: #4ecca3;
 		}
 	}
 }

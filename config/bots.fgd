@@ -9,7 +9,7 @@
 // 
 // FloorUsable : Sandbox.Prop 
 // 
-@SolidClass  model() 
+@PointClass  model() 
 metadata
 {
 }
@@ -27,7 +27,7 @@ metadata
 // 
 // LootPickup : FloorUsable 
 // 
-@SolidClass  model() 
+@PointClass  model() 
 metadata
 {
 }
@@ -45,7 +45,7 @@ metadata
 // 
 // SupplyCrate : FloorUsable 
 // 
-@SolidClass  model() 
+@PointClass  model() 
 metadata
 {
 }
@@ -63,7 +63,7 @@ metadata
 // 
 // Crossbow : BaseBRWeapon 
 // 
-@SolidClass = dm_crossbow : ""
+@PointClass = dm_crossbow : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 ]
@@ -71,7 +71,7 @@ metadata
 // 
 // CrossbowBolt : Sandbox.ModelEntity 
 // 
-@SolidClass = crossbow_bolt : ""
+@PointClass = crossbow_bolt : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 ]
@@ -79,7 +79,7 @@ metadata
 // 
 // Pistol : BaseBRWeapon 
 // 
-@SolidClass = dm_pistol : ""
+@PointClass = dm_pistol : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 ]
@@ -87,7 +87,7 @@ metadata
 // 
 // PumpShotgun : BaseBRWeapon 
 // 
-@SolidClass = dm_pumpshotgun : ""
+@PointClass = dm_pumpshotgun : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 ]
@@ -95,7 +95,7 @@ metadata
 // 
 // Shotgun : BaseBRWeapon 
 // 
-@SolidClass = dm_shotgun : ""
+@PointClass = dm_shotgun : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 ]
@@ -103,7 +103,7 @@ metadata
 // 
 // SMG : BaseBRWeapon 
 // 
-@SolidClass = dm_smg : ""
+@PointClass = dm_smg : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 ]

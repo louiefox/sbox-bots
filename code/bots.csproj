@@ -42,6 +42,9 @@
     <None Update="UI\BattleRoyaleHUD.scss">
       <DependentUpon>BattleRoyaleHUD.cs</DependentUpon>
     </None>
+    <None Update="UI\EndScreen.scss">
+      <DependentUpon>EndScreen.cs</DependentUpon>
+    </None>
     <None Update="UI\SpectatingInfo.scss">
       <DependentUpon>SpectatingInfo.cs</DependentUpon>
     </None>

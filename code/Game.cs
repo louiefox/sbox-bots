@@ -8,8 +8,8 @@ public partial class BRGame : Sandbox.Game
     public static GameState CurrentState = GameState.Waiting;
     public static TimeSince StartingTime;
     public static TimeSince EndedTime;
-    public static float StartDuration = 5f;
-    public static float EndDuration = 5f;
+    public static float StartDuration = 30f;
+    public static float EndDuration = 15f;
 
     private BattleRoyaleHUD BattleRoyaleHUD;
     private Dictionary<Client, TimeSince> DelayedClients = new();
