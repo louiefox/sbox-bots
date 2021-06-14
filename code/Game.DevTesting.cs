@@ -43,5 +43,5 @@ public partial class BRGame
         {
             Position = tr.EndPos
         };
-    }
+    }    
 }

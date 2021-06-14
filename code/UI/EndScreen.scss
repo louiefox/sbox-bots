@@ -6,7 +6,7 @@
 	transition: all 0.1s ease-out;
 	opacity: 0;
 	z-index: 1000;
-	background-color: rgba(50, 50, 50, 0.5);
+	background-color: rgba(30, 30, 30, 0.8);
 
 	&.active {
 		opacity: 1;
@@ -44,5 +44,47 @@
 	.timebar {
 		background-color: #4ecca3;
 		min-width: .1px;
+	}
+
+	.winnerback {
+		position: absolute;
+		left: 50%;
+		top: 300px;
+		transform: translateX(-50%);
+		background-color: #232931;
+		box-shadow: 0 0 10px black;
+		border-radius: 16px;
+		border: 2px solid #393e46;
+	}
+
+	.winnerbackground {
+		position: absolute;
+		width: 200%;
+		height: 100%;
+		transform: translateY(-50%);
+		top: 50%;
+		background-image: url( /ui/endscreen/trophy.png );
+		background-size: contain;
+	}
+
+	.winnercontent {
+		display: flex;
+		flex-direction: column;
+		padding: 10px 20px;
+	}
+
+	.winnertitle {
+		font-size: 20px;
+		color: #eeeeee;
+		text-align: center;
+		margin-bottom: 5px;
+	}
+
+	.winnertext {
+		font-family: Roboto;
+		font-weight: 500;
+		text-shadow: 0 0 8px black;
+		font-size: 75px;
+		color: #4ecca3;
 	}
 }

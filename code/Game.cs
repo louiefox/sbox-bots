@@ -178,6 +178,12 @@ public partial class BRGame : Sandbox.Game
         if ( !Host.IsClient ) return false;
         return PlayerInfo.GetPlayerInfo( Local.Client ).State != PlayerGameState.Alive && (BRGame.CurrentState == GameState.Active || BRGame.CurrentState == GameState.Ended);
     }
+
+    [ServerCmd( "kill" )]
+    public static void KillOverride()
+    {
+
+    }
 }
 
 public enum GameState
