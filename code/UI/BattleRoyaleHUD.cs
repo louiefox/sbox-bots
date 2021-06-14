@@ -25,6 +25,7 @@ public partial class BattleRoyaleHUD : HudEntity<RootPanel>
         PanelList.Add( RootPanel.AddChild<ChatBox>(), true );
         PanelList.Add( RootPanel.AddChild<VoiceList>(), true );
         PanelList.Add( RootPanel.AddChild<KillFeed>(), true );
+        PanelList.Add( RootPanel.AddChild<MiniMap>(), true );
 
         PanelList.Add( RootPanel.AddChild<NameTags>(), true );
         PanelList.Add( RootPanel.AddChild<LootItemTags>(), false );

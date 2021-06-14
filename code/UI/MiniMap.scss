@@ -1,0 +1,75 @@
+﻿minimap {
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	left: 50px;
+	top: 50px;
+	background-color: #393E46;
+	padding: 5px;
+	box-shadow: 0 0 10px black;
+
+	.north, .east, .south, .west {
+		position: absolute;
+		font-family: Roboto;
+		font-weight: 500;
+		text-shadow: 0 0 8px black;
+		font-size: 25px;
+		color: #eeeeee;
+		z-index: 100;
+	}
+
+	.north {
+		left: 50%;
+		top: 0;
+		transform: translateX(-50%) translateY(-50%);
+	}
+
+	.east {
+		right: 0;
+		top: 50%;
+		transform: translateX(50%) translateY(-50%);
+	}
+
+	.south {
+		left: 50%;
+		bottom: 0;
+		transform: translateX(-50%) translateY(50%);
+	}
+
+	.west {
+		left: 0;
+		top: 50%;
+		transform: translateX(-50%) translateY(-50%);
+	}
+
+	.mapcontents {
+		background-color: #232931;
+		width: 100%;
+		height: 100%;
+		overflow: hidden;
+	}
+
+	.playermarker {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translateX(-50%) translateY(-50%);
+		width: 20px;
+		height: 20px;
+		background-image: url( /ui/map/player.png );
+		background-repeat: no-repeat;
+		background-size: contain;
+	}
+
+	.cratemarker {
+		position: absolute;
+		background-color: #e67e22;
+		box-shadow: 0 0 4px #e67e22;
+	}	
+	
+	.zonemarker {
+		position: absolute;
+		background-color: red;
+		box-shadow: 0 0 4px #e67e22;
+	}
+}
