@@ -10,12 +10,7 @@ public class EndScreen : Panel
 {
     private Panel TimeBar;
     private Label TimeText;
-    private Panel WinnerBackground;
     private Label WinnerText;
-
-    private float WinnerBackLeft;
-
-    private TimeSince TestTime;
 
     public EndScreen()
 	{
@@ -29,22 +24,20 @@ public class EndScreen : Panel
         TimeBar = timeBar.Add.Panel( "timebar" );
 
         Panel winnerPanel = topPanel.Add.Panel( "winnerback" );
-        WinnerBackground = winnerPanel.Add.Panel( "winnerbackground" );
+        winnerPanel.Add.Panel( "winnerbackground" );
 
         Panel winnerContent = winnerPanel.Add.Panel( "winnercontent" );
         winnerContent.Add.Label( "THE WINNER IS", "winnertitle" );
         WinnerText = winnerContent.Add.Label( "BRICKWALL", "winnertext" );
-
-        TestTime = 0;
     }
 
     public override void Tick()
 	{
-        SetClass( "active", BRGame.CurrentState == GameState.Ended || true );
+        SetClass( "active", BRGame.CurrentState == GameState.Ended );
 
-        if ( BRGame.CurrentState == GameState.Ended || true )
+        if ( BRGame.CurrentState == GameState.Ended )
         {
-            float time = Math.Max( 0, BRGame.EndDuration - TestTime );//BRGame.EndedTime );
+            float time = Math.Max( 0, BRGame.EndDuration - BRGame.EndedTime );
 
             TimeText.Text = $"Next game in {string.Format( "{0:0.0}", time )}s";
 
@@ -63,10 +56,6 @@ public class EndScreen : Panel
             {
                 WinnerText.Text = winner.Name.ToUpper();
             }
-
-            WinnerBackLeft = WinnerBackLeft > -250f ? WinnerBackLeft - .5f : 0f;
-            //WinnerBackground.Style.Dirty();
-            //WinnerBackground.Style.Left = WinnerBackLeft;
         }
     }
 }

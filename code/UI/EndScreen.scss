@@ -59,11 +59,11 @@
 
 	.winnerbackground {
 		position: absolute;
-		width: 200%;
+		width: 100%;
 		height: 100%;
 		transform: translateY(-50%);
 		top: 50%;
-		background-image: url( /ui/endscreen/trophy.png );
+		background-image: url( /ui/endscreen/trophy_background.png );
 		background-size: contain;
 	}
 
@@ -71,6 +71,7 @@
 		display: flex;
 		flex-direction: column;
 		padding: 10px 20px;
+		min-width: 400px;
 	}
 
 	.winnertitle {
@@ -81,6 +82,7 @@
 	}
 
 	.winnertext {
+		text-align: center;
 		font-family: Roboto;
 		font-weight: 500;
 		text-shadow: 0 0 8px black;

@@ -30,7 +30,7 @@
 
 	.healthbar {
 		height: 12px;
-		background-color: #c0392b;
+		background-color: #232931;
 		border-bottom-left-radius: 12px;
 		border-bottom-right-radius: 12px;
 		border: 1.5px solid #393e46;
@@ -38,7 +38,7 @@
 	}
 
 	.health {
-		min-width: 0.1px;
+		width: 50%;
 		height: 100%;
 		background-color: #c0392b;
 		border-bottom-left-radius: 12px;
