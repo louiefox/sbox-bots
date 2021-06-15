@@ -29,7 +29,9 @@ public class MiniMap : Panel
         MapContents = Add.Panel( "mapcontents" );
         PlayerMarker = MapContents.Add.Panel( "playermarker" );
 
-        ZoneMarker = MapContents.Add.Panel( "zonemarker" );
+        Markers.Add( MapContents.Add.Panel( "redzone" ), new MapMarker( (Game.Current as BRGame).ZoneCenterPos, 3000f, 3000f ) );
+
+        ZoneMarker = MapContents.Add.Panel( "safezone" );
         Markers.Add( ZoneMarker, new MapMarker( (Game.Current as BRGame).ZoneCenterPos, 10f, 10f ) );
     }
 
@@ -43,6 +45,12 @@ public class MiniMap : Panel
         }
 
         if ( currentPawn == null || !currentPawn.IsValid() ) return;
+
+        if( Markers.ContainsKey( ZoneMarker ) )
+        {
+            float size = ((Game.Current as BRGame).DeathZoneDistance() * 2) * PixelsPerUnit;
+            Markers[ZoneMarker] = new MapMarker( (Game.Current as BRGame).ZoneCenterPos, size, size );
+        }
 
         foreach ( Entity ent in Entity.All )
         {

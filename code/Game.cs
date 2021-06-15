@@ -86,6 +86,7 @@ public partial class BRGame : Sandbox.Game
 
     public void StartGame()
     {
+        ZoneTicks = 0;
         CurrentState = GameState.Active;
 
         foreach ( Client client in Client.All )

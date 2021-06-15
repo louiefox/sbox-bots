@@ -201,12 +201,14 @@ public partial class LootPickup : FloorUsable
 
 	public override void EnableGlow()
 	{
-		ClientModel.GlowColor = RarityColor.ToColor();
+        if ( ClientModel == null || !ClientModel.IsValid() ) return;
+        ClientModel.GlowColor = RarityColor.ToColor();
 	}	
 	
 	public override void DisableGlow()
 	{
-		ClientModel.GlowColor = new Color( 1.0f, 1.0f, 1.0f );
+        if ( ClientModel == null || !ClientModel.IsValid() ) return;
+        ClientModel.GlowColor = new Color( 1.0f, 1.0f, 1.0f );
 	}
 
 	protected override void OnDestroy()

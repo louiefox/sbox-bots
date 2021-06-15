@@ -65,11 +65,18 @@
 		position: absolute;
 		background-color: #e67e22;
 		box-shadow: 0 0 4px #e67e22;
-	}	
-	
-	.zonemarker {
+	}
+
+	.redzone {
 		position: absolute;
 		background-color: red;
-		box-shadow: 0 0 4px #e67e22;
+		z-index: -1000;
+	}
+
+	.safezone {
+		position: absolute;
+		background-color: #232931;
+		border-radius: 100%;
+		z-index: -999;
 	}
 }

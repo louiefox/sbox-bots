@@ -23,7 +23,9 @@ partial class BRPlayer
 	[Net, Local]
 	public float RegenTime { get; set; }
 
-	private void ResetRegen()
+    private TimeSince LastZoneDamage = 0;
+
+    private void ResetRegen()
 	{
 		if( RegenActive )
 		{
@@ -43,20 +45,45 @@ partial class BRPlayer
 		RegenActive = true;
 	}
 
+    public bool InDeathZone()
+    {
+        BRGame game = Game.Current as BRGame;
+
+        Vector2 pos1 = Position;
+        Vector2 pos2 = game.ZoneCenterPos;
+
+        float a = pos1.x - pos2.x;
+        float b = pos1.y - pos2.y;
+        double distance = Math.Sqrt( (a * a) + (b * b) );
+
+        return distance >= game.DeathZoneDistance();
+    }
+
 	[Event.Tick]
-	private void Regen()
+	private void VitalsUpdate()
 	{
-		if( !RegenActive ) { return; }
+		if( RegenActive )
+        {
+            if ( Health >= 100f )
+            {
+                RegenActive = false;
+            }
 
-		if( Health >= 100f )
-		{
-			RegenActive = false;
-		}
+            if ( Time.Now >= RegenStartTime + RegenStartDelay + RegenTime )
+            {
+                Health = 100f;
+                RegenActive = false;
+            }
+        }
 
-		if( Time.Now >= RegenStartTime+RegenStartDelay+RegenTime )
-		{
-			Health = 100f;
-			RegenActive = false;
-		}
+        if( LastZoneDamage >= 2f )
+        {
+            if( InDeathZone() )
+            {
+                TakeDamage( DamageInfo.Generic( 5f ) );
+            }
+
+            LastZoneDamage = 0;
+        }
 	}
 }
