@@ -91,6 +91,7 @@ public partial class BRGame : Sandbox.Game
 
         foreach ( Client client in Client.All )
         {
+            if ( client.Pawn == null || !client.Pawn.IsValid() ) continue;
             PlayerInfo.UpdateGameState( client.Pawn as Player, PlayerGameState.Alive );
 
             if ( IsServer ) (client.Pawn as Player).Respawn();
@@ -177,7 +178,9 @@ public partial class BRGame : Sandbox.Game
     public static bool IsSpectating()
     {
         if ( !Host.IsClient ) return false;
-        return PlayerInfo.GetPlayerInfo( Local.Client ).State != PlayerGameState.Alive && (BRGame.CurrentState == GameState.Active || BRGame.CurrentState == GameState.Ended);
+        if ( Local.Client == null || PlayerInfo.GetPlayerInfo( Local.Client ) is not PlayerInfo playerInfo ) return true;
+
+        return playerInfo.State != PlayerGameState.Alive && (BRGame.CurrentState == GameState.Active || BRGame.CurrentState == GameState.Ended);
     }
 
     [ServerCmd( "kill" )]

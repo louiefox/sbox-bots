@@ -7,6 +7,7 @@ namespace BattleRoyale
     public partial class PlayerInfo
     {
         public static Dictionary<ulong, PlayerInfo> Players = new();
+        public static Dictionary<Client, TimeSince> DelayedSendAddPlayer = new();
 
         public Client Client;
         public PlayerGameState State;
@@ -36,12 +37,32 @@ namespace BattleRoyale
             if ( Players.ContainsKey( client.SteamId ) ) return;
 
             Players.Add( client.SteamId, new( client ) );
-            SendAddPlayer( To.Everyone, client.SteamId );
+
+            DelayedSendAddPlayer.Add( client, 0 );
 
             foreach( var kv in Players )
             {
                 if ( kv.Key == client.SteamId ) continue;
                 SendAddPlayer( To.Single( client ), kv.Key );
+            }
+        }
+
+        [Event.Tick]
+        public static void DelayedSendPlayerUpdate()
+        {
+            List<Client> toDelete = new();
+            foreach( var kv in DelayedSendAddPlayer )
+            {
+                if ( kv.Value < 1f ) continue;
+
+                if( kv.Key.IsValid() ) SendAddPlayer( To.Everyone, kv.Key.SteamId );
+
+                toDelete.Add( kv.Key );
+            }
+
+            foreach ( Client client in toDelete )
+            {
+                DelayedSendAddPlayer.Remove( client );
             }
         }
         

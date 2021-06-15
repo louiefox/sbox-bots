@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BattleRoyale;
 
 partial class BRPlayer
 {
@@ -76,11 +77,11 @@ partial class BRPlayer
             }
         }
 
-        if( LastZoneDamage >= 2f )
+        if( BRGame.CurrentState == GameState.Active && LastZoneDamage >= 2f )
         {
             if( InDeathZone() )
             {
-                TakeDamage( DamageInfo.Generic( 5f ) );
+                //TakeDamage( DamageInfo.Generic( 5f ) );
             }
 
             LastZoneDamage = 0;
