@@ -7,7 +7,7 @@ namespace BattleRoyale
     public partial class PlayerInfo
     {
         public static Dictionary<ulong, PlayerInfo> Players = new();
-        public static Dictionary<Client, TimeSince> DelayedSendAddPlayer = new();
+        public static Dictionary<ulong, (TimeSince, int)> DelayedSendAddPlayer = new();
 
         public Client Client;
         public PlayerGameState State;
@@ -38,31 +38,12 @@ namespace BattleRoyale
 
             Players.Add( client.SteamId, new( client ) );
 
-            DelayedSendAddPlayer.Add( client, 0 );
+            SendAddPlayer( To.Everyone, client.SteamId );
 
-            foreach( var kv in Players )
+            foreach ( var kv in Players )
             {
                 if ( kv.Key == client.SteamId ) continue;
                 SendAddPlayer( To.Single( client ), kv.Key );
-            }
-        }
-
-        [Event.Tick]
-        public static void DelayedSendPlayerUpdate()
-        {
-            List<Client> toDelete = new();
-            foreach( var kv in DelayedSendAddPlayer )
-            {
-                if ( kv.Value < 1f ) continue;
-
-                if( kv.Key.IsValid() ) SendAddPlayer( To.Everyone, kv.Key.SteamId );
-
-                toDelete.Add( kv.Key );
-            }
-
-            foreach ( Client client in toDelete )
-            {
-                DelayedSendAddPlayer.Remove( client );
             }
         }
         
@@ -156,13 +137,38 @@ namespace BattleRoyale
         [ClientRpc]
         public static void SendAddPlayer( ulong steamID )
         {
-            if ( GetClientFromSteamID( steamID ) is not Client client ) return;
-            PlayerInfo playerInfo = new( client );
+            DelayedSendAddPlayer.Add( steamID, (0, 0) );
+        }
 
-            Players.Add( steamID, playerInfo );
-            Event.Run( "battleroyale.addplayer", steamID );
-        }        
-        
+        [Event( "client.tick" )]
+        public static void DelayedSendPlayerUpdate()
+        {
+            List<ulong> toDelete = new();
+            foreach ( var kv in DelayedSendAddPlayer )
+            {
+                if ( kv.Value.Item1 < .5f ) continue;
+
+                DelayedSendAddPlayer[kv.Key] = (0, kv.Value.Item2 + 1);
+
+                if ( GetClientFromSteamID( kv.Key ) is Client client )
+                {
+                    PlayerInfo playerInfo = new( client );
+
+                    Players.Add( kv.Key, playerInfo );
+                    Event.Run( "battleroyale.addplayer", kv.Key );
+                    toDelete.Add( kv.Key );
+                    continue;
+                }
+
+                if ( kv.Value.Item2 >= 5 ) toDelete.Add( kv.Key );
+            }
+
+            foreach ( ulong steamID in toDelete )
+            {
+                DelayedSendAddPlayer.Remove( steamID );
+            }
+        }
+
         [ClientRpc]
         public static void SendRemovePlayer( ulong steamID )
         {
