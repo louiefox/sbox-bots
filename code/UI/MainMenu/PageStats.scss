@@ -1,6 +1,62 @@
-﻿pagestats {
-    width: 100%;
-    height: 100%;
-    background-color: red;
+﻿@import 'UI/ColourConfig.scss';
+
+pagestats {
     font-family: Roboto;
+
+    .playerlist {
+        width: 40%;
+        margin: 35px;
+        flex-direction: column;
+    }
+
+    .playerentry {
+        width: 100%;
+        margin-top: 5px;
+        background-color: $theme-foreground;
+        box-shadow: 0 0 5px black;
+        border-radius: 8px;
+        align-items: center;
+    }
+
+    .playeravatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 100px;
+        margin-left: 10px;
+    }
+
+    .playerinfo {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .playername {
+        font-size: 15px;
+        font-weight: 500;
+        color: $theme-text;
+        text-shadow: 0 0 5px black;
+    }
+
+    .playerid {
+        font-size: 10px;
+        color: $theme-accent;
+        text-shadow: 0 0 5px black;
+    }
+
+    .playerstats {
+        flex-grow: 1;
+        flex-direction: row-reverse;
+    }
+
+    .playerstat {
+        margin-right: 10px;
+        padding: 5px 10px;
+        border: 1px solid $theme-foreground;
+        border-radius: 6px;
+        box-shadow: 0 0 5px black;
+        background-color: $theme-background;
+        font-size: 13px;
+        text-shadow: 0 0 5px black;
+        color: $theme-text;
+    }
 }

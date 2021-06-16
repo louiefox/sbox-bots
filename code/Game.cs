@@ -17,6 +17,8 @@ public partial class BRGame : Sandbox.Game
     public BRGame()
     {
         if ( IsClient ) BattleRoyaleHUD = new BattleRoyaleHUD();
+
+        if ( IsServer ) PlayerData.LoadData();
     }
 
     [Event.Hotload]
