@@ -13,6 +13,17 @@ public partial class SupplyCrate : FloorUsable
     {
         (new Vector3( -4733, 2368, 619 ), new Angles( 0, 134, 0 )),
         (new Vector3( -4922, 2558, 619 ), new Angles( 0, -6, 0 )),
+        (new Vector3( -3113, 4235, 412 ), new Angles( 0, -169, 0 )),
+        (new Vector3( -3496, 4581, 425 ), new Angles( 0, -133, 0 )),
+        (new Vector3( -3623, 4423, 427 ), new Angles( 0, -130, 0 )),
+        (new Vector3( -4924, 4929, 182 ), new Angles( 0, -71, 0 )),
+        (new Vector3( -7617, 7327, 82 ), new Angles( 0, -176, 0 )),
+        (new Vector3( -7066, 6548, 331 ), new Angles( 0, 166, 0 )),
+        (new Vector3( -8136, 1271, 161 ), new Angles( 0, 40, 0 )),
+        (new Vector3( -2344, 2307, 149 ), new Angles( 0, -54, 0 )),
+        (new Vector3( -2385, 2434, 153 ), new Angles( 0, 118, 0 )),
+        (new Vector3( -1817, 6024, 285 ), new Angles( 0, 98, 0 )),
+        (new Vector3( -1411, 7703, 120 ), new Angles( 0, 52, 0 )),
     };
 
 	public override void Spawn()

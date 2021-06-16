@@ -11,7 +11,7 @@ public partial class LootPickup : FloorUsable
     [Net]
 	public int Amount { get; set; }
 
-	public ModelEntity ClientModel;
+	public LootPickupClientModel ClientModel;
 	private float ClientZRot = 0f;
 	private bool ClientBobIncreasing = true;
 	private float ClientZBob = 0f;
@@ -165,7 +165,7 @@ public partial class LootPickup : FloorUsable
 				break;
 		}
 
-		ClientModel = new ModelEntity();
+		ClientModel = new LootPickupClientModel();
 		ClientModel.Parent = this;
 		ClientModel.Position = Position;
 		ClientModel.SetModel( item.Model );
@@ -211,12 +211,14 @@ public partial class LootPickup : FloorUsable
         ClientModel.GlowColor = new Color( 1.0f, 1.0f, 1.0f );
 	}
 
-	protected override void OnDestroy()
+    // Doesn't seem to be reliable
+
+	/*protected override void OnDestroy()
 	{
 		base.OnDestroy();
 
 		ClientModel?.Delete();
-	}
+	}*/
 
 	public override void Use( Player ply )
 	{

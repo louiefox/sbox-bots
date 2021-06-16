@@ -6,7 +6,8 @@ using System;
 
 public class Crosshair : Panel
 {
-	int fireCounter;
+	private int FireCounter;
+    private string ActiveClass;
 
 	public Crosshair()
 	{
@@ -20,26 +21,31 @@ public class Crosshair : Panel
 			var p = Add.Panel( "element" );
 			p.AddClass( $"el{i}" );
 		}
-	}
+    }
 
 	public override void Tick()
 	{
 		base.Tick();
 
-		SetClass( "fire", fireCounter > 0 );
+		SetClass( "fire", FireCounter > 0 );
 
-		if ( fireCounter > 0 )
-			fireCounter--;
-	}
+		if ( FireCounter > 0 ) FireCounter--;
 
-	public override void OnEvent( string eventName )
+        if ( Local.Pawn is BRPlayer player && player.ActiveChild is BaseBRWeapon weapon )
+        {
+            if( ActiveClass != weapon.ClassInfo.Name )
+            {
+                RemoveClass( ActiveClass );
+
+                ActiveClass = weapon.ClassInfo.Name;
+                AddClass( ActiveClass );
+            }
+        }
+    }
+
+    [Event( "battleroyale.weaponfired" )]
+    public void OnWeaponFire()
 	{
-		if ( eventName == "fire" )
-		{
-			// this is a hack until we have animation or TriggerClass support
-			fireCounter += 2;
-		}
-
-		base.OnEvent( eventName );
-	}
+        FireCounter += 2;
+    }
 }

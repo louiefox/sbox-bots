@@ -100,14 +100,18 @@ namespace Sandbox.UI
             var labelPos = CurrentTarget.Position + new Vector3( 0, 0, 20f );
 
             float dist = labelPos.Distance( CurrentView.Position );
-            if ( dist > MaxDrawDistance ) return;
+            if ( dist > MaxDrawDistance )
+            {
+                Tag.Style.Opacity = 0;
+                Tag.Style.Dirty();
+                return;
+            }
 
-            var alpha = dist.LerpInverse( MaxDrawDistance, MaxDrawDistance * 0.1f, true );
             var screenPos = labelPos.ToScreen();
 
+            Tag.Style.Opacity = 1;
             Tag.Style.Left = Length.Fraction( screenPos.x );
             Tag.Style.Top = Length.Fraction( screenPos.y );
-            //tag.Style.Opacity = alpha;
 
             var transform = new PanelTransform();
             transform.AddTranslateY( Length.Fraction( -1.0f ) );

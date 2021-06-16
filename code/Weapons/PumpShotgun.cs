@@ -62,8 +62,8 @@ partial class PumpShotgun : BaseBRWeapon
 			new Sandbox.ScreenShake.Perlin(1.0f, 1.5f, 2.0f);
 		}
 
-		CrosshairPanel?.OnEvent( "fire" );
-	}
+        Event.Run( "battleroyale.weaponfired" );
+    }
 
 	public override void OnReloadFinish()
 	{

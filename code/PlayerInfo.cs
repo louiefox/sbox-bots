@@ -74,16 +74,20 @@ namespace BattleRoyale
         public static void UpdateGameState( Client client, PlayerGameState state )
         {
             if ( GetPlayerInfo( client ) is not PlayerInfo playerInfo ) return;
-            playerInfo.State = state;
 
-            if ( state == PlayerGameState.Alive )
+            switch ( state )
             {
-                playerInfo.AliveSince = 0;
+                case PlayerGameState.Alive:
+                    playerInfo.AliveSince = 0;
+                    break;
+                case PlayerGameState.Dead:
+                    playerInfo.survived = playerInfo.AliveSince;
+                    break;
             }
-            else if ( state == PlayerGameState.Dead )
-            {
-                playerInfo.survived = playerInfo.AliveSince;
-            }
+
+            if( state != PlayerGameState.Dead ) playerInfo.Kills = 0;
+
+            playerInfo.State = state;
 
             UpdateGameState( To.Everyone, playerInfo.Client.SteamId, state );
         }
@@ -99,15 +103,32 @@ namespace BattleRoyale
             if ( GetPlayerInfo( steamID ) is not PlayerInfo playerInfo ) return;
             playerInfo.State = state;
 
+            switch ( state )
+            {
+                case PlayerGameState.Alive:
+                    playerInfo.AliveSince = 0;
+                    break;
+                case PlayerGameState.Dead:
+                    playerInfo.survived = playerInfo.AliveSince;
+                    break;
+            }
+
+            if ( state != PlayerGameState.Dead ) playerInfo.Kills = 0;
+
             Event.Run( "battleroyale.updateplayer", steamID );
         }
 
-        public static void UpdateKills( Player player, int kills, bool setKills )
+        public static void UpdateKills( Client client, int kills, bool setKills )
         {
-            if ( GetPlayerInfo( player ) is not PlayerInfo playerInfo ) return;
+            if ( GetPlayerInfo( client ) is not PlayerInfo playerInfo ) return;
             playerInfo.Kills = setKills ? kills : playerInfo.Kills + kills;
 
             UpdateKills( To.Everyone, playerInfo.Client.SteamId, playerInfo.Kills );
+        }           
+        
+        public static void UpdateKills( Player player, int kills, bool setKills )
+        {
+            UpdateKills( player.GetClientOwner(), kills, setKills );
         }        
         
         public static void UpdateKills( Player player, int kills )
@@ -160,7 +181,7 @@ namespace BattleRoyale
                     continue;
                 }
 
-                if ( kv.Value.Item2 >= 5 ) toDelete.Add( kv.Key );
+                if ( kv.Value.Item2 >= 120 ) toDelete.Add( kv.Key );
             }
 
             foreach ( ulong steamID in toDelete )

@@ -62,8 +62,8 @@ partial class SMG : BaseBRWeapon
 		}
 
 		ViewModelEntity?.SetAnimBool( "fire", true );
-		CrosshairPanel?.OnEvent( "fire" );
-	}
+        Event.Run( "battleroyale.weaponfired" );
+    }
 
 	public override void SimulateAnimator( PawnAnimator anim )
 	{

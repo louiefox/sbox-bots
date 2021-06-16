@@ -150,7 +150,7 @@ partial class BaseBRWeapon : BaseWeapon
 
 		Particles.Create( "particles/pistol_muzzleflash.vpcf", EffectEntity, "muzzle" );
 
-		CrosshairPanel?.OnEvent( "fire" );
+        Event.Run( "battleroyale.weaponfired" );
 	}
 
 	/// <summary>
@@ -227,15 +227,6 @@ partial class BaseBRWeapon : BaseWeapon
 	public void DryFire()
 	{
 		Reload();
-	}
-
-	public override void CreateHudElements()
-	{
-		if ( Local.Hud == null ) return;
-
-		CrosshairPanel = new Crosshair();
-		CrosshairPanel.Parent = Local.Hud;
-		CrosshairPanel.AddClass( ClassInfo.Name );
 	}
 
 	public bool IsUsable()

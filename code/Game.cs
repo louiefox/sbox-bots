@@ -27,20 +27,16 @@ public partial class BRGame : Sandbox.Game
         BattleRoyaleHUD = new BattleRoyaleHUD();
     }
 
-    [Event.Tick]
+    [Event( "server.tick" )]
     public void GameTick()
     {
         if ( CurrentState == GameState.Waiting )
         {
-            if ( Client.All.Count > 1 )
-            {
-                StartingTime = 0;
-                CurrentState = GameState.Starting;
-            }
+            if ( Client.All.Count > 1 ) StartStarting();
         }
         else if ( CurrentState == GameState.Starting )
         {
-            if ( Client.All.Count <= 1 ) CurrentState = GameState.Waiting;
+            if ( Client.All.Count <= 1 ) StartWaiting();
 
             if ( StartingTime >= StartDuration ) StartGame();
         }
@@ -65,16 +61,13 @@ public partial class BRGame : Sandbox.Game
     {
         CurrentState = GameState.Waiting;
 
+        SendStartWaiting( To.Everyone );
+
         foreach ( Client client in Client.All )
         {
             PlayerInfo.UpdateGameState( client, PlayerGameState.Spectating );
 
-            if( client.Camera != null )
-            {
-                client.Camera = null;
-            }
-
-            if ( !IsServer ) continue;
+            if( client.Camera != null ) client.Camera = null;
 
             if ( client.Pawn != null || client.Pawn.IsValid() ) client.Pawn.Delete();
 
@@ -84,10 +77,33 @@ public partial class BRGame : Sandbox.Game
         }
     }
 
+    [ClientRpc]
+    public void SendStartWaiting()
+    {
+        CurrentState = GameState.Waiting;
+    }
+
+    public void StartStarting()
+    {
+        StartingTime = 0;
+        CurrentState = GameState.Starting;
+
+        SendStartStarting( To.Everyone  );
+    }
+
+    [ClientRpc]
+    public void SendStartStarting()
+    {
+        StartingTime = 0;
+        CurrentState = GameState.Starting;
+    }
+
     public void StartGame()
     {
         ZoneTicks = 0;
         CurrentState = GameState.Active;
+
+        SendStartGame( To.Everyone );
 
         foreach ( Client client in Client.All )
         {
@@ -108,16 +124,23 @@ public partial class BRGame : Sandbox.Game
                 };
             }
         }
+    }
 
-        Log.Info( "Game Started" );
-    }    
-    
+    [ClientRpc]
+    public void SendStartGame()
+    {
+        ZoneTicks = 0;
+        CurrentState = GameState.Active;
+    }
+
     public void EndGame()
     {
         EndedTime = 0;
         CurrentState = GameState.Ended;
 
-        if( IsServer )
+        SendEndGame( To.Everyone );
+
+        if ( IsServer )
         {
             foreach ( Entity ent in All )
             {
@@ -125,8 +148,13 @@ public partial class BRGame : Sandbox.Game
                 usableEnt.Delete();
             }
         }
+    }
 
-        Log.Info( "Game Ended" );
+    [ClientRpc]
+    public void SendEndGame()
+    {
+        EndedTime = 0;
+        CurrentState = GameState.Ended;
     }
 
     public override void ClientJoined( Client client )

@@ -104,6 +104,6 @@ partial class Crossbow : BaseBRWeapon
 		}
 
 		ViewModelEntity?.SetAnimBool( "fire", true );
-		CrosshairPanel?.OnEvent( "fire" );
-	}
+        Event.Run( "battleroyale.weaponfired" );
+    }
 }

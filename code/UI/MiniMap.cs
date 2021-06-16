@@ -9,7 +9,7 @@ using BattleRoyale;
 public class MiniMap : Panel
 {
     private Panel MapContents;
-    private float PixelsPerUnit = .2f;
+    private float PixelsPerUnit = .1f;
     private float ContentSize = 200f - 10f;
     private Dictionary<Panel, MapMarker> Markers = new();
     private Dictionary<Entity, Panel> MarkedCrates = new();

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 public partial class BattleRoyaleHUD : HudEntity<RootPanel>
 {
     private Dictionary<Panel, bool> PanelList = new();
+    public Crosshair Crosshair;
 
 	public BattleRoyaleHUD()
 	{
@@ -29,6 +30,9 @@ public partial class BattleRoyaleHUD : HudEntity<RootPanel>
 
         PanelList.Add( RootPanel.AddChild<NameTags>(), true );
         PanelList.Add( RootPanel.AddChild<LootItemTags>(), false );
+
+        Crosshair = RootPanel.AddChild<Crosshair>();
+        PanelList.Add( Crosshair, false );
 
         RootPanel.StyleSheet.Load( "/ui/BattleRoyaleHUD.scss" );
 
