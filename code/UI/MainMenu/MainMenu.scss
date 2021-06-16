@@ -1,0 +1,42 @@
+﻿mainmenu {
+	position: absolute;
+	z-index: 1001;
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	transition: all 0.1s ease-out;
+	transform: scale( 1.05 );
+	pointer-events: all;
+	background-color: rgba(30, 30, 30, 0.8);
+	justify-content: center;
+	align-items: center;
+
+	&.open {
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	.menu {
+		width: 65%;
+		height: 65%;
+		background-color: #232931;
+		box-shadow: 0 0 5px black;
+	}
+
+	.navbar {
+		width: 75px;
+		height: 100%;
+		background-color: #393E46;
+		box-shadow: 3px 0 5px rgba(0, 0, 0, 0.5);
+		justify-content: center;
+	}
+
+	.menuicon {
+		width: 35px;
+		height: 35px;
+		background-image: url( /ui/mainmenu/menu.png );
+		background-repeat: no-repeat;
+		background-size: contain;
+		margin-top: 20px;
+	}
+}

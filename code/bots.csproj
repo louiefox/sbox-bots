@@ -54,6 +54,12 @@
     <None Update="UI\GameStatus.scss">
       <DependentUpon>%(Filename).cs</DependentUpon>
     </None>
+    <None Update="UI\MainMenu\PageStats.scss">
+      <DependentUpon>PageStats.cs</DependentUpon>
+    </None>
+    <None Update="UI\MainMenu\MainMenu.scss">
+      <DependentUpon>MainMenu.cs</DependentUpon>
+    </None>
   </ItemGroup>
 
 </Project>

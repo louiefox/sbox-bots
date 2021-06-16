@@ -19,6 +19,7 @@ public partial class BattleRoyaleHUD : HudEntity<RootPanel>
         PanelList.Add( RootPanel.AddChild<EndScreen>(), true );
         PanelList.Add( RootPanel.AddChild<SpectatingInfo>(), true );
         PanelList.Add( RootPanel.AddChild<TabMenu>(), true );
+        PanelList.Add( RootPanel.AddChild<MainMenu>(), true );
 
         PanelList.Add( RootPanel.AddChild<DamageIndicator>(), false );
         PanelList.Add( RootPanel.AddChild<HitIndicator>(), false );
