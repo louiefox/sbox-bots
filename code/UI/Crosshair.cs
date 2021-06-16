@@ -16,11 +16,11 @@ public class Crosshair : Panel
 		Style.Left = Length.Fraction( .5f );
 		Style.Top = Length.Fraction( .5f );
 
-		for ( int i=0; i<5; i++ )
-		{
-			var p = Add.Panel( "element" );
-			p.AddClass( $"el{i}" );
-		}
+        for ( int i = 0; i < 5; i++ )
+        {
+            var p = Add.Panel( "element" );
+            p.AddClass( $"el{i}" );
+        }
     }
 
 	public override void Tick()

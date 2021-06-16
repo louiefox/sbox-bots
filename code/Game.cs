@@ -147,6 +147,14 @@ public partial class BRGame : Sandbox.Game
                 if ( ent is not FloorUsable usableEnt ) continue;
                 usableEnt.Delete();
             }
+
+            foreach( var kv in PlayerInfo.Players )
+            {
+                PlayerInfo playerInfo = kv.Value;
+                if ( playerInfo.State == PlayerGameState.Spectating ) continue;
+
+                PlayerData.AddStats( playerInfo.Client, playerInfo.Kills, playerInfo.State == PlayerGameState.Alive ? 1 : 0, (int)playerInfo.Survived );
+            }
         }
     }
 
