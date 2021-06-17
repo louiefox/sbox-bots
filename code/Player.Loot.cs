@@ -18,31 +18,18 @@ partial class BRPlayer
 
         Vector3 startPos = tr.EndPos;
 
-        List<LootPickupDist> sortedEnts = new List<LootPickupDist>();
-        foreach ( var ent in All )
+        FloorUsable newTarget = null;
+        if ( (tr.Entity is FloorUsable || tr.Entity is LootPickupClientModel) && startPos.Distance( tr.Entity.Position ) <= 40 )
         {
-            if ( ent is FloorUsable lootEnt )
-            {
-                bool lookingAtClientModel = false;
-                if ( ent is LootPickup pickupEnt && tr.Entity == pickupEnt.ClientModel )
-                {
-                    lookingAtClientModel = true;
-                }
-
-                float distance = startPos.Distance( lootEnt.Position );
-                if ( distance > 30 && tr.Entity != ent && !lookingAtClientModel ) continue;
-
-                sortedEnts.Add( new LootPickupDist( lootEnt as FloorUsable, distance ) );
-            }
+            newTarget = (tr.Entity is FloorUsable ? tr.Entity : tr.Entity.Parent) as FloorUsable;
         }
 
-        sortedEnts = sortedEnts.OrderBy( o => o.Distance ).ToList();
+        if ( newTarget == null )
+        {
+            newTarget = All.OfType<FloorUsable>().OrderBy( x => startPos.Distance( x.Position ) ).FirstOrDefault();
+        }
 
-        if ( sortedEnts.Count <= 0 ) return null;
-
-        FloorUsable newTarget = sortedEnts[0].Ent;
-
-        if ( newTarget == null || !newTarget.IsValid() ) return null;
+        if ( newTarget == null || !newTarget.IsValid() || startPos.Distance( newTarget.Position ) > 40 ) return null;
 
         return newTarget;
     }

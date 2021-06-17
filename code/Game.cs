@@ -1,9 +1,11 @@
 using Sandbox;
 using BattleRoyale;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 [Library( "bots", Title = "Battle of Terrys" )]
-public partial class BRGame : Sandbox.Game
+public partial class BRGame : Game
 {
     public static GameState CurrentState = GameState.Waiting;
     public static TimeSince StartingTime;
@@ -219,6 +221,41 @@ public partial class BRGame : Sandbox.Game
         if ( Local.Client == null || PlayerInfo.GetPlayerInfo( Local.Client ) is not PlayerInfo playerInfo ) return true;
 
         return playerInfo.State != PlayerGameState.Alive && (BRGame.CurrentState == GameState.Active || BRGame.CurrentState == GameState.Ended);
+    }
+
+    public override void MoveToSpawnpoint( Entity pawn )
+    {
+        var spawnpoints = All.OfType<SpawnPoint>().OrderBy( x => Guid.NewGuid() );
+        var players = All.OfType<Player>();
+
+        SpawnPoint spawnpoint = null;
+        foreach( SpawnPoint point in spawnpoints )
+        {
+            bool foundPlayer = false;
+            foreach( Player player in players )
+            {
+                if( player.Position.Distance( point.Position ) < 500 )
+                {
+                    foundPlayer = true;
+                    break;
+                }
+            }
+
+            if ( foundPlayer ) continue;
+
+            spawnpoint = point;
+            break;
+        }
+
+        if ( spawnpoint == null ) spawnpoint = All.OfType<SpawnPoint>().OrderBy( x => Guid.NewGuid() ).FirstOrDefault();
+
+        if ( spawnpoint == null )
+        {
+            Log.Warning( $"Couldn't find spawnpoint for {pawn}!" );
+            return;
+        }
+
+        pawn.Transform = spawnpoint.Transform;
     }
 
     [ServerCmd( "kill" )]
