@@ -48,6 +48,9 @@
     <None Update="UI\GameStatus - Copy.scss">
       <DependentUpon>%(Filename).cs</DependentUpon>
     </None>
+    <None Update="UI\MainMenu\PageStats - Copy.scss">
+      <DependentUpon>PageStats.cs</DependentUpon>
+    </None>
     <None Update="UI\SpectatingInfo.scss">
       <DependentUpon>SpectatingInfo.cs</DependentUpon>
     </None>
