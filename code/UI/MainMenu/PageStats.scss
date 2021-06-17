@@ -3,9 +3,40 @@
 pagestats {
     font-family: Roboto;
 
-    .playerlist {
-        width: 40%;
+    .playerlistarea {
+        width: 50%;
         margin: 35px;
+        flex-direction: column;
+    }
+
+    .headerbar {
+        width: 100%;
+        margin-top: 5px;
+        background-color: $theme-foreground;
+        box-shadow: 0 0 5px black;
+        border-radius: 8px;
+        align-items: center;
+        padding: 5px 0;
+    }
+
+    .header {
+        width: 20%;
+        font-size: 13px;
+        text-shadow: 0 0 5px black;
+        color: $theme-text;
+        text-align: center;
+
+        &.player {
+            width: 35%;
+        }
+
+        &.survived {
+            width: 25%;
+        }
+    }
+
+    .playerlist {
+        width: 100%;
         flex-direction: column;
     }
 
@@ -18,6 +49,11 @@ pagestats {
         align-items: center;
     }
 
+    .playerinfo {
+        width: 35%;
+        align-items: center;
+    }
+
     .playeravatar {
         width: 32px;
         height: 32px;
@@ -25,9 +61,10 @@ pagestats {
         margin-left: 10px;
     }
 
-    .playerinfo {
+    .playertext {
         flex-direction: column;
-        padding: 10px;
+        padding: 10px 0;
+        margin-left: 10px;
     }
 
     .playername {
@@ -43,20 +80,15 @@ pagestats {
         text-shadow: 0 0 5px black;
     }
 
-    .playerstats {
-        flex-grow: 1;
-        flex-direction: row-reverse;
-    }
-
-    .playerstat {
-        margin-right: 10px;
-        padding: 5px 10px;
-        border: 1px solid $theme-foreground;
-        border-radius: 6px;
-        box-shadow: 0 0 5px black;
-        background-color: $theme-background;
+    .playerstattxt {
         font-size: 13px;
         text-shadow: 0 0 5px black;
         color: $theme-text;
+        width: 20%;
+        text-align: center;
+
+        &.survived {
+            width: 25%;
+        }
     }
 }

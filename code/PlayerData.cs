@@ -28,6 +28,7 @@ public partial class PlayerData
             stats = JsonSerializer.Deserialize<Stats>( data );
         }
 
+        stats.Name = client.Name;
         stats.Kills += kills;
         stats.Wins += wins;
         stats.Survived += survived;
@@ -77,6 +78,7 @@ public partial class PlayerData
 
     public struct Stats
     {
+        public string Name { get; set; }
         public int Kills { get; set; }
         public int Wins { get; set; }
         public int Survived { get; set; }
