@@ -4,6 +4,7 @@ using Sandbox.UI;
 using Sandbox.UI.Construct;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace BattleRoyale.UI.MainMenuPages
 {
@@ -20,19 +21,19 @@ namespace BattleRoyale.UI.MainMenuPages
 
             LeaderboardsBack = Add.Panel( "leaderboardscontainer" );
 
-            CreateLeaderboard( "Most Wins", stats => $"{stats.Kills} Wins" );
-            CreateLeaderboard( "Most Kills", stats => $"{stats.Wins} Kills" );
-            CreateLeaderboard( "Longest Survived", stats => FormatTime( stats.Survived ) );
+            CreateLeaderboard( "Most Wins", stats => $"{stats.Kills} Wins", stats => stats.Kills );
+            CreateLeaderboard( "Most Kills", stats => $"{stats.Wins} Kills", stats => stats.Wins );
+            CreateLeaderboard( "Longest Survived", stats => FormatTime( stats.Survived ), stats => stats.Survived );
 
             FinishCreating();
 
             ConsoleSystem.Run( "br_request_data" );
         }
 
-        private void CreateLeaderboard( string title, FormatStat formatStat )
+        private void CreateLeaderboard( string title, FormatStat formatStat, GetSortValue getSortValue )
         {
             LeaderboardPanel board = LeaderboardsBack.AddChild<LeaderboardPanel>( "leaderboard" );
-            board.SetInfo( title, formatStat );
+            board.SetInfo( title, formatStat, getSortValue );
             board.SwitchButton.AddEvent( "onclick", () => {
                 SetTargetLeaderboard( board );
             } );
@@ -83,7 +84,7 @@ namespace BattleRoyale.UI.MainMenuPages
             double minutes = Math.Floor( seconds / 60f );
             seconds -= minutes * 60f;
 
-            return $"{hours}h {minutes}m {seconds}s";
+            return $"{hours}h {minutes}m {string.Format( "{0:00}", seconds )}s";
         }
 
         [Event( "battleroyale.updateplayerdata" )]
@@ -99,6 +100,7 @@ namespace BattleRoyale.UI.MainMenuPages
     }
 
     public delegate string FormatStat( PlayerData.Stats stats );
+    public delegate int GetSortValue( PlayerData.Stats stats );
 
     public class LeaderboardPanel : Panel
     {
@@ -106,6 +108,7 @@ namespace BattleRoyale.UI.MainMenuPages
         public Button SwitchButton;
         private Panel PlayerList;
         public FormatStat FormatStat;
+        public GetSortValue GetSortValue;
         public int SelectionPos;
 
         public LeaderboardPanel()
@@ -115,30 +118,53 @@ namespace BattleRoyale.UI.MainMenuPages
             PlayerList = Add.Panel( "playerlist" );
         }
         
-        public void SetInfo( string title, FormatStat formatStat )
+        public void SetInfo( string title, FormatStat formatStat, GetSortValue getSortValue )
         {
             Title.Text = title.ToUpper();
             FormatStat = formatStat;
+            GetSortValue = getSortValue;
         }
 
         public void UpdateStats( Dictionary<ulong, PlayerData.Stats> data )
         {
             PlayerList.DeleteChildren();
 
-            int currentCount = 0;
+            List<SortStats> sortedStats = new();
             foreach ( var kv in data )
             {
-                currentCount++;
-                if ( currentCount > 10 ) break;
+                sortedStats.Add( new( kv.Key, kv.Value, GetSortValue( kv.Value ) ) );
+            }
 
-                PlayerData.Stats stats = kv.Value;
+            sortedStats = sortedStats.OrderByDescending( o => o.SortValue ).ToList();
+
+            for ( int i = 0; i < 10; i++ )
+            {
+                int currentCount = i + 1;
 
                 Panel entry = PlayerList.Add.Panel( "entry" );
                 entry.Add.Label( currentCount <= 3 ? "emoji_events" : $"{currentCount}", "rank" ).AddClass( currentCount <= 3 ? $"rank{currentCount}" : "noicon" );
-                entry.Add.Image( $"avatar:{kv.Key}", "avatar" );
-                entry.Add.Label( stats.Name, "name" );
-                entry.Add.Label( FormatStat( stats ), "statistic" );
-                entry.SetClass( "last", currentCount >= data.Count );
+                entry.SetClass( "last", currentCount >= 10 );
+
+                if( i < sortedStats.Count && sortedStats[i] is SortStats sortStats && sortStats.Stats is PlayerData.Stats stats )
+                {
+                    entry.Add.Image( $"avatar:{sortStats.SteamID}", "avatar" );
+                    entry.Add.Label( stats.Name, "name" );
+                    entry.Add.Label( FormatStat( stats ), "statistic" );
+                }
+            }
+        }
+
+        private struct SortStats
+        {
+            public ulong SteamID;
+            public PlayerData.Stats Stats;
+            public int SortValue;
+
+            public SortStats( ulong steamID, PlayerData.Stats stats, int sortValue )
+            {
+                SteamID = steamID;
+                Stats = stats;
+                SortValue = sortValue;
             }
         }
     }

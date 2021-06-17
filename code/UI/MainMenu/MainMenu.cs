@@ -80,7 +80,7 @@ namespace BattleRoyale.UI
 		{
 			base.Tick();
 
-			SetClass( "open", Input.Down( InputButton.Menu ) || true );
+			SetClass( "open", Input.Down( InputButton.Menu ) );
 		}
 
         public struct Page

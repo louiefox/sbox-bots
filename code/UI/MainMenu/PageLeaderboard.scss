@@ -107,6 +107,7 @@ pageleaderboard {
             font-family: Roboto;
             font-size: 15px;
             color: $theme-foreground;
+            color: rgba( $theme-text, 0.2 );
             text-shadow: 0 0 2px black;
         }
     }
