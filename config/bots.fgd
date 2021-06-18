@@ -4,6 +4,7 @@
 @PointClass = bots : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 ]
 
 // 
@@ -20,6 +21,7 @@ metadata
 	bodygroups(bodygroupchoices) [ group="Render Properties" ] : "Body Groups" : "" 
 	disableshadows(boolean) [ group="Misc" ] : "Disable Shadows" : 0 : "Used to disable dynamic shadows on this entity." 
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 	collisiongroupoverride(integer) : "CollisionGroupOverride" :  : ""
 
 ]
@@ -38,6 +40,7 @@ metadata
 	bodygroups(bodygroupchoices) [ group="Render Properties" ] : "Body Groups" : "" 
 	disableshadows(boolean) [ group="Misc" ] : "Disable Shadows" : 0 : "Used to disable dynamic shadows on this entity." 
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 	collisiongroupoverride(integer) : "CollisionGroupOverride" :  : ""
 
 ]
@@ -48,6 +51,7 @@ metadata
 @PointClass = ent_lootpickup_clientmodel : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 ]
 
 // 
@@ -64,6 +68,7 @@ metadata
 	bodygroups(bodygroupchoices) [ group="Render Properties" ] : "Body Groups" : "" 
 	disableshadows(boolean) [ group="Misc" ] : "Disable Shadows" : 0 : "Used to disable dynamic shadows on this entity." 
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 	collisiongroupoverride(integer) : "CollisionGroupOverride" :  : ""
 
 ]
@@ -74,6 +79,7 @@ metadata
 @PointClass = dm_crossbow : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 ]
 
 // 
@@ -82,6 +88,7 @@ metadata
 @PointClass = crossbow_bolt : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 ]
 
 // 
@@ -90,6 +97,7 @@ metadata
 @PointClass = dm_pistol : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 ]
 
 // 
@@ -98,6 +106,7 @@ metadata
 @PointClass = dm_pumpshotgun : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 ]
 
 // 
@@ -106,6 +115,7 @@ metadata
 @PointClass = dm_shotgun : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 ]
 
 // 
@@ -114,5 +124,6 @@ metadata
 @PointClass = dm_smg : ""
 [
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
+	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 ]
 

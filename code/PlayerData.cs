@@ -6,6 +6,7 @@ using Sandbox;
 public partial class PlayerData
 {
     public static Dictionary<ulong, Stats> Data = new();
+    public static TimeSince LastLoadData = 0;
 
     public static float RequestCooldown = 60f;
     public static Dictionary<Client, TimeSince> DataRequests = new();
@@ -63,6 +64,12 @@ public partial class PlayerData
         } else
         {
             DataRequests.Add( client, 0 );
+        }
+
+        if( LastLoadData >= 300f )
+        {
+            LoadData();
+            LastLoadData = 0;
         }
 
         // Will be replaced once dictionaries can be networked

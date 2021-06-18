@@ -26,8 +26,6 @@ namespace BattleRoyale.UI.MainMenuPages
             PlayerList = playerListArea.Add.Panel( "playerlist" );
 
             UpdateStats();
-
-            ConsoleSystem.Run( "br_request_data" );
         }
 
         private string FormatTime( double secs )

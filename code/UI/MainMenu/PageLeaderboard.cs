@@ -21,13 +21,11 @@ namespace BattleRoyale.UI.MainMenuPages
 
             LeaderboardsBack = Add.Panel( "leaderboardscontainer" );
 
-            CreateLeaderboard( "Most Wins", stats => $"{stats.Kills} Wins", stats => stats.Kills );
-            CreateLeaderboard( "Most Kills", stats => $"{stats.Wins} Kills", stats => stats.Wins );
+            CreateLeaderboard( "Most Wins", stats => $"{stats.Wins} Wins", stats => stats.Wins );
+            CreateLeaderboard( "Most Kills", stats => $"{stats.Kills} Kills", stats => stats.Kills );
             CreateLeaderboard( "Longest Survived", stats => FormatTime( stats.Survived ), stats => stats.Survived );
 
             FinishCreating();
-
-            ConsoleSystem.Run( "br_request_data" );
         }
 
         private void CreateLeaderboard( string title, FormatStat formatStat, GetSortValue getSortValue )

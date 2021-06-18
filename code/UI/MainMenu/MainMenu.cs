@@ -13,6 +13,8 @@ namespace BattleRoyale.UI
         private string ActivePage = "";
         private Label PageTitle;
         private Label PageDescription;
+        private bool IsOpen = false;
+        private bool RanOpenFunc = false;
 
 		public MainMenu()
 		{
@@ -76,12 +78,27 @@ namespace BattleRoyale.UI
             ActivePage = key;
         }
 
+        private void OnOpen()
+        {
+            ConsoleSystem.Run( "br_request_data" );
+        }
+
 		public override void Tick()
 		{
 			base.Tick();
 
-			SetClass( "open", Input.Down( InputButton.Menu ) );
-		}
+            IsOpen = Input.Down( InputButton.Menu );
+            SetClass( "open", IsOpen );
+
+            if( IsOpen && !RanOpenFunc )
+            {
+                OnOpen();
+                RanOpenFunc = true;
+            } else if ( !IsOpen && RanOpenFunc )
+            {
+                RanOpenFunc = false;
+            }
+        }
 
         public struct Page
         {
