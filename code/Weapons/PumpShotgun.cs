@@ -60,9 +60,8 @@ partial class PumpShotgun : BaseBRWeapon
 		if ( IsLocalPawn )
 		{
 			new Sandbox.ScreenShake.Perlin(1.0f, 1.5f, 2.0f);
-		}
-
-        Event.Run( "battleroyale.weaponfired" );
+            Event.Run( "battleroyale.weaponfired" );
+        }
     }
 
 	public override void OnReloadFinish()

@@ -14,7 +14,7 @@ public partial class FloorUsable : Prop
 	{
 		base.Spawn();
 
-		if ( !IsServer ) return;
+        if ( !IsServer ) return;
 
 		int newIndex = -1;
 		for ( int i = 0; i < IndexEnts.Count; i++ )

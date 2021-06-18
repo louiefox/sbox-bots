@@ -70,6 +70,8 @@ partial class BRPlayer : Player
     {
         base.OnKilled();
 
+        (Game.Current as BRGame).CheckGameEnd( -1 );
+
         BecomeRagdollOnClient( LastDamage.Force, GetHitboxBone( LastDamage.HitboxIndex ) );
 
         Controller = null;

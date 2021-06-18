@@ -182,7 +182,6 @@ public partial class LootPickup : FloorUsable
 	{
 		if ( ClientModel == null || !ClientModel.IsValid() ) return;
 
-		
 		if( ClientBobIncreasing )
 		{
 			ClientZBob += .1f;

@@ -59,10 +59,10 @@ partial class SMG : BaseBRWeapon
 		if ( Owner == Local.Pawn )
 		{
 			new Sandbox.ScreenShake.Perlin(0.5f, 4.0f, 1.0f, 0.5f);
-		}
+            Event.Run( "battleroyale.weaponfired" );
+        }
 
 		ViewModelEntity?.SetAnimBool( "fire", true );
-        Event.Run( "battleroyale.weaponfired" );
     }
 
 	public override void SimulateAnimator( PawnAnimator anim )

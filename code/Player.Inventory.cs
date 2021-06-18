@@ -55,6 +55,8 @@ partial class BRPlayer
     [ClientRpc]
     public void CLTakeInventoryItemAmount(int slot, int amount)
     {
+        if ( !ItemInventory.Slots.ContainsKey( slot ) ) return;
+
         BRInventoryItem itemData = ItemInventory.Slots[slot];
         itemData.Amount = amount;
         ItemInventory.Slots[slot] = itemData;

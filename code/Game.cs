@@ -46,19 +46,24 @@ public partial class BRGame : Game
         }
         else if ( CurrentState == GameState.Active )
         {
-            int alivePlayers = 0;
-            foreach( var kv in PlayerInfo.Players )
-            {
-                if ( kv.Value.State != PlayerGameState.Alive ) continue;
-                alivePlayers++;
-            }    
-
-            if ( Client.All.Count <= 1 || alivePlayers <= 1 ) EndGame();
+            CheckGameEnd( 0 );
         }        
         else if ( CurrentState == GameState.Ended )
         {
             if ( EndedTime > EndDuration ) StartWaiting();
         }
+    }
+
+    public void CheckGameEnd( int takeAmount )
+    {
+        int alivePlayers = takeAmount;
+        foreach ( var kv in PlayerInfo.Players )
+        {
+            if ( kv.Value.State != PlayerGameState.Alive ) continue;
+            alivePlayers++;
+        }
+
+        if ( Client.All.Count <= 1 || alivePlayers <= 1 ) EndGame();
     }
 
     public void StartWaiting()

@@ -150,7 +150,7 @@ partial class BaseBRWeapon : BaseWeapon
 
 		Particles.Create( "particles/pistol_muzzleflash.vpcf", EffectEntity, "muzzle" );
 
-        Event.Run( "battleroyale.weaponfired" );
+        if( IsLocalPawn ) Event.Run( "battleroyale.weaponfired" );
 	}
 
 	/// <summary>
