@@ -61,7 +61,7 @@ namespace BattleRoyale.UI.MainMenuPages
                 playerText.Add.Label( stats.Name, "playername" );
                 playerText.Add.Label( kv.Key.ToString(), "playerid" );
 
-                entry.Add.Label( $"{stats.Kills} Kills", "playerstattxt" );
+                entry.Add.Label( $"{stats.Wins} Kills", "playerstattxt" );
                 entry.Add.Label( $"{stats.Wins} Wins", "playerstattxt" );
                 entry.Add.Label( FormatTime( stats.Survived ), "playerstattxt" ).AddClass( "survived" );
             }

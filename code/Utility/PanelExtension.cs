@@ -30,12 +30,12 @@ namespace Sandbox.UI
 		{
 			var screenpos = pos.ToScreen();
 
-			if ( screenpos.Z < 0 )
+			if ( screenpos.z < 0 )
 				return;
 
-			Log.Info( Length.Fraction( screenpos.X ).ToString() );
-			panel.Style.Left = Length.Fraction( screenpos.X );
-			panel.Style.Top = Length.Fraction( screenpos.Y );
+			Log.Info( Length.Fraction( screenpos.x ).ToString() );
+			panel.Style.Left = Length.Fraction( screenpos.x );
+			panel.Style.Top = Length.Fraction( screenpos.y );
 			panel.Style.Dirty();
 		}
 	}

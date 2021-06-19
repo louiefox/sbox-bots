@@ -25,7 +25,7 @@ public partial class BRGame
                 ZoneModel.SetModel( "models/bots/death_zone/cylinder.vmdl_c" );
             }
 
-            ZoneModel.Position = new Vector3( ZoneCenterPos.X, ZoneCenterPos.Y, 300 );
+            ZoneModel.Position = new Vector3( ZoneCenterPos.x, ZoneCenterPos.y, 300 );
             ZoneModel.Scale = (DeathZoneDistance() * 2) / 100f;
             ZoneModel.RenderColor = Color32.Red;
             ZoneModel.RenderAlpha = .5f;

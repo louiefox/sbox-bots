@@ -171,7 +171,7 @@ partial class BaseBRWeapon : BaseWeapon
 		pos = center;
 
 		float distance = 130.0f * Owner.Scale;
-		targetPos = pos + Input.Rotation.Right * (((Owner as Player).CollisionBounds.Maxs.X + 1) * Owner.Scale);
+		targetPos = pos + Input.Rotation.Right * (((Owner as Player).CollisionBounds.Maxs.x + 1) * Owner.Scale);
 		targetPos += Input.Rotation.Forward * -distance;
 
 		pos = Trace.Ray( pos, targetPos )
@@ -181,7 +181,7 @@ partial class BaseBRWeapon : BaseWeapon
 
 		var forward = Input.Rotation.Forward;
 		forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * spread * 0.25f;
-		forward = forward.Normalized;
+		forward = forward.Normal;
 
 		var camTrace = Trace.Ray( pos, pos + forward * 5000 )
 			.UseHitboxes()

@@ -36,7 +36,7 @@ namespace BattleRoyale
 
             Vector3 targetPos;
             float distance = 130.0f * CurrentTarget.Scale;
-            targetPos = CurrentTarget.Position + Vector3.Up * 64 + targetRot.Right * ((CurrentTarget.CollisionBounds.Maxs.X + 1) * CurrentTarget.Scale);
+            targetPos = CurrentTarget.Position + Vector3.Up * 64 + targetRot.Right * ((CurrentTarget.CollisionBounds.Maxs.x + 1) * CurrentTarget.Scale);
             targetPos += targetRot.Forward * -distance;
             
             Pos = targetPos;

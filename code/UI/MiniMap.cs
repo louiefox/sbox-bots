@@ -101,8 +101,8 @@ public class MiniMap : Panel
             marker.Style.Dirty();
             marker.Style.Width = markerInfo.Width;
             marker.Style.Height = markerInfo.Height;
-            marker.Style.Left = ContentSize / 2 - markerInfo.Width / 2 + ((pos.X - playerPos.X) * PixelsPerUnit);            
-            marker.Style.Top = ContentSize / 2 - markerInfo.Height / 2 + -((pos.Y - playerPos.Y) * PixelsPerUnit);
+            marker.Style.Left = ContentSize / 2 - markerInfo.Width / 2 + ((pos.x - playerPos.x) * PixelsPerUnit);            
+            marker.Style.Top = ContentSize / 2 - markerInfo.Height / 2 + -((pos.y - playerPos.y) * PixelsPerUnit);
         }
     }
 
