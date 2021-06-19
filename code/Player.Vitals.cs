@@ -53,8 +53,8 @@ partial class BRPlayer
         Vector2 pos1 = Position;
         Vector2 pos2 = game.ZoneCenterPos;
 
-        float a = pos1.x - pos2.x;
-        float b = pos1.y - pos2.y;
+        float a = pos1.X - pos2.X;
+        float b = pos1.Y - pos2.Y;
         double distance = Math.Sqrt( (a * a) + (b * b) );
 
         return distance >= game.DeathZoneDistance();

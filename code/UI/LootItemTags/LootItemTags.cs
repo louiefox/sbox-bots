@@ -110,8 +110,8 @@ namespace Sandbox.UI
             var screenPos = labelPos.ToScreen();
 
             Tag.Style.Opacity = 1;
-            Tag.Style.Left = Length.Fraction( screenPos.x );
-            Tag.Style.Top = Length.Fraction( screenPos.y );
+            Tag.Style.Left = Length.Fraction( screenPos.X );
+            Tag.Style.Top = Length.Fraction( screenPos.Y );
 
             var transform = new PanelTransform();
             transform.AddTranslateY( Length.Fraction( -1.0f ) );
