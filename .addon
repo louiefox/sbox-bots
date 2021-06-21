@@ -1,6 +1,7 @@
 {
     "name": "bots",
     "sharedassets": "*.*",
+	"ident": "blackrock.bots",
     
     "depends": 
     [

@@ -128,37 +128,45 @@ partial class BRPlayer : Player
 
         // hack - hitbox 0 is head
         // we should be able to get this from somewhere
-        if ( info.HitboxIndex == 0 )
+        if ( info.HitboxIndex == GetBoneIndex( "head" ) )
         {
-            info.Damage *= 2.0f;
+            info.Damage *= 1.25f;
         }
 
+        float oldArmour = Armour;
         if ( Armour > 0 )
         {
-            float oldArmour = Armour;
             Armour = Math.Max( Armour - info.Damage, 0 );
 
             info.Damage -= oldArmour - Armour;
+        }
+
+        // DEV TESTING
+        if( info.Damage >= Health )
+        {
+            Respawn();
+            return;
         }
 
         base.TakeDamage( info );
 
         if ( info.Attacker is BRPlayer attacker && attacker != this )
         {
-            // Note - sending this only to the attacker!
-            attacker.DidDamage( To.Single( attacker ), info.Position, info.Damage, Health.LerpInverse( 100, 0 ) );
+            attacker.DidDamage( To.Single( attacker ), info.Position, info.Damage, Armour, oldArmour > 0 && Armour <= 0 );
 
             TookDamage( To.Single( this ), info.Weapon.IsValid() ? info.Weapon.Position : info.Attacker.Position );
         }
     }
 
     [ClientRpc]
-    public void DidDamage( Vector3 pos, float amount, float healthinv )
+    public void DidDamage( Vector3 pos, float amount, float armourLeft, bool brokeArmour )
     {
-        Sound.FromScreen( "dm.ui_attacker" )
-            .SetPitch( 1 + healthinv * 1 );
+        if ( brokeArmour ) Sound.FromScreen( "armour_break" );
 
-        HitIndicator.Current?.OnHit( pos, amount );
+        if ( armourLeft > 0 ) Sound.FromScreen( "armour_hit" );
+        else Sound.FromScreen( "dm.ui_attacker" );
+
+        HitIndicator.Current?.OnHit( pos, amount, armourLeft, brokeArmour );
     }
 
     [ClientRpc]

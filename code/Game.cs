@@ -20,7 +20,10 @@ public partial class BRGame : Game
     {
         if ( IsClient ) BattleRoyaleHUD = new BattleRoyaleHUD();
 
-        if ( IsServer ) PlayerData.LoadData();
+        if ( IsServer )
+        {
+            PlayerData.LoadData();
+        }
     }
 
     [Event.Hotload]
@@ -34,6 +37,7 @@ public partial class BRGame : Game
     [Event( "server.tick" )]
     public void GameTick()
     {
+        return;
         if ( CurrentState == GameState.Waiting )
         {
             if ( Client.All.Count > 1 ) StartStarting();
@@ -56,6 +60,8 @@ public partial class BRGame : Game
 
     public void CheckGameEnd( int takeAmount )
     {
+        if ( CurrentState != GameState.Ended ) return;
+
         int alivePlayers = takeAmount;
         foreach ( var kv in PlayerInfo.Players )
         {
@@ -97,13 +103,13 @@ public partial class BRGame : Game
         StartingTime = 0;
         CurrentState = GameState.Starting;
 
-        SendStartStarting( To.Everyone  );
+        SendStartStarting( To.Everyone, StartingTime );
     }
 
     [ClientRpc]
-    public void SendStartStarting()
+    public void SendStartStarting( TimeSince startTime )
     {
-        StartingTime = 0;
+        StartingTime = startTime;
         CurrentState = GameState.Starting;
     }
 
@@ -136,9 +142,9 @@ public partial class BRGame : Game
     }
 
     [ClientRpc]
-    public void SendStartGame()
+    public void SendStartGame( int zoneTicks = 0 )
     {
-        ZoneTicks = 0;
+        ZoneTicks = zoneTicks;
         CurrentState = GameState.Active;
     }
 
@@ -147,7 +153,7 @@ public partial class BRGame : Game
         EndedTime = 0;
         CurrentState = GameState.Ended;
 
-        SendEndGame( To.Everyone );
+        SendEndGame( To.Everyone, 0 );
 
         if ( IsServer )
         {
@@ -168,9 +174,9 @@ public partial class BRGame : Game
     }
 
     [ClientRpc]
-    public void SendEndGame()
+    public void SendEndGame( TimeSince endTime )
     {
-        EndedTime = 0;
+        EndedTime = endTime;
         CurrentState = GameState.Ended;
     }
 
@@ -181,8 +187,32 @@ public partial class BRGame : Game
         PlayerInfo.AddPlayer( client );
         PlayerInfo.UpdateGameState( client, PlayerGameState.Spectating );
 
-        if( CurrentState == GameState.Waiting || CurrentState == GameState.Starting ) 
+        SendGameState( To.Single( client ), CurrentState );
+
+        if ( CurrentState == GameState.Waiting || CurrentState == GameState.Starting ) 
             DelayedClients.Add( client, 0 );
+    }
+
+    [ClientRpc]
+    private void SendGameState( GameState currentState )
+    {
+        CurrentState = currentState;
+
+        switch( currentState )
+        {
+            case GameState.Waiting:
+                SendStartWaiting();
+                break;         
+            case GameState.Starting:
+                SendStartStarting( StartingTime );
+                break;            
+            case GameState.Active:
+                SendStartGame( ZoneTicks );
+                break;          
+            case GameState.Ended:
+                SendEndGame( EndedTime );
+                break;
+        }
     }
 
     [Event( "server.tick" )]
@@ -200,9 +230,15 @@ public partial class BRGame : Game
                 continue;
             }
 
-            var player = new BRPlayer();
-            client.Pawn = player;
-            player.Respawn();
+            if ( CurrentState == GameState.Waiting || CurrentState == GameState.Starting )
+            {
+                var player = new BRPlayer();
+                client.Pawn = player;
+                player.Respawn();
+            } else
+            {
+                client.Camera = new BRSpectateCamera();
+            }
 
             toDelete.Add( client );
         }

@@ -5,7 +5,8 @@
 	display: flex;
 	flex-direction: column;
 	width: 300px;
-
+	pixel-snap: 0;
+		
 	.armourrow {
 		height: 12px;
 		display: flex;
