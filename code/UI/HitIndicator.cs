@@ -39,7 +39,7 @@ public partial class HitIndicator : Panel
 
 		async Task Lifetime()
 		{
-			await Task.Delay( 200 );
+			await Task.Delay( 300 );
 			Delete();
 		}
 	}

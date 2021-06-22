@@ -44,6 +44,6 @@ partial class Pistol : BaseBRWeapon
 		//
 		// Shoot the bullets
 		//
-		ShootBullet( 0.0f, 1.5f, 20.0f, 3.0f );
+		ShootBullet( 0.02f, 1.5f, 20.0f, 3.0f );
 	}
 }

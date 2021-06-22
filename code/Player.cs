@@ -107,6 +107,7 @@ partial class BRPlayer : Player
         if ( LastAttacker is BRPlayer attacker )
         {
             PlayerInfo.UpdateKills( attacker, 1 );
+            attacker.OnPlayerEliminated( this );
         }
 
         if( PlayerInfo.GetPlayerInfo( this ).State == PlayerGameState.Alive )
@@ -115,9 +116,19 @@ partial class BRPlayer : Player
             PlayerInfo.UpdateGameState( this, PlayerGameState.Dead );
             if( IsServer ) Delete();
         }
+
+        // DEV TESTING
+        //_ = StartRespawn();
     }
 
-    DamageInfo LastDamage;
+    // DEV TESTING
+    /*private async System.Threading.Tasks.Task StartRespawn()
+    {
+        await Task.Delay( 1000 );
+        Respawn();
+    }*/
+
+    private DamageInfo LastDamage;
 
     public override void TakeDamage( DamageInfo info )
     {
@@ -139,13 +150,6 @@ partial class BRPlayer : Player
             Armour = Math.Max( Armour - info.Damage, 0 );
 
             info.Damage -= oldArmour - Armour;
-        }
-
-        // DEV TESTING
-        if( info.Damage >= Health )
-        {
-            Respawn();
-            return;
         }
 
         base.TakeDamage( info );
