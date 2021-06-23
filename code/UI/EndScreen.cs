@@ -24,7 +24,7 @@ public class EndScreen : Panel
         TimeBar = timeBar.Add.Panel( "timebar" );
 
         Panel winnerPanel = topPanel.Add.Panel( "winnerback" );
-        winnerPanel.Add.Panel( "winnerbackground" );
+		winnerPanel.Add.Panel( "winnerbackground" );
 
         Panel winnerContent = winnerPanel.Add.Panel( "winnercontent" );
         winnerContent.Add.Label( "THE WINNER IS", "winnertitle" );

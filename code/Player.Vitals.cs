@@ -111,10 +111,5 @@ partial class BRPlayer
             Armour = Math.Clamp( Armour + 50, 0, MaxArmour );
             ArmourInserting = false;
         }
-
-        if( Input.Pressed( InputButton.Slot3 ) )
-        {
-            Armour = Math.Clamp( Armour - 50, 0, MaxArmour );
-        }
     }
 }
