@@ -109,6 +109,8 @@ partial class BaseBRWeapon : BaseWeapon
 
 	public override void AttackPrimary()
 	{
+        if ( Owner is BRPlayer player ) player.CancelArmourInsert();
+
         TimeSincePrimaryAttack = 0;
 		TimeSinceSecondaryAttack = 0;
 

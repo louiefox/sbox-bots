@@ -41,7 +41,7 @@ partial class BRPlayer
     {
         ItemInventory.Slots[slot] = new BRInventoryItem(itemID, amount);
 
-        Event.Run("battleroyale.updateinv");
+        Event.Run( "battleroyale.updateinv" );
     }
 
     [ClientRpc]

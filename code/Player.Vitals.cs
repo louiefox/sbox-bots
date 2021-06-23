@@ -16,7 +16,7 @@ partial class BRPlayer
 	public float RegenStartDelay = 3.0f;
 
 	[Net, Local]
-	public bool RegenActive { get; set; } = false;
+	public bool RegenActive { get; set; }
 
 	[Net, Local]
 	public float RegenStartTime { get; set; }
@@ -24,13 +24,17 @@ partial class BRPlayer
 	[Net, Local]
 	public float RegenTime { get; set; }
 
-    private TimeSince LastZoneDamage = 0;
+    private TimeSince LastZoneDamage;
+
+    public float ArmourInsertDuration = 1.5f;
+    public bool ArmourInserting;
+    public TimeSince ArmourInsertTime;
 
     private void ResetRegen()
 	{
 		if( RegenActive )
 		{
-			if(Time.Now >= RegenStartTime+RegenStartDelay)
+			if( Time.Now >= RegenStartTime+RegenStartDelay )
 			{
 				float regenProgress = (Time.Now - RegenStartTime - RegenStartDelay) / RegenTime;
 				Health = Math.Clamp( Health + ((100f - Health) * regenProgress), 0, 100f );
@@ -60,7 +64,7 @@ partial class BRPlayer
         return distance >= game.DeathZoneDistance();
     }
 
-	[Event.Tick]
+	[Event( "server.tick" )]
 	private void VitalsUpdate()
 	{
 		if( RegenActive )
@@ -83,4 +87,34 @@ partial class BRPlayer
             LastZoneDamage = 0;
         }
 	}
+
+    public void CancelArmourInsert()
+    {
+        ArmourInserting = false;
+    }
+
+    private void CheckArmourInsert()
+    {
+        if ( Input.Down( InputButton.Slot4 ) && !ArmourInserting && Armour < MaxArmour && GetInvItemCount( "armour_plate" ) > 0 )
+        {
+            ArmourInserting = true;
+            ArmourInsertTime = 0;
+        } else if( !Input.Down( InputButton.Slot4 ) && ArmourInserting )
+        {
+            CancelArmourInsert();
+        }
+
+        if( ArmourInserting && ArmourInsertTime >= ArmourInsertDuration )
+        {
+            if ( IsServer ) using ( Prediction.Off() ) TakeInvItems( "armour_plate", 1 );
+
+            Armour = Math.Clamp( Armour + 50, 0, MaxArmour );
+            ArmourInserting = false;
+        }
+
+        if( Input.Pressed( InputButton.Slot3 ) )
+        {
+            Armour = Math.Clamp( Armour - 50, 0, MaxArmour );
+        }
+    }
 }

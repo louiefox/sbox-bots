@@ -1,0 +1,100 @@
+﻿@import 'ui/colourconfig.scss';
+
+armourplates {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: unset;
+
+	.armour {
+		position: absolute;
+		left: 450px;
+		bottom: 90px;
+		width: 50px;
+		height: 50px;
+		background-image: url( /ui/hud/armour_break.png );
+		background-image-tint: #EEEEEE;
+		background-size: cover;
+		background-repeat: no-repeat;
+	}
+
+	.armourcount {
+		position: absolute;
+		right: 4px;
+		top: 8px;
+		transform: translateX(50%) translateY(-50%);
+		font-family: Roboto;
+		font-weight: bold;
+		text-shadow: 0 0 10px black;
+		font-size: 22px;
+		color: $theme-accent;
+	}
+
+	.armourhint {
+		position: absolute;
+		left: 50%;
+		bottom: 2px;
+		transform: translateX(-50%) translateY(50%);
+		box-shadow: 0 0 5px black;
+		padding: 0 6px;
+		border: 1px solid $theme-background;
+		border-radius: 5px;
+		background-color: $theme-text;
+		font-family: Roboto;
+		font-weight: bold;
+		text-shadow: 0 0 10px black;
+		font-size: 13px;
+		color: $theme-foreground;
+		text-align: center;
+	}
+
+	.armourinsert {
+		position: absolute;
+		left: 50%;
+		bottom: 100px;
+		transform: translateX(-50%) scale( 1.25 );
+		background-color: #232931;
+		font-family: Roboto;
+		font-weight: 500;
+		text-shadow: 0 0 3px black;
+		border-radius: 10px;
+		box-shadow: 0 0 8px black;
+		padding: 5px 20px;
+		transition: all 0.1s ease-out;
+		opacity: 0;
+		flex-direction: column;
+
+		&.active {
+			opacity: 1;
+			transform: translateX(-50%) scale(1);
+		}
+
+		.timerrow {
+			width: 100%;
+			height: 5px;
+			margin: 5px 0;
+			display: flex;
+		}
+
+		.timerbarslot {
+			height: 100%;
+			flex-grow: 1;
+			background-color: #393e46;
+			box-shadow: 0 0 4px #393e46;
+		}
+
+		.timerbar {
+			opacity: 0;
+			width: 100%;
+			height: 100%;
+			background-color: #4ecca3;
+			box-shadow: 0 0 4px #4ecca3;
+		}
+
+		.startingtitle {
+			text-align: center;
+			font-size: 15px;
+			color: #4ecca3;
+		}
+	}
+}

@@ -44,7 +44,11 @@ public class Vitals : Panel
                 armourBar.Style.BorderTopLeftRadius = 12;
             }
 
-            ArmourBars.Add( armourBar.Add.Panel( "armour" ) );
+            Panel armour = armourBar.Add.Panel( "armour" );
+            armour.Style.BorderTopLeftRadius = i == 0 ? 12 : 0;
+            armour.Style.BorderTopRightRadius = i == (barCount - 1) ? 12 : 0;
+
+            ArmourBars.Add( armour );
         }
     }
 
@@ -62,10 +66,15 @@ public class Vitals : Panel
         int currentCount = 0;
         foreach ( Panel panel in ArmourBars )
         {
-            panel.Style.Dirty();
-            panel.Style.Width = Length.Percent( Math.Clamp( (player.Armour - (currentCount * 50f)) / 50f * 100f, 0f, 100f ) );
-            panel.Style.BorderTopLeftRadius = currentCount == 0 ? 12 : 0;
-            panel.Style.BorderTopRightRadius = currentCount == (ArmourBars.Count - 1) ? 12 : 0;
+            float percent = Math.Clamp( (player.Armour - (currentCount * 50f)) / 50f * 100f, 0f, 100f );
+
+            panel.SetClass( "active", percent > 0 );
+
+            if( percent > 0 )
+            {
+                panel.Style.Dirty();
+                panel.Style.Width = Length.Percent( percent );
+            }
 
             currentCount++;
         }

@@ -50,8 +50,7 @@ partial class BRPlayer : Player
     {
         base.Simulate( cl );
 
-        if ( LifeState != LifeState.Alive )
-            return;
+        if ( LifeState != LifeState.Alive ) return;
 
         if ( Input.MouseWheel != 0 || Input.Pressed( InputButton.Slot1 ) || Input.Pressed( InputButton.Slot2 ) )
         {
@@ -62,6 +61,8 @@ partial class BRPlayer : Player
         {
             RequestLootPickup();
         }
+
+        CheckArmourInsert();
 
         SimulateActiveChild( cl, ActiveChild );
     }
@@ -118,15 +119,15 @@ partial class BRPlayer : Player
         }
 
         // DEV TESTING
-        //_ = StartRespawn();
+        _ = StartRespawn();
     }
 
     // DEV TESTING
-    /*private async System.Threading.Tasks.Task StartRespawn()
+    private async System.Threading.Tasks.Task StartRespawn()
     {
         await Task.Delay( 1000 );
         Respawn();
-    }*/
+    }
 
     private DamageInfo LastDamage;
 
@@ -135,6 +136,8 @@ partial class BRPlayer : Player
         if( BRGame.CurrentState == GameState.Starting || BRGame.CurrentState == GameState.Ended ) return;
 
         ResetRegen();
+        CancelArmourInsert();
+
         LastDamage = info;
 
         // hack - hitbox 0 is head

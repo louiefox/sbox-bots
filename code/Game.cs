@@ -37,7 +37,7 @@ public partial class BRGame : Game
     [Event( "server.tick" )]
     public void GameTick()
     {
-        //return;
+        return;
         if ( CurrentState == GameState.Waiting )
         {
             if ( Client.All.Count > 1 ) StartStarting();

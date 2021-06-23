@@ -21,7 +21,9 @@ partial class PumpShotgun : BaseBRWeapon
 
 	public override void AttackPrimary() 
 	{
-		TimeSincePrimaryAttack = 0;
+        if ( Owner is BRPlayer player ) player.CancelArmourInsert();
+
+        TimeSincePrimaryAttack = 0;
 		TimeSinceSecondaryAttack = 0;
 
 		if ( !TakeAmmo( 1 ) )

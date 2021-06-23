@@ -6,7 +6,7 @@
 	flex-direction: column;
 	width: 300px;
 	pixel-snap: 0;
-		
+
 	.armourrow {
 		height: 12px;
 		display: flex;
@@ -27,6 +27,16 @@
 		height: 100%;
 		min-width: 1px;
 		background-color: #2a51de;
+		display: none;
+		transition: all 0.2s all;
+		opacity: 0;
+		box-shadow: 0 0 5px #2a51de;
+
+		&.active {
+			display: normal;
+			opacity: 1;
+			box-shadow: 0 0 0 none;
+		}
 	}
 
 	.healthbar {

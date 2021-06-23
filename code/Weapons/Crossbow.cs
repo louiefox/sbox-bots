@@ -21,7 +21,9 @@ partial class Crossbow : BaseBRWeapon
 
 	public override void AttackPrimary()
 	{
-		if ( !TakeAmmo( 1 ) )
+        if ( Owner is BRPlayer player ) player.CancelArmourInsert();
+        
+        if ( !TakeAmmo( 1 ) )
 		{
 			DryFire();
 			return;

@@ -18,6 +18,8 @@ partial class BRPlayer
 
         if ( (player as BRPlayer).LastDamage.HitboxIndex == player.GetBoneIndex( "head" ) ) tags.Add( EliminationTag.Types.Headshot );
 
+        if ( Position.Distance( player.Position ) >= 1000f ) tags.Add( EliminationTag.Types.Longshot );
+
         if( (RecentElimCount > 0 && LastElimination > 5f) || RecentElimCount >= 4 )
         {
             RecentElimCount = 0;
@@ -57,6 +59,7 @@ public class EliminationTag
         { Types.DoubleKill, new( "Double Kill" ) },
         { Types.TripleKill, new( "Triple Kill" ) },
         { Types.QuadKill, new( "Quad Feed" ) },
+        { Types.Longshot, new( "Longshot" ) },
     };
 
     public string Title;
@@ -72,5 +75,6 @@ public class EliminationTag
         DoubleKill,
         TripleKill,
         QuadKill,
+        Longshot
     }
 }

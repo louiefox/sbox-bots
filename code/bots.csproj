@@ -45,8 +45,8 @@
     <None Update="UI\EndScreen.scss">
       <DependentUpon>EndScreen.cs</DependentUpon>
     </None>
-    <None Update="UI\GameStatus - Copy.scss">
-      <DependentUpon>%(Filename).cs</DependentUpon>
+    <None Update="UI\ArmourPlates.scss">
+      <DependentUpon>ArmourPlates.cs</DependentUpon>
     </None>
     <None Update="UI\ElimIndicator.scss">
       <DependentUpon>ElimIndicator.cs</DependentUpon>
