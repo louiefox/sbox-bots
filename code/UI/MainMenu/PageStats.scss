@@ -9,9 +9,44 @@ pagestats {
         flex-direction: column;
     }
 
+    textentry {
+        width: 100%;
+        background-color: $theme-background;
+        box-shadow: 0 0 10px black;
+        border-radius: 8px;
+        align-items: center;
+        padding: 10px;
+        cursor: text;
+        color: $theme-text;
+        font-size: 13px;
+        font-weight: normal;
+        text-shadow: 0 0 5px black;
+        transition: all 0.2s all;
+        border: 2px solid $theme-foreground;
+
+        .placeholder {
+            opacity: 0.2;
+            position: absolute;
+            pointer-events: none;
+            padding: 10px;
+
+            &.hidden {
+                display: none;
+            }
+        }
+
+        &:focus {
+            border: 2px solid $theme-accent;
+
+            .placeholder {
+                display: none;
+            }
+        }
+    }
+
     .headerbar {
         width: 100%;
-        margin-top: 5px;
+        margin-top: 15px;
         background-color: $theme-foreground;
         box-shadow: 0 0 5px black;
         border-radius: 8px;
@@ -37,7 +72,8 @@ pagestats {
 
     .playerlist {
         width: 100%;
-        flex-direction: column;
+        height: 100%;
+        overflow: scroll;
     }
 
     .playerentry {

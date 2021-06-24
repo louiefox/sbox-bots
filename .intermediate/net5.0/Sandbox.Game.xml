@@ -89,6 +89,13 @@
             Instead send the name hash and look up using that.
             </summary>
         </member>
+        <member name="M:Sandbox.Surface.FindByName(System.String)">
+            <summary>
+            Returns a Surface from its name, or null
+            </summary>
+            <param name="name">The name of a surface property to look up</param>
+            <returns>The surface with given name, or null if such surface property doesn't exist</returns>
+        </member>
         <member name="T:Sandbox.Library">
             <summary>
             Allows the registration/creation of classes by name, in a generic way.
@@ -103,6 +110,11 @@
         <member name="M:Sandbox.Library.ProcessType(System.Type,System.Reflection.Assembly)">
             <summary>
             Process this type, add it to the library if it has the right tags
+            </summary>
+        </member>
+        <member name="M:Sandbox.Library.EntrolType(System.Type,System.Reflection.Assembly,Sandbox.LibraryAttribute)">
+            <summary>
+            Should this class be automatically added to the class library, even if it isn't tagged with an attribute
             </summary>
         </member>
         <member name="M:Sandbox.Library.ShouldAutomaticallyEntrolType(System.Type)">
@@ -147,7 +159,12 @@
         </member>
         <member name="M:Sandbox.Library.GetAllAttributes``1">
             <summary>
-            Get all class library attributes that are derived from type
+            Get all library attributes that are attached to type
+            </summary>
+        </member>
+        <member name="M:Sandbox.Library.GetAttributes``1">
+            <summary>
+            Get custom attributes that are derived from type
             </summary>
         </member>
         <member name="M:Sandbox.Library.Get``1(System.String)">
@@ -319,6 +336,11 @@
             The current game has shut down
             </summary>
         </member>
+        <member name="M:Sandbox.ContextInterface.InitGamemodeData(System.String)">
+            <summary>
+            Create the data folders and the basefilesystem's for the gamemode folder
+            </summary>
+        </member>
         <member name="M:Sandbox.MenuInterface.InitAsync">
             <summary>
             Wait for compile to finish and then load the menu
@@ -347,6 +369,16 @@
         <member name="M:Sandbox.ServerInterface.ServerLoadLoop">
             <summary>
             Server is loading, return true to finish loading
+            </summary>
+        </member>
+        <member name="M:Sandbox.Decals.Place(Sandbox.Material,Sandbox.Entity,System.Int32,Vector3,Vector3,Rotation)">
+            <summary>
+            Place a decal on an entity
+            </summary>
+        </member>
+        <member name="M:Sandbox.Decals.Place(Sandbox.Material,Vector3,Vector3,Rotation)">
+            <summary>
+            Place a decal on the world
             </summary>
         </member>
         <member name="M:Sandbox.Particles.SetEntity(System.Int32,Sandbox.Entity,System.Boolean)">
@@ -382,6 +414,11 @@
         <member name="M:Sandbox.EntityManager.CreateServerEntity(System.String)">
             <summary>
             The engine wants to create this entity by name.
+            </summary>
+        </member>
+        <member name="P:Sandbox.AnimEntity.RootMotion">
+            <summary>
+            Experimental root motion velocity for anim graphs that use root motion
             </summary>
         </member>
         <member name="M:Sandbox.AnimEntity.SetAnimLookAt(System.String,Vector3)">
@@ -448,6 +485,56 @@
             Returns true if this entity is the world
             </summary>
         </member>
+        <member name="P:Sandbox.Entity.LocalPosition">
+            <summary>
+            The entity's position relative to its parent (or the world if no parent)
+            </summary>
+        </member>
+        <member name="P:Sandbox.Entity.Position">
+            <summary>
+            The entity's position relative to its parent (or the world if no parent)
+            </summary>
+        </member>
+        <member name="P:Sandbox.Entity.Rotation">
+            <summary>
+            The entity's world rotation
+            </summary>
+        </member>
+        <member name="P:Sandbox.Entity.WorldAng">
+            <summary>
+            The entity's angle
+            </summary>
+        </member>
+        <member name="P:Sandbox.Entity.LocalRotation">
+            <summary>
+            The entity's local rotation
+            </summary>
+        </member>
+        <member name="P:Sandbox.Entity.LocalScale">
+            <summary>
+            The entity's local scale
+            </summary>
+        </member>
+        <member name="P:Sandbox.Entity.Scale">
+            <summary>
+            The scale of the entity. 1 is normal.
+            </summary>
+        </member>
+        <member name="P:Sandbox.Entity.Velocity">
+            <summary>
+            The velocity in world coords.
+            </summary>
+        </member>
+        <member name="P:Sandbox.Entity.AngularVelocity">
+            <summary>
+            The angular velocity in local coords
+            </summary>
+        </member>
+        <member name="P:Sandbox.Entity.LocalVelocity">
+            <summary>
+            Velocity in local coords
+            </summary>
+        </member>
         <member name="P:Sandbox.Entity.BaseVelocity">
             <summary>
             Generally describes the velocity of this object that is caused by its parent moving.
@@ -458,6 +545,16 @@
             <summary>
             Generally describes the velocity of this object that is caused by its parent moving.
             Examples would be conveyor belts and elevators.
+            </summary>
+        </member>
+        <member name="P:Sandbox.Entity.EngineEntityName">
+            <summary>
+            The internal class name of this entity. For debug purposes only.
+            </summary>
+        </member>
+        <member name="M:Sandbox.Entity.OnHotloaded">
+            <summary>
+            Called when we hotload
             </summary>
         </member>
         <member name="M:Sandbox.Entity.GetEntityIntPtr">
@@ -610,6 +707,13 @@
             Try to fire this output
             </summary>
         </member>
+        <member name="M:Sandbox.Entity.Output.#ctor(Sandbox.Entity,System.String)">
+            <summary>
+            You shouldn't really ever be initializing this manually, 
+            codegen will take care of that by generating a CreateHammerOutputs method for
+            each entity filled with constructors for these.
+            </summary>
+        </member>
         <member name="P:Sandbox.Entity.Root">
             <summary>
             Gets the top most parent entity. If we don't have a parent, it might be us.
@@ -649,7 +753,7 @@
         </member>
         <member name="P:Sandbox.Entity.NetworkIdent">
             <summary>
-            Returns the entity's network id
+            Returns the entity's network id. Client only entities have a network id too!
             </summary>
         </member>
         <member name="P:Sandbox.Entity.PhysicsGroup">
@@ -708,6 +812,63 @@
         <member name="M:Sandbox.Entity.PlayerSetupVisibility(System.Int32,System.IntPtr)">
             <summary>
             Called by the server to determine what the player should see
+            </summary>
+        </member>
+        <member name="P:Sandbox.Entity.Tags">
+            <summary>
+            Accessor to add, remove and check entity tags
+            </summary>
+        </member>
+        <member name="F:Sandbox.Entity.networkTags">
+            <summary>
+            Tags that exist on the server and are networked down to the client
+            </summary>
+        </member>
+        <member name="M:Sandbox.Entity.UpdateTagsFromNetwork">
+            <summary>
+            This is called on the client after a network update to keey the networkTags list up to date
+            </summary>
+        </member>
+        <member name="M:Sandbox.Entity.OnTagAdded(System.String)">
+            <summary>
+            Called when a tag was added to this entity. On the client this will get called
+            when an entity is created or enters PVS.
+            </summary>
+        </member>
+        <member name="M:Sandbox.Entity.OnTagRemoved(System.String)">
+            <summary>
+            Called when a tag was removed from this entity.
+            </summary>
+        </member>
+        <member name="T:Sandbox.Internal.EntityTags">
+            <summary>
+            Entity Tags are strings you can set and check for on any entity. Internally
+            these strings are tokenized and networked so they're also available clientside.
+            </summary>
+        </member>
+        <member name="M:Sandbox.Internal.EntityTags.Has(System.String)">
+            <summary>
+            Returns true if we have this tag
+            </summary>
+        </member>
+        <member name="M:Sandbox.Internal.EntityTags.Set(System.String,System.Boolean)">
+            <summary>
+            Set the tag on this entity
+            </summary>
+        </member>
+        <member name="M:Sandbox.Internal.EntityTags.Add(System.String)">
+            <summary>
+            Try to add the tag to this entity. 
+            </summary>
+        </member>
+        <member name="M:Sandbox.Internal.EntityTags.Add(System.String[])">
+            <summary>
+            Adds multiple tags. Calls Add for each tag.
+            </summary>
+        </member>
+        <member name="M:Sandbox.Internal.EntityTags.Remove(System.String)">
+            <summary>
+            Try to remove the tag from this entity
             </summary>
         </member>
         <member name="M:Sandbox.Internal.SpawnFlagAccessor.Has``1(``0)">
@@ -874,12 +1035,6 @@
             Which interaction layers do I represent?
             </summary>
         </member>
-        <member name="P:Sandbox.ModelEntity.ViewOffset">
-            <summary>
-            The position of this entity's eye relative to its origin.
-            This is a local vector - not world
-            </summary>
-        </member>
         <member name="M:Sandbox.ModelEntity.InternalOnNewModel">
             <summary>
             Called from engine when a new model is set
@@ -930,6 +1085,12 @@
         <member name="P:Sandbox.ModelEntity.GlowDistanceEnd">
             <summary>
             The maximum distance that this object will glow.
+            </summary>
+        </member>
+        <member name="P:Sandbox.ModelEntity.MaterialGroupCount">
+            <summary>
+            Set material group to replace materials of the model
+            Uses index for material group
             </summary>
         </member>
         <member name="M:Sandbox.ModelEntity.SetMaterialGroup(System.Int32)">
@@ -986,6 +1147,11 @@
         <member name="M:Sandbox.ModelEntity.GetHitboxBone(System.Int32)">
             <summary>
             Return which bone is this hitbox attached to
+            </summary>
+        </member>
+        <member name="M:Sandbox.ModelEntity.GetHitboxGroup(System.Int32)">
+            <summary>
+            Return group id for this hitbox
             </summary>
         </member>
         <member name="F:Sandbox.GlowStates.GlowStateOff">
@@ -1097,49 +1263,59 @@
             Remove all entries that aren't value
             </summary>
         </member>
-        <member name="P:Sandbox.UserInput.Forward">
+        <member name="M:Sandbox.Input.GetKeyWithBinding(System.String)">
+            <summary>
+            Returns the name of a key that is bound to this value
+            </summary>
+        </member>
+        <member name="P:Sandbox.Input.Forward">
             <summary>
             A float in range of -1 to 0 to 1 that represents how much the user wants to move forwards (1) or backwards (-1)
             </summary>
         </member>
-        <member name="P:Sandbox.UserInput.Left">
+        <member name="P:Sandbox.Input.Left">
             <summary>
             A float in range of -1 to 0 to 1 that represents how much the user wants to move left (1) or right (-1)
             </summary>
         </member>
-        <member name="P:Sandbox.UserInput.Up">
+        <member name="P:Sandbox.Input.Up">
             <summary>
             A float in range of -1 to 0 to 1 that represents how much the user wants to move up (1) or down (-1)
             </summary>
         </member>
-        <member name="P:Sandbox.UserInput.Position">
+        <member name="P:Sandbox.Input.Position">
             <summary>
             The location of the camera on the client when this command was issued
             </summary>
         </member>
-        <member name="M:Sandbox.UserInput.Down(Sandbox.InputButton)">
+        <member name="M:Sandbox.Input.Down(Sandbox.InputButton)">
             <summary>
             Button is pressed down
             </summary>
         </member>
-        <member name="M:Sandbox.UserInput.Pressed(Sandbox.InputButton)">
+        <member name="M:Sandbox.Input.Pressed(Sandbox.InputButton)">
             <summary>
             Button wasn't pressed but now is it
             </summary>
         </member>
-        <member name="M:Sandbox.UserInput.Released(Sandbox.InputButton)">
+        <member name="M:Sandbox.Input.Released(Sandbox.InputButton)">
             <summary>
             Button was pressed but now it isn't
             </summary>
         </member>
-        <member name="M:Sandbox.UserInput.UpdateFrom(Sandbox.Client,NativeEngine.CUserCmd)">
+        <member name="M:Sandbox.Input.UpdateFrom(Sandbox.Client,NativeEngine.CUserCmd)">
             <summary>
             Called every tick
             </summary>
         </member>
-        <member name="M:Sandbox.UserInput.UpdateFrom(Sandbox.Client,NativeEngine.InputData)">
+        <member name="M:Sandbox.Input.UpdateFrom(Sandbox.Client,NativeEngine.InputData)">
             <summary>
             Called each frame, in between ticks
+            </summary>
+        </member>
+        <member name="M:Sandbox.Input.Clear">
+            <summary>
+            Todo clear the lot
             </summary>
         </member>
         <member name="M:Sandbox.RenderEntity.UpdateSceneObject(Sandbox.SceneObject)">
@@ -1262,6 +1438,11 @@
             The hitbox index
             </summary>
         </member>
+        <member name="P:Sandbox.DamageInfo.BoneIndex">
+            <summary>
+            The bone index that the hitbox was attached to
+            </summary>
+        </member>
         <member name="M:Sandbox.DamageInfo.FromBullet(Vector3,Vector3,System.Single)">
             <summary>
             Creates a new DamageInfo with the DamageFlag Bullet
@@ -1300,6 +1481,21 @@
         <member name="M:Sandbox.DamageInfo.WithHitbox(System.Int32)">
             <summary>
             Sets the hitbox index
+            </summary>
+        </member>
+        <member name="M:Sandbox.DamageInfo.WithBone(System.Int32)">
+            <summary>
+            Sets the hitbox index
+            </summary>
+        </member>
+        <member name="M:Sandbox.DamageInfo.WithPosition(Vector3)">
+            <summary>
+            Sets the position
+            </summary>
+        </member>
+        <member name="M:Sandbox.DamageInfo.WithForce(Vector3)">
+            <summary>
+            Sets the force
             </summary>
         </member>
         <member name="M:Sandbox.DamageInfo.UsingTraceResult(Sandbox.TraceResult)">
@@ -1671,6 +1867,32 @@
             Player info has changed
             </summary>
         </member>
+        <member name="M:Sandbox.StringPool.OnStringAddedOrChanged(System.Int32)">
+            <summary>
+            String table changed
+            </summary>
+        </member>
+        <member name="M:Sandbox.StringTables.Init">
+            <summary>
+            On server this gets called once
+            On client this can get called multiple times
+            </summary>
+        </member>
+        <member name="P:Sandbox.StringTable.Name">
+            <summary>
+            The name of this string table
+            </summary>
+        </member>
+        <member name="M:Sandbox.StringTable.Count">
+            <summary>
+            Returns the number of strings in this table
+            </summary>
+        </member>
+        <member name="F:Sandbox.StringTable.OnStringAddedOrChanged">
+            <summary>
+            Called clientside when a string is added or changed
+            </summary>
+        </member>
         <member name="F:Sandbox.CollisionGroup.Always">
             <summary>
             This will *ALWAYS* collide
@@ -1849,30 +2071,41 @@
             Allow Touch callbacks to be called
             </summary>
         </member>
-        <member name="M:Sandbox.IndexBufferHandle.Lock(Sandbox.IndexBufferHandle.LockHandler)">
+        <member name="M:Sandbox.PhysicsBody.Wake">
             <summary>
-            Lock all the memory in this buffer so you can write to it
+            Wake up this physics body. Physics bodies automatically go to sleep after a certain amount of time of inactivity to save on performance.
             </summary>
         </member>
-        <member name="M:Sandbox.IndexBufferHandle.Lock(System.Int32,Sandbox.IndexBufferHandle.LockHandler)">
+        <member name="M:Sandbox.PhysicsBody.Sleep">
             <summary>
-            Lock a specific amount of the memory in this buffer so you can write to it
+            Put this physics body to sleep. Physics bodies automatically go to sleep after a certain amount of time of inactivity to save on performance.
             </summary>
         </member>
-        <member name="M:Sandbox.IndexBufferHandle.LockRegion(System.Int32,System.Int32,Sandbox.IndexBufferHandle.LockHandler)">
+        <member name="M:Sandbox.PhysicsBody.IsSleeping">
             <summary>
-            Lock a region of memory in this buffer so you can write to it
+            Returns the current sleep state of this physics body. Physics bodies automatically go to sleep after a certain amount of time of inactivity to save on performance.
             </summary>
         </member>
-        <member name="M:Sandbox.IndexBufferHandle.SetData(System.Span{System.UInt32},System.Int32)">
+        <member name="T:Sandbox.PhysicsGroup">
             <summary>
-            Set data of this buffer
+            Represets a set of PhysicsBody objects
             </summary>
         </member>
-        <member name="M:Sandbox.IndexBufferHandle.Delete">
+        <member name="M:Sandbox.PhysicsGroup.Wake">
             <summary>
-            Free the buffer
+            Wake all physics bodies of this physics group. Physics bodies automatically go to sleep after a certain amount of time of inactivity to save on performance.
             </summary>
+        </member>
+        <member name="M:Sandbox.PhysicsGroup.Sleep">
+            <summary>
+            Put all physics bodies of this physics group to sleep. Physics bodies automatically go to sleep after a certain amount of time of inactivity to save on performance.
+            </summary>
+        </member>
+        <member name="M:Sandbox.PhysicsGroup.SetSurface(System.String)">
+            <summary>
+            Sets the physical properties of all physics bodies of this group.
+            </summary>
+            <param name="name"></param>
         </member>
         <member name="M:Sandbox.Material.CreateCopy">
             <summary>
@@ -1899,9 +2132,130 @@
             Set how many indices this mesh draws
             </summary>
         </member>
+        <member name="M:Sandbox.Mesh.DeleteBuffers">
+            <summary>
+            This is TEMP, we need a way to clean up meshes/models
+            </summary>
+        </member>
+        <member name="M:Sandbox.Mesh.CreateIndexBuffer(System.Int32,System.Span{System.Int32})">
+            <summary>
+            Create a index buffer with a number of indices
+            </summary>
+        </member>
+        <member name="M:Sandbox.Mesh.SetIndexBufferData(System.Span{System.Int32},System.Int32)">
+            <summary>
+            Set data of this buffer
+            </summary>
+        </member>
+        <member name="M:Sandbox.Mesh.LockIndexBuffer(Sandbox.Mesh.IndexBufferLockHandler)">
+            <summary>
+            Lock all the memory in this buffer so you can write to it
+            </summary>
+        </member>
+        <member name="M:Sandbox.Mesh.LockIndexBuffer(System.Int32,Sandbox.Mesh.IndexBufferLockHandler)">
+            <summary>
+            Lock a specific amount of the memory in this buffer so you can write to it
+            </summary>
+        </member>
+        <member name="M:Sandbox.Mesh.LockIndexBuffer(System.Int32,System.Int32,Sandbox.Mesh.IndexBufferLockHandler)">
+            <summary>
+            Lock a region of memory in this buffer so you can write to it
+            </summary>
+        </member>
         <member name="M:Sandbox.Mesh.Get(NativeEngine.CRenderMesh)">
             <summary>
             Try to make it so only one Mesh class exists for each model
+            </summary>
+        </member>
+        <member name="M:Sandbox.Mesh.CreateVertexBuffer``1(System.Int32,Sandbox.VertexAttribute[],System.Span{``0})">
+            <summary>
+            Create a vertex buffer with a number of vertices, an array of vertex attributes can be passed in
+            Otherwise it will try to guess the vertex layout
+            </summary>
+        </member>
+        <member name="M:Sandbox.Mesh.SetVertexBufferData``1(System.Span{``0},System.Int32)">
+            <summary>
+            Set data of this buffer
+            </summary>
+        </member>
+        <member name="M:Sandbox.Mesh.LockVertexBuffer``1(Sandbox.Mesh.VertexBufferLockHandler{``0})">
+            <summary>
+            Lock all the memory in this buffer so you can write to it
+            </summary>
+        </member>
+        <member name="M:Sandbox.Mesh.LockVertexBuffer``1(System.Int32,Sandbox.Mesh.VertexBufferLockHandler{``0})">
+            <summary>
+            Lock a specific amount of the memory in this buffer so you can write to it
+            </summary>
+        </member>
+        <member name="M:Sandbox.Mesh.LockVertexBuffer``1(System.Int32,System.Int32,Sandbox.Mesh.VertexBufferLockHandler{``0})">
+            <summary>
+            Lock a region of memory in this buffer so you can write to it
+            </summary>
+        </member>
+        <member name="M:Sandbox.ModelBuilder.WithMass(System.Single)">
+            <summary>
+            Total mass of the physics body (Default is 1000)
+            </summary>
+        </member>
+        <member name="M:Sandbox.ModelBuilder.WithSurface(System.String)">
+            <summary>
+            Surface property to use for collision
+            </summary>
+        </member>
+        <member name="M:Sandbox.ModelBuilder.WithLodDistance(System.Single)">
+            <summary>
+            LOD switch distance increment for each LOD level (Default is 50)
+            </summary>
+        </member>
+        <member name="M:Sandbox.ModelBuilder.AddCollisionBox(Vector3,System.Nullable{Vector3},System.Nullable{Rotation})">
+            <summary>
+            Add box collision shape
+            </summary>
+        </member>
+        <member name="M:Sandbox.ModelBuilder.AddCollisionSphere(System.Single,Vector3)">
+            <summary>
+            Add sphere collision shape
+            </summary>
+        </member>
+        <member name="M:Sandbox.ModelBuilder.AddCollisionCapsule(Vector3,Vector3,System.Single)">
+            <summary>
+            Add capsule collision shape
+            </summary>
+        </member>
+        <member name="M:Sandbox.ModelBuilder.AddCollisionHull(Vector3[],System.Nullable{Vector3},System.Nullable{Rotation})">
+            <summary>
+            Add a CONVEX hull collision shape
+            </summary>
+        </member>
+        <member name="M:Sandbox.ModelBuilder.AddCollisionMesh(Vector3[],System.Int32[])">
+            <summary>
+            Add a CONCAVE mesh collision shape (This shape can NOT be physically simulated)
+            </summary>
+        </member>
+        <member name="M:Sandbox.ModelBuilder.AddMesh(Sandbox.Mesh)">
+            <summary>
+            Add a mesh
+            </summary>
+        </member>
+        <member name="M:Sandbox.ModelBuilder.AddMeshes(Sandbox.Mesh[])">
+            <summary>
+            Add a bunch of meshes
+            </summary>
+        </member>
+        <member name="M:Sandbox.ModelBuilder.AddMesh(Sandbox.Mesh,System.Int32)">
+            <summary>
+            Add a mesh to a LOD group
+            </summary>
+        </member>
+        <member name="M:Sandbox.ModelBuilder.AddMeshes(Sandbox.Mesh[],System.Int32)">
+            <summary>
+            Add a bunch of meshes to a LOD group
+            </summary>
+        </member>
+        <member name="M:Sandbox.ModelBuilder.Create">
+            <summary>
+            Finish creation of model
             </summary>
         </member>
         <member name="M:Sandbox.Model.Get(NativeEngine.CModel)">
@@ -1978,67 +2332,10 @@
             Draw this mesh using Material
             </summary>
         </member>
-        <member name="M:Sandbox.VertexBuffer.CreateModel(System.String,Sandbox.Material,System.Boolean)">
-            <summary>
-            Create a new model using this vertex buffer
-            </summary>
-        </member>
-        <member name="M:Sandbox.VertexBufferHandle`1.#ctor(System.Int32,Sandbox.VertexAttribute[])">
-            <summary>
-            Create a vertex buffer with a number of elements, an array of vertex attributes can be passed in
-            Otherwise it will try to guess the vertex layout
-            </summary>
-        </member>
-        <member name="M:Sandbox.VertexBufferHandle`1.Lock(Sandbox.VertexBufferHandle{`0}.LockHandler)">
-            <summary>
-            Lock all the memory in this buffer so you can write to it
-            </summary>
-        </member>
-        <member name="M:Sandbox.VertexBufferHandle`1.Lock(System.Int32,Sandbox.VertexBufferHandle{`0}.LockHandler)">
-            <summary>
-            Lock a specific amount of the memory in this buffer so you can write to it
-            </summary>
-        </member>
-        <member name="M:Sandbox.VertexBufferHandle`1.LockRegion(System.Int32,System.Int32,Sandbox.VertexBufferHandle{`0}.LockHandler)">
-            <summary>
-            Lock a region of memory in this buffer so you can write to it
-            </summary>
-        </member>
-        <member name="M:Sandbox.VertexBufferHandle`1.SetData(System.Span{`0},System.Int32)">
-            <summary>
-            Set data of this buffer
-            </summary>
-        </member>
-        <member name="M:Sandbox.VertexBufferHandle`1.Delete">
-            <summary>
-            Free the buffer
-            </summary>
-        </member>
         <member name="P:Sandbox.SceneObject.SceneObjectFlagAccessor.ExcludeGameLayer">
             <summary>
             Don't render in the opaque/translucent game passes. This is useful when you
             want to only render in the Bloom layer, rather than additionally to it.
-            </summary>
-        </member>
-        <member name="M:Sandbox.StringTables.Init">
-            <summary>
-            On server this gets called once
-            On client this can get called multiple times
-            </summary>
-        </member>
-        <member name="P:Sandbox.StringTable.Name">
-            <summary>
-            The name of this string table
-            </summary>
-        </member>
-        <member name="M:Sandbox.StringTable.Count">
-            <summary>
-            Returns the number of strings in this table
-            </summary>
-        </member>
-        <member name="F:Sandbox.StringTable.OnStringAddedOrChanged">
-            <summary>
-            Called clientside when a string is added or changed
             </summary>
         </member>
         <member name="P:Sandbox.Time.Now">
@@ -2064,6 +2361,27 @@
         <member name="M:Sandbox.Trace.HitLayer(Sandbox.CollisionLayer,System.Boolean)">
             <summary>
             Adds CollisionLayer.Water to the mask
+            </summary>
+        </member>
+        <member name="M:Sandbox.Trace.WithTag(System.String)">
+            <summary>
+            Only return entities with this tag. Subsequent calls to this will add multiple requirements
+            and they'll all have to be met (ie, the entity will need all tags).
+            </summary>
+        </member>
+        <member name="M:Sandbox.Trace.WithAllTags(System.String[])">
+            <summary>
+            Only return entities with all of these tags
+            </summary>
+        </member>
+        <member name="M:Sandbox.Trace.WithAnyTags(System.String[])">
+            <summary>
+            Only return entities with any of these tags
+            </summary>
+        </member>
+        <member name="M:Sandbox.Trace.WithoutTags(System.String)">
+            <summary>
+            Only return entities with none of these tags
             </summary>
         </member>
         <member name="F:Sandbox.TraceResult.Hit">
@@ -2123,7 +2441,7 @@
         </member>
         <member name="F:Sandbox.TraceResult.Bone">
             <summary>
-            The id of the hit physicsbody on the hit entity (for PhysicsGroup.GetBody)
+            The id of the hit bone (either from hitbox or physics shape)
             </summary>
         </member>
         <member name="F:Sandbox.TraceResult.Direction">
@@ -2176,7 +2494,7 @@
         </member>
         <member name="M:Sandbox.UI.SkiaTextBlock.SizeFinalized(System.Single,System.Single)">
             <summary>
-            Called on layout. We should decice here if we actually need to rebuild
+            Called on layout. We should decide here if we actually need to rebuild
             </summary>
         </member>
         <member name="M:Sandbox.UI.SkiaTextBlock.RebuildTexture(System.Single,System.Single)">
@@ -2225,6 +2543,21 @@
             Clear focus away from this panel.
             </summary>
         </member>
+        <member name="F:Sandbox.UI.PanelStyle.activeRules">
+            <summary>
+            This could be a local variable if we wanted to create a new class every time
+            </summary>
+        </member>
+        <member name="F:Sandbox.UI.PanelStyle.LastActiveRules">
+            <summary>
+            Store the last active rules so we can compare them when they change and trigger sounds etc on new styles
+            </summary>
+        </member>
+        <member name="F:Sandbox.UI.PanelStyle.ActiveRulesGuid">
+            <summary>
+            Cache of the active rules that are applied, that way we can trigger stuff only if they actually changed
+            </summary>
+        </member>
         <member name="M:Sandbox.UI.Panel.RemoveChild(Sandbox.UI.Panel)">
             <summary>
             Called internally when a child is removed, to remove from our Children list
@@ -2236,6 +2569,11 @@
             </summary>
         </member>
         <member name="M:Sandbox.UI.Panel.AddChild(Sandbox.UI.Panel)">
+            <summary>
+            Add a child to this panel
+            </summary>
+        </member>
+        <member name="M:Sandbox.UI.Panel.InternalAddChild(Sandbox.UI.Panel)">
             <summary>
             Called internally when a child is added, to add to our Children list
             </summary>
@@ -2280,7 +2618,7 @@
             Dirty the styles of this class and its children recursively.
             </summary>
         </member>
-        <member name="M:Sandbox.UI.Panel.Switch(Sandbox.UI.PseudoClass,System.Boolean,System.Boolean)">
+        <member name="M:Sandbox.UI.Panel.Switch(Sandbox.UI.PseudoClass,System.Boolean)">
             <summary>
             Switch a pseudo class on or off
             </summary>
@@ -2288,6 +2626,11 @@
         <member name="P:Sandbox.UI.Panel.IsVisible">
             <summary>
             Return true if this panel isn't hidden by opacity
+            </summary>
+        </member>
+        <member name="M:Sandbox.UI.Panel.OnParentChanged">
+            <summary>
+            Called after the parent has changed
             </summary>
         </member>
         <member name="M:Sandbox.UI.Panel.UpdateDataBind(System.Boolean)">
@@ -2317,7 +2660,7 @@
             Called on delete
             </summary>
         </member>
-        <member name="P:Sandbox.UI.Panel.MousePos">
+        <member name="P:Sandbox.UI.Panel.MousePosition">
             <summary>
             Current mouse position local to this panel
             </summary>
@@ -2347,6 +2690,16 @@
             (We might end up having to snap text etc to pixels to stop it being blurry but that's in our control)
             </summary>
         </member>
+        <member name="P:Sandbox.UI.Panel.LocalMatrix">
+            <summary>
+            If this panel has transforms, they'll be reflected here
+            </summary>
+        </member>
+        <member name="P:Sandbox.UI.Panel.GlobalMatrix">
+            <summary>
+            If this panel or its parents have transforms, they'll be compounded here.
+            </summary>
+        </member>
         <member name="M:Sandbox.UI.Panel.FinalLayout">
             <summary>
             Takes a LayoutCascade and returns an outer rect
@@ -2372,6 +2725,12 @@
             Called by the templating system when an element has content between its tags.
             </summary>
         </member>
+        <member name="M:Sandbox.UI.Panel.SetTemplate(System.String)">
+            <summary>
+            Set the panel's template. Ideally you won't be using this, you'll be 
+            using the [UseTemplate] attribute instead.
+            </summary>
+        </member>
         <member name="P:Sandbox.UI.Panel.ComputedStyle">
             <summary>
             This is the style that we computed last. If you're looking to see which
@@ -2382,6 +2741,16 @@
             <summary>
             Allows you to set styles specifically on this panel. Setting the style will
             only affect this panel and no others and will override any other styles.
+            </summary>
+        </member>
+        <member name="M:Sandbox.UI.Panel.PreTemplateApplied">
+            <summary>
+            Called right before the template is applied.
+            </summary>
+        </member>
+        <member name="M:Sandbox.UI.Panel.PostTemplateApplied">
+            <summary>
+            Called right after the template is applied
             </summary>
         </member>
         <member name="P:Sandbox.UI.Panel.Transitions">
@@ -2490,39 +2859,55 @@
             A ~B
             </summary>
         </member>
+        <member name="M:Sandbox.UI.StyleSheet.InitStyleSheets">
+            <summary>
+            Between sessions we clear the stylesheets, so one gamemode can't accidentally
+            use cached values from another.
+            </summary>
+        </member>
+        <member name="M:Sandbox.UI.StyleSheet.Release">
+            <summary>
+            Releases the filesystem watcher so we won't get file changed events.
+            </summary>
+        </member>
         <member name="M:Sandbox.UI.StyleSheetCollection.Add(Sandbox.UI.StyleSheet)">
             <summary>
             Add a stylesheet directly
             </summary>
         </member>
-        <member name="M:Sandbox.UI.StyleSheetCollection.Load(System.String)">
+        <member name="M:Sandbox.UI.StyleSheetCollection.Load(System.String,System.Boolean)">
             <summary>
             Load the stylesheet from a file
             </summary>
         </member>
-        <member name="M:Sandbox.UI.StyleSheetCollection.Parse(System.String)">
+        <member name="M:Sandbox.UI.StyleSheetCollection.Parse(System.String,System.Boolean)">
             <summary>
             Load the stylesheet from a string
             </summary>
         </member>
-        <member name="M:Sandbox.UI.PanelEvent.Parse(System.String,System.String,System.Collections.Generic.List{Sandbox.UI.PanelEvent})">
+        <member name="M:Sandbox.UI.PanelAction.Parse(System.String,System.String,System.Collections.Generic.List{Sandbox.UI.PanelAction})">
             <summary>
-            Parse the code line into multiple PanelEvents
+            Parse the code line into multiple PanelActions
             </summary>
         </member>
-        <member name="T:Sandbox.UI.PanelEvent.Argument">
+        <member name="T:Sandbox.UI.PanelAction.Argument">
             <summary>
             This is a mechanism to pass in possibly dynamic arguments
             </summary>
         </member>
-        <member name="T:Sandbox.UI.PanelEvent.StringLiteralArgument">
+        <member name="T:Sandbox.UI.PanelAction.StringLiteralArgument">
             <summary>
             A string literal means that the argument is just a static string, passed in 'liek this
             </summary>
         </member>
-        <member name="T:Sandbox.UI.PanelEvent.RuntimeArgument">
+        <member name="T:Sandbox.UI.PanelAction.RuntimeArgument">
             <summary>
             A string literal means that the argument is just a static string, passed in 'liek this
+            </summary>
+        </member>
+        <member name="T:Sandbox.UI.UseTemplateAttribute">
+            <summary>
+            If no name is passed, we will look next to the name of the file with this attribute
             </summary>
         </member>
         <member name="M:Sandbox.UI.Template.Apply(Sandbox.UI.Panel)">
@@ -2636,6 +3021,11 @@
             Run an event
             </summary>
         </member>
+        <member name="M:Sandbox.Event.Run``2(System.String,``0,``1)">
+            <summary>
+            Run an event
+            </summary>
+        </member>
         <member name="T:Sandbox.LoopEvent">
             <summary>
             This class will call any static methods with an attribute on, in THIS dll (sandbox.game.dll).
@@ -2680,6 +3070,12 @@
         </member>
         <member name="F:NativeEngine.ESceneObjectTypeFlags.UNIQUE_BATCH_GROUP">
             A unique batch flag that allows objects to draw in a separate batch from their original group
+        </member>
+        <member name="F:NativeEngine.TraceRequest.ResolveEntities">
+            <summary>
+            If true, we use a slightly slower path in the trace code that checks each entity.
+            This is needed for testing things like Tags, so gets set auomatically if needed.
+            </summary>
         </member>
         <member name="M:Managed.SourceClient.Exports.Sandboclient_Physcs_OnObjectCreated(System.IntPtr,System.Int32)">
             <summary>

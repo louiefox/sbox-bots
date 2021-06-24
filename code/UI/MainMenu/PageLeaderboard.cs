@@ -13,7 +13,6 @@ namespace BattleRoyale.UI.MainMenuPages
         private Panel LeaderboardsBack;
         private List<LeaderboardPanel> Leaderboards = new();
         private LeaderboardPanel TargetLeaderboard;
-        private float TargetLeft = 0f;
 
         public PageLeaderboard()
         {

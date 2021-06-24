@@ -11,6 +11,11 @@
             name - which should offers a degree of debuggability and uniqueness.
             </summary>
         </member>
+        <member name="P:Sandbox.InputAttribute.Help">
+            <summary>
+            Automatically provided using the comment for the method this is attached to.
+            </summary>
+        </member>
         <member name="P:Sandbox.LibraryAttribute.Name">
             <summary>
             This is the name that will be used to create this class.
@@ -74,6 +79,48 @@
             Return true if this class matches this name, eiuther with its primary name or any of its alt named.
             </summary>
         </member>
+        <member name="M:Sandbox.LibraryAttribute.Create``1">
+            <summary>
+            Tries to create a type T from this attribute
+            </summary>
+        </member>
+        <member name="P:Sandbox.PropertyAttribute.Name">
+            <summary>
+            The internal name of this property in Hammer FGD. If used the C# variable name is used
+            </summary>
+        </member>
+        <member name="P:Sandbox.PropertyAttribute.Title">
+            <summary>
+            The user friendly name of this property in the FGD. If unset, the internal Name will be used.
+            </summary>
+        </member>
+        <member name="P:Sandbox.PropertyAttribute.Help">
+            <summary>
+            The help text for the FGD for this property
+            </summary>
+        </member>
+        <member name="P:Sandbox.PropertyAttribute.FGDType">
+            <summary>
+            Overrides the property type in the Hammer FGD
+            </summary>
+        </member>
+        <member name="P:Sandbox.PropertyAttribute.Hammer">
+            <summary>
+            Whether this property should be written to Hammer FGD
+            </summary>
+        </member>
+        <member name="P:Sandbox.PropertyAttribute.OnPropertyRegistered">
+            <summary>
+            The engine needs access when a property is registered, because we need to register the
+            string with the StringToken system. This allows is to convert a string token to a string..
+            .. which is needed so that KeyValues from the engine work properly.
+            </summary>
+        </member>
+        <member name="P:Sandbox.SpawnflagsAttribute.Default">
+            <summary>
+            The default values for the spawnflags
+            </summary>
+        </member>
         <member name="T:Sandbox.NetAttribute">
             <summary>
             Mark a property as networked, so it is sent from the client to the server.
@@ -97,6 +144,11 @@
             we'll drop this attribute on that property.
             </summary>
         </member>
+        <member name="T:Sandbox.Internal.DescriptionAttribute">
+            <summary>
+            We want access to the comments. This gives us that.
+            </summary>
+        </member>
         <member name="P:Sandbox.ConVar.BaseAttribute.Name">
             <summary>
             If unset the name will be set to the name of the method/property
@@ -105,6 +157,20 @@
         <member name="P:Sandbox.ConVar.BaseAttribute.Help">
             <summary>
             Describes why this command exists
+            </summary>
+        </member>
+        <member name="T:Sandbox.ConVar.ClientDataAttribute">
+            <summary>
+            A property with this attribute will be made a ClientData ConVar. It will be
+            able to be changed by the client at any time and changes will be sent to the server.
+            The variables will be accessible on the server by name on the Client object.
+            </summary>
+        </member>
+        <member name="T:Sandbox.ConVar.ReplicatedAttribute">
+            <summary>
+            Properties with this attribute will be replicated from the server to each client. The
+            value can only be changed by the server or the server admin, but clients can read the
+            value at any time.
             </summary>
         </member>
         <member name="P:Sandbox.Utility.CommandLine.Full">
@@ -181,9 +247,20 @@
             Does what you expected to happen when you did "a % b"
             </summary>
         </member>
+        <member name="M:Sandbox.NumberExtensions.BitsSet(System.Int32)">
+            <summary>
+            Returns the number of bits set in an integer. This us usually used for flags to count
+            the amount of flags set.
+            </summary>
+        </member>
         <member name="M:Sandbox.ReflectionExtensions.HasAttribute(System.Reflection.MemberInfo,System.Type)">
             <summary>
             Returns true if this member has this attribute
+            </summary>
+        </member>
+        <member name="M:Sandbox.ReflectionExtensions.HasBaseType(System.Type,System.String)">
+            <summary>
+            Returns true if this type derives from a type named name
             </summary>
         </member>
         <member name="T:Sandbox.StringX">
@@ -217,6 +294,11 @@
         <member name="M:Sandbox.StringX.ToFloat(System.String,System.Single)">
             <summary>
             Convert to float, if not then return Default
+            </summary>
+        </member>
+        <member name="M:Sandbox.StringX.ToUInt(System.String,System.Int32)">
+            <summary>
+            Convert to uint, if not then return Default
             </summary>
         </member>
         <member name="M:Sandbox.StringX.ToInt(System.String,System.Int32)">
@@ -871,12 +953,6 @@
             TODO: Implement
             </summary>
         </member>
-        <member name="P:ConsoleVariableAttribute.Replicated">
-            <summary>
-            The server replicates this value to the client. 
-            When it updates on the server it updates on all clients.
-            </summary>
-        </member>
         <member name="F:ClientCmdAttribute.CanBeCalledFromServer">
             <summary>
             If true the server can run this command on the client any time it wants
@@ -935,6 +1011,16 @@
             <summary>
             Returns the corner point of one of the 8 corners.
             This may return null if i is > 7 or the frustum is invalid.
+            </summary>
+        </member>
+        <member name="M:Matrix.Transform(Vector3)">
+            <summary>
+            Transforms a vector by a 4x4 matrix
+            </summary>
+        </member>
+        <member name="M:Matrix.TransformNormal(Vector3)">
+            <summary>
+            Transforms a normal vector by a specified 4x4 matrix
             </summary>
         </member>
         <member name="M:Plane.Trace(Ray,System.Boolean,System.Double)">

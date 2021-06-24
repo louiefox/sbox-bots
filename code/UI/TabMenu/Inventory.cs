@@ -97,7 +97,7 @@ namespace BattleRoyale.UI
         public Label Name;
         public Label Amount;
 
-        private ModelDisplay Model;
+        //private ModelDisplay Model;
         private ItemRarity CurrentRarity;
 
         public InventorySlot()
@@ -128,7 +128,7 @@ namespace BattleRoyale.UI
 
         public void SetModel( string model )
         {
-            Model.UpdateModel( model );
+            //Model.UpdateModel( model );
         }
     }
 }

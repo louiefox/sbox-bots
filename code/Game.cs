@@ -37,7 +37,6 @@ public partial class BRGame : Game
     [Event( "server.tick" )]
     public void GameTick()
     {
-        return;
         if ( CurrentState == GameState.Waiting )
         {
             if ( Client.All.Count > 1 ) StartStarting();
@@ -60,7 +59,7 @@ public partial class BRGame : Game
 
     public void CheckGameEnd( int takeAmount )
     {
-        if ( CurrentState != GameState.Ended ) return;
+        if ( CurrentState != GameState.Active ) return;
 
         int alivePlayers = takeAmount;
         foreach ( var kv in PlayerInfo.Players )

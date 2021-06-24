@@ -119,15 +119,15 @@ partial class BRPlayer : Player
         }
 
         // DEV TESTING
-        _ = StartRespawn();
+        //_ = StartRespawn();
     }
 
     // DEV TESTING
-    private async System.Threading.Tasks.Task StartRespawn()
+    /*private async System.Threading.Tasks.Task StartRespawn()
     {
         await Task.Delay( 1000 );
         Respawn();
-    }
+    }*/
 
     private DamageInfo LastDamage;
 

@@ -36,21 +36,6 @@
             Force the assembly to be recompiled
             </summary>
         </member>
-        <member name="M:Sandbox.GameInfo.#ctor(Sandbox.Addon)">
-            <summary>
-            Initialize from an installer gamemode
-            </summary>
-        </member>
-        <member name="P:Sandbox.GameInfo.Url">
-            <summary>
-            Github url to download this addon.
-            </summary>
-        </member>
-        <member name="M:Sandbox.GameInfo.FindAsync(System.String)">
-            <summary>
-            Find the gamemode info. We might already have the information, in which case we'll return a cached version.
-            </summary>
-        </member>
         <member name="T:Sandbox.AddonProvision.BaseAddonProvider">
             <summary>
             Downloading and getting information about a specific addon.
@@ -267,6 +252,11 @@
         <member name="M:Sandbox.Package.Categories">
             <summary>
             Find package information
+            </summary>
+        </member>
+        <member name="M:Sandbox.Package.FindAsync(System.String)">
+            <summary>
+            Find the gamemode info. We might already have the information, in which case we'll return a cached version.
             </summary>
         </member>
         <member name="M:Sandbox.AccessControl.InitTouches(System.IO.Stream,System.IO.Stream)">
@@ -688,6 +678,11 @@
             Called for each file changed
             </summary>
         </member>
+        <member name="M:Sandbox.FgdWriter.AddFromMetaData(Hammer.MetaDataAttribute[],System.Text.StringBuilder)">
+            <summary>
+            Create the metadata section, if it has metadata properties
+            </summary>
+        </member>
         <member name="T:Sandbox.IMenuAddon">
             <summary>
             This is how the engine communicates with the menu system
@@ -726,6 +721,11 @@
         <member name="M:Sandbox.IMenuAddon.DevNotice(System.String,System.String,System.String,System.Int32,System.String,System.String)">
             <summary>
             Show a popup
+            </summary>
+        </member>
+        <member name="M:Sandbox.IMenuAddon.OnFriendPartyInvite(Steamworks.Friend,Steamworks.Data.Lobby)">
+            <summary>
+            Friend invited you to a party
             </summary>
         </member>
         <member name="P:Sandbox.Internal.SharedRendering.RenderRect">
@@ -895,6 +895,49 @@
             clear this, although it is a technical possibility for someone to call functions
             that take a StringToken with millions of random strings to make the Cache so full
             that calling FindOrCreate takes ages. So maybe we want to keep an eye on it.
+            </summary>
+        </member>
+        <member name="T:Hammer.ModelAttribute">
+            <summary>
+            This makes it so the model, skin and bodygroups can be set and changed in Hammer.
+            </summary>
+        </member>
+        <member name="P:Hammer.ModelAttribute.Model">
+            <summary>
+            The default model to be set to
+            </summary>
+        </member>
+        <member name="P:Hammer.ModelAttribute.BodyGroup">
+            <summary>
+            The default body group to be set to
+            </summary>
+        </member>
+        <member name="P:Hammer.ModelAttribute.MaterialGroup">
+            <summary>
+            The default material group to be set to
+            </summary>
+        </member>
+        <member name="T:Hammer.EditorModelAttribute">
+            <summary>
+            Declare a model to represent this
+            </summary>
+        </member>
+        <member name="T:Hammer.EditorSpriteAttribute">
+            <summary>
+            Declare a model to represent this
+            </summary>
+            <example>
+            [Hammer.EditorSprite( "editor/ai_goal_follow.vmat" )]
+            </example>
+        </member>
+        <member name="T:Hammer.SkipAttribute">
+            <summary>
+            Don't expose this to Hammer
+            </summary>
+        </member>
+        <member name="T:Hammer.SolidAttribute">
+            <summary>
+            This is a brush based class
             </summary>
         </member>
         <member name="M:Managed.SandboxEngine.Exports.SandboEngine_Btstrp_PreInit(System.IntPtr,System.Int32,System.Int32)">

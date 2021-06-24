@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Linq;
 using Sandbox;
 
 public partial class PlayerData
 {
     public static Dictionary<ulong, Stats> Data = new();
+    public static List<ulong> RequiredData = new();
     public static TimeSince LastLoadData = 0;
 
     public static float RequestCooldown = 60f;
@@ -37,7 +39,9 @@ public partial class PlayerData
         FileSystem.Data.WriteAllText( filePath, JsonSerializer.Serialize( stats ) );
     }
 
-    public static void LoadData()
+	public delegate int GetSortValue( PlayerData.Stats stats );
+
+	public static void LoadData()
     {
         if ( !FileSystem.Data.DirectoryExists( "stats" ) ) return;
 
@@ -49,9 +53,35 @@ public partial class PlayerData
 
             Data.Add( Convert.ToUInt64( steamID ), JsonSerializer.Deserialize<Stats>( data ) );
         }
-    }
 
-    [ServerCmd( "br_request_data" )]
+		RequiredData.Clear();
+
+		List<GetSortValue> sortValues = new() 
+		{
+			stats => stats.Wins,
+			stats => stats.Kills,
+			stats => stats.Survived
+		};
+
+		foreach( GetSortValue getSortValue in sortValues )
+		{
+			List<(ulong, int)> sortedStats = new();
+			foreach ( var kv in Data )
+			{
+				sortedStats.Add( (kv.Key, getSortValue(kv.Value)) );
+			}
+
+			sortedStats = sortedStats.OrderByDescending( o => o.Item2 ).ToList();
+
+			for ( int i = 0; i < Math.Min( 10, sortedStats.Count ); i++ )
+			{
+				if ( RequiredData.Contains( sortedStats[i].Item1 ) ) continue;
+				RequiredData.Add( sortedStats[i].Item1 );
+			}
+		}
+	}
+
+	[ServerCmd( "br_request_data" )]
     public static void RequestData()
     {
         Client client = ConsoleSystem.Caller;
@@ -72,8 +102,15 @@ public partial class PlayerData
             LastLoadData = 0;
         }
 
+		Dictionary<ulong, Stats> dataToSend = new();
+		
+		foreach( ulong steamID in RequiredData )
+		{
+			dataToSend.Add( steamID, Data[steamID] );
+		}
+
         // Will be replaced once dictionaries can be networked
-        SendPlayerData( To.Single( client ), JsonSerializer.Serialize( Data ) );
+        SendPlayerData( To.Single( client ), JsonSerializer.Serialize( dataToSend ) );
     }
 
     [ClientRpc]
