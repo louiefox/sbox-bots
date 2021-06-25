@@ -83,7 +83,12 @@ partial class BRPlayer
 
         if( BRGame.CurrentState == GameState.Active && LastZoneDamage >= 2f )
         {
-            if( InDeathZone() ) TakeDamage( DamageInfo.Generic( 5f ) );
+			if ( InDeathZone() ) 
+			{
+				TakeDamage( DamageInfo.Generic( 5f ) );
+				PlaySound( "gas_choking" );
+			}
+
             LastZoneDamage = 0;
         }
 	}

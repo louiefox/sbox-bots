@@ -29,6 +29,7 @@ public partial class BattleRoyaleHUD : HudEntity<RootPanel>
         PanelList.Add( RootPanel.AddChild<ElimIndicator>(), false );
 
         PanelList.Add( RootPanel.AddChild<ArmourPlates>(), false );
+        PanelList.Add( RootPanel.AddChild<ZoneWarnings>(), false );
 
         PanelList.Add( RootPanel.AddChild<ChatBox>(), true );
         PanelList.Add( RootPanel.AddChild<VoiceList>(), true );

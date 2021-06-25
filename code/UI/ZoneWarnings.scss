@@ -1,0 +1,52 @@
+﻿@import 'ui/colourconfig.scss';
+
+zonewarnings {
+	position: absolute;
+	left: 100px;
+	bottom: 150px;
+	transform: scale( 1.25 );
+	background-color: rgba( #e74c3c, 0.3 );
+	border-top: 3px solid #e74c3c;
+	border-bottom: 3px solid #e74c3c;
+	font-family: Roboto;
+	font-weight: 500;
+	text-shadow: 0 0 5px #e74c3c;
+	padding: 5px 10px;
+	transition: all 0.05s ease-out;
+	opacity: 0;
+	align-items: center;
+
+	&.active {
+		opacity: 1;
+		transform: scale(1);
+	}
+
+	&.jitterleft {
+		left: 98px;
+	}
+
+	&.jitterright {
+		left: 102px;
+	}
+
+	.warningicon {
+		font-size: 50px;
+		font-family: MaterialIcons;
+		color: #c0392b;
+	}
+
+	.textcontainer {
+		margin-left: 10px;
+		flex-direction: column;
+	}
+
+	.deathzone {
+		font-size: 25px;
+		color: #c0392b;
+	}
+
+	.hint {
+		font-size: 17px;
+		color: #c0392b;
+	}
+}

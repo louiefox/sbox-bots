@@ -20,7 +20,7 @@ public class ArmourPlates : Panel
         ArmourCount = armour.Add.Label( "0", "armourcount" );
 
         ArmourInsert = Add.Panel( "armourinsert" );
-        ArmourInsert.Add.Label( "INSERTING ARMOUR", "startingtitle" );
+        ArmourInsert.Add.Label( "INSERTING ARMOUR", "inserting" );
 
         Panel timerColumn = ArmourInsert.Add.Panel( "timerrow" );
         int barCount = 6;
