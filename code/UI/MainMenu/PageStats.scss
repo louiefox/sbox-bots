@@ -13,6 +13,7 @@ pagestats {
         width: 100%;
         background-color: $theme-background;
         box-shadow: 0 0 10px black;
+        border: 2px solid $theme-foreground;
         border-radius: 8px;
         align-items: center;
         padding: 10px;
@@ -22,7 +23,6 @@ pagestats {
         font-weight: normal;
         text-shadow: 0 0 5px black;
         transition: all 0.2s all;
-        border: 2px solid $theme-foreground;
 
         .placeholder {
             opacity: 0.2;
@@ -48,25 +48,43 @@ pagestats {
         width: 100%;
         margin-top: 15px;
         background-color: $theme-foreground;
-        box-shadow: 0 0 5px black;
+        box-shadow: 0 0 10px black;
+        padding: 2px;
         border-radius: 8px;
         align-items: center;
-        padding: 5px 0;
     }
 
     .header {
-        width: 20%;
+        flex-basis: 20%;
+        flex-grow: 1;
         font-size: 13px;
-        text-shadow: 0 0 5px black;
+        font-weight: normal;
+        text-shadow: 0 0 10px black;
         color: $theme-text;
         text-align: center;
+        padding: 5px 0;
+        margin: 3px 0;
+        margin-right: 1px;
+        cursor: pointer;
+        background-color: $theme-background;
+        transition: all 0.2s all;
 
         &.player {
-            width: 35%;
+            flex-basis: 35%;
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
         }
 
         &.survived {
-            width: 25%;
+            border-right: 0px solid $theme-foreground;
+            flex-basis: 25%;
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+            margin-right: 0px;
+        }
+
+        &:hover {
+            background-color: rgba( $theme-accent, 0.05 );
         }
     }
 
@@ -79,10 +97,17 @@ pagestats {
     .playerentry {
         width: 100%;
         margin-top: 5px;
-        background-color: $theme-foreground;
+        background-color: $theme-background;
         box-shadow: 0 0 5px black;
+        border: 2px solid $theme-foreground;
         border-radius: 8px;
         align-items: center;
+        cursor: pointer;
+        transition: all 0.1s all;
+
+        &:hover {
+            border: 2px solid $theme-accent;
+        }
     }
 
     .playerinfo {
@@ -118,7 +143,8 @@ pagestats {
 
     .playerstattxt {
         font-size: 13px;
-        text-shadow: 0 0 5px black;
+        font-weight: normal;
+        text-shadow: 0 0 10px black;
         color: $theme-text;
         width: 20%;
         text-align: center;

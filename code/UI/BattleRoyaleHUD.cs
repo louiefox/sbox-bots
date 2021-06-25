@@ -1,6 +1,7 @@
 ﻿
 using Sandbox;
 using Sandbox.UI;
+using Sandbox.UI.Construct;
 using BattleRoyale;
 using BattleRoyale.UI;
 using System.Collections.Generic;
@@ -15,7 +16,9 @@ public partial class BattleRoyaleHUD : HudEntity<RootPanel>
 	{
 		if ( !IsClient ) return;
 
-        PanelList.Add( RootPanel.AddChild<GameStatus>(), true );
+		RootPanel.Add.Panel( "testcontainer" ).Add.Label( "TEST", "testlabel" );
+
+		PanelList.Add( RootPanel.AddChild<GameStatus>(), true );
         PanelList.Add( RootPanel.AddChild<EndScreen>(), true );
         PanelList.Add( RootPanel.AddChild<SpectatingInfo>(), true );
         PanelList.Add( RootPanel.AddChild<TabMenu>(), true );

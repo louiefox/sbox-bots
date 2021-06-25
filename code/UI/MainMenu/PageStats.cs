@@ -21,7 +21,7 @@ namespace BattleRoyale.UI.MainMenuPages
 
 			TextEntry search = playerListArea.Add.TextEntry( "" );
 			search.Placeholder = "Search";
-			search.AddEvent( "onchange", () => UpdateStats( search.Text ) );
+			search.AddEventListener( "onchange", () => RefreshStats( search.Text ) );
 
 			Panel playerStats = playerListArea.Add.Panel( "headerbar" );
             playerStats.Add.Label( "Player", "header" ).AddClass( "player" );
@@ -33,13 +33,18 @@ namespace BattleRoyale.UI.MainMenuPages
 			PlayerList.Layout.ItemSize = new Vector2( 0, 50 );
 			PlayerList.Layout.AutoColumns = true;
 
-			UpdateStats();
+			RefreshStats();
         }
 
         [Event( "battleroyale.updateplayerdata" )]
-        private void UpdateStats(string filter = "")
+        private void RefreshStats()
         {
-            PlayerList.Clear();
+			RefreshStats( "" );
+		}        
+		
+		private void RefreshStats(string filter)
+        {
+			PlayerList.Clear();
 
             if ( PlayerData.Data == null ) return;
 

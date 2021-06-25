@@ -37,7 +37,7 @@ namespace BattleRoyale.UI
 
             Panel pageArea = mainArea.Add.Panel( "pagearea" );
 
-            //Pages.Add( "leaderboard", new( pageArea.AddChild<PageLeaderboard>( "page" ), "Leaderboards", "leaderboard", "View leaderboards for different statistics" ) );
+            Pages.Add( "leaderboard", new( pageArea.AddChild<PageLeaderboard>( "page" ), "Leaderboards", "leaderboard", "View leaderboards for different statistics" ) );
             Pages.Add( "stats", new( pageArea.AddChild<PageStats>( "page" ), "Global Stats", "trending_up", "View the global stats of players" ) );
             Pages.Add( "customisation", new( pageArea.AddChild<PageCustomisation>( "page" ), "Customisation", "person", "Customise your character with cosmetics" ) );
             Pages.Add( "settings", new( pageArea.AddChild<PageSettings>( "page" ), "Settings", "tune", "Change client settings" ) );
@@ -48,7 +48,7 @@ namespace BattleRoyale.UI
 
                 IconPanel pageButton = navigationPanel.Add.Icon( pageInfo.Icon );
                 pageButton.AddClass( "pagebutton" );
-                pageButton.AddEvent( "onclick", () => {
+                pageButton.AddEventListener( "onclick", () => {
                     SetActivePage( kv.Key );
                 } );
 
@@ -94,7 +94,7 @@ namespace BattleRoyale.UI
 				LastOpen = 0;
 			}
 
-			IsOpen = true;
+			//IsOpen = true;
 
 			SetClass( "open", IsOpen );
 
