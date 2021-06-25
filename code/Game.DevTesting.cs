@@ -44,5 +44,16 @@ public partial class BRGame
         {
             Position = tr.EndPos
         };
-    }        
+    }      
+	
+	[ServerCmd( "test_dress" )]
+    public static void TestDress()
+    {
+        var owner = ConsoleSystem.Caller.Pawn as BRPlayer;
+
+        if ( owner == null )
+            return;
+
+        owner.Dress();
+	}        
 }
