@@ -43,6 +43,10 @@ partial class BRPlayer : Player
             ItemInventory.Add( new BRInventoryItem( "ammo_rifle", 20 ) );
         }
 
+		AddClothingItem( "jacket_suit" );
+		AddClothingItem( "trousers_suit" );
+		AddClothingItem( "shoes_smart" );
+
 		Dress();
 
         base.Respawn();

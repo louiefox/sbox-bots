@@ -55,8 +55,7 @@ pagestats {
     }
 
     .header {
-        flex-basis: 20%;
-        flex-grow: 1;
+        width: 20%;
         font-size: 13px;
         font-weight: normal;
         text-shadow: 0 0 10px black;
@@ -70,14 +69,14 @@ pagestats {
         transition: all 0.2s all;
 
         &.player {
-            flex-basis: 35%;
+            width: 35%;
             border-top-left-radius: 8px;
             border-bottom-left-radius: 8px;
         }
 
         &.survived {
             border-right: 0px solid $theme-foreground;
-            flex-basis: 25%;
+            width: 25%;
             border-top-right-radius: 8px;
             border-bottom-right-radius: 8px;
             margin-right: 0px;

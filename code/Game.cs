@@ -24,12 +24,16 @@ public partial class BRGame : Game
         {
             PlayerData.LoadData();
         }
-    }
+
+		ClothingItem.LoadClothing();
+	}
 
     [Event.Hotload]
-    public void UpdateHUD()
+    public void HotloadUpdate()
     {
-        if ( !IsClient || BattleRoyaleHUD == null ) { return; }
+		ClothingItem.LoadClothing();
+
+		if ( !IsClient || BattleRoyaleHUD == null ) { return; }
         BattleRoyaleHUD.Delete();
         BattleRoyaleHUD = new BattleRoyaleHUD();
     }

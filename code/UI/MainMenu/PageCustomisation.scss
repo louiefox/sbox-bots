@@ -1,3 +1,138 @@
-﻿pagecustomisation {
+﻿@import 'ui/colourconfig.scss';
+
+pagecustomisation {
     font-family: Roboto;
+
+    .leftsection {
+        height: 100%;
+        aspect-ratio: 1;
+    }
+
+    .modelpanel {
+        width: 100%;
+        height: 100%;
+        background-color: $theme-foreground;
+    }
+
+    .modelimage {
+        width: 100%;
+        height: 100%;
+    }
+
+    .rightsection {
+        flex-grow: 1;
+        background-color: rgba( $theme-foreground, 0.7 );
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        margin: 25px;
+        border-radius: 8px;
+        flex-direction: row-reverse;
+    }
+
+    .navigation {
+        width: 50px;
+        background-color: rgba( $theme-foreground, 1 );
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+        flex-direction: column;
+    }
+
+    .pagebutton {
+        width: 100%;
+        height: 50px;
+        text-align: center;
+        align-items: center;
+        font-size: 30px;
+        cursor: pointer;
+        background-color: $theme-foreground;
+        transition: all 0.2s ease-out;
+        text-shadow: 0 0 5px black;
+        font-family: MaterialIcons;
+        color: $theme-text;
+
+        &:first-child {
+            border-top-right-radius: 8px;
+        }
+
+        &:hover {
+            background-color: $theme-background;
+        }
+
+        &.active {
+            color: $theme-accent;
+            background-color: rgba( $theme-accent, 0.1 );
+        }
+    }
+
+    .content {
+        width: 100%;
+        height: 100%;
+        flex-direction: column;
+    }
+
+    .page {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transition: all 0.1s ease-out;
+        opacity: 0;
+        transform: scale(1.05);
+
+        &.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .itemlist {
+        width: 100%;
+        height: 100%;
+        overflow: scroll;
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    .itemrow {
+        width: 100%;
+        flex-direction: row;
+        margin-bottom: 10px;
+        flex-shrink: 0;
+    }
+
+    .itementry {
+        flex-grow: 1;
+        width: 33%;
+        background-color: $theme-foreground;
+        box-shadow: 0 0 5px black;
+        border-radius: 8px;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        transition: all 0.1s all;
+        cursor: pointer;
+
+        &:hover {
+            transform: scale(1.05);
+        }
+    }
+
+    .itementryfill {
+        flex-grow: 1;
+        width: 33%;
+    }
+
+    .itemname {
+        color: $theme-text;
+        font-weight: 500;
+        font-size: 12px;
+        padding: 10px 0;
+        text-shadow: 0 0 5px black;
+    }
+
+    .itemimage {
+        background-color: black;
+        width: 100%;
+        aspect-ratio: 1;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+    }
 }
