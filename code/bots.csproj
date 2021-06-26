@@ -23,52 +23,14 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<Analyzer Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.Generator.dll" />
-		<Reference Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.System.dll" />
-		<Reference Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.Engine.dll" />
-		<Reference Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.Game.dll" />
-		<Reference Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.Hotload.dll" />
+		<Analyzer Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.Generator.dll"/>
+		<Reference Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.System.dll"/>
+		<Reference Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.Engine.dll"/>
+		<Reference Include="C:/Program Files (x86)/Steam/steamapps/common/sbox/bin/managed/Sandbox.Game.dll"/>
 	</ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="C:\Program Files (x86)\Steam\steamapps\common\sbox\addons\base\code\base.csproj"></ProjectReference>
-
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="UI\ArmourPlates - Copy.scss">
-      <DependentUpon>ArmourPlates.cs</DependentUpon>
-    </None>
-    <None Update="UI\BattleRoyaleHUD - Copy.scss">
-      <DependentUpon>BattleRoyaleHUD.cs</DependentUpon>
-    </None>
-    <None Update="UI\BattleRoyaleHUD.scss">
-      <DependentUpon>BattleRoyaleHUD.cs</DependentUpon>
-    </None>
-    <None Update="UI\EndScreen.scss">
-      <DependentUpon>EndScreen.cs</DependentUpon>
-    </None>
-    <None Update="UI\ArmourPlates.scss">
-      <DependentUpon>ArmourPlates.cs</DependentUpon>
-    </None>
-    <None Update="UI\ElimIndicator.scss">
-      <DependentUpon>ElimIndicator.cs</DependentUpon>
-    </None>
-    <None Update="UI\MainMenu\PageStats - Copy.scss">
-      <DependentUpon>PageStats.cs</DependentUpon>
-    </None>
-    <None Update="UI\SpectatingInfo.scss">
-      <DependentUpon>SpectatingInfo.cs</DependentUpon>
-    </None>
-    <None Update="UI\GameStatus.scss">
-      <DependentUpon>%(Filename).cs</DependentUpon>
-    </None>
-    <None Update="UI\MainMenu\PageStats.scss">
-      <DependentUpon>PageStats.cs</DependentUpon>
-    </None>
-    <None Update="UI\MainMenu\MainMenu.scss">
-      <DependentUpon>MainMenu.cs</DependentUpon>
-    </None>
+<ProjectReference Include="C:\Program Files (x86)\Steam\steamapps\common\sbox\Addons\base\code\base.csproj" />
   </ItemGroup>
 
 </Project>

@@ -18,6 +18,7 @@ namespace BattleRoyale.UI.MainMenuPages
 		private SceneCapture sceneCapture;
 		private Angles CamAngles;
 		private Panel ModelPanel;
+		private Panel ModelImage;
 
 		public PageCustomisation()
         {
@@ -27,7 +28,6 @@ namespace BattleRoyale.UI.MainMenuPages
 			ModelPanel = leftSection.Add.Panel( "modelpanel" );
 			ModelPanel.AddEventListener( "OnMouseDown", () => ModelPanel.SetMouseCapture( true ) );
 			ModelPanel.AddEventListener( "OnMouseUp", () => ModelPanel.SetMouseCapture( false ) );
-			ModelPanel.Add.Image( "scene:menucustomisation", "modelimage" );
 
 			CamAngles = new Angles( 25, 180, 0 );
 
@@ -175,6 +175,9 @@ namespace BattleRoyale.UI.MainMenuPages
 
 				sceneCapture.SetCamera( Vector3.Up * 30 + CamAngles.Direction * -150, CamAngles, 45 );
 			}
+
+			if ( ModelImage != null ) return;
+			ModelImage = ModelPanel.Add.Image( "scene:menucustomisation", "modelimage" );
 		}
 
 		public override void OnDeleted()
