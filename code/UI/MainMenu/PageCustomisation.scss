@@ -54,7 +54,7 @@ pagecustomisation {
         }
 
         &:hover {
-            background-color: $theme-background;
+            background-color: rgba( $theme-accent, 0.2 );
         }
 
         &.active {
@@ -101,8 +101,9 @@ pagecustomisation {
     .itementry {
         flex-grow: 1;
         width: 33%;
-        background-color: $theme-foreground;
-        box-shadow: 0 0 5px black;
+        background-color: $theme-background;
+        border: 2px solid $theme-foreground;
+        box-shadow: 0 0 10px black;
         border-radius: 8px;
         justify-content: center;
         align-items: center;
@@ -112,6 +113,11 @@ pagecustomisation {
 
         &:hover {
             transform: scale(1.05);
+            border: 2px solid $theme-accent;
+        }
+
+        &.active {
+            border: 2px solid $theme-accent;
         }
     }
 
@@ -129,10 +135,19 @@ pagecustomisation {
     }
 
     .itemimage {
-        background-color: black;
         width: 100%;
         aspect-ratio: 1;
-        border-top-left-radius: 8px;
         border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px;
+    }
+
+    .activemark {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        font-family: MaterialIcons;
+        color: $theme-accent;
+        font-size: 20px;
+        text-shadow: 0 0 5px black;
     }
 }

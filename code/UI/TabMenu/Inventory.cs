@@ -108,11 +108,11 @@ namespace BattleRoyale.UI
             //Model = AddChild<ModelDisplay>();
             //Model.Style.Set( "width: 100%; height: 100%;" );
 
-            AddEvent( "onclick", () => {
+            AddEventListener( "onclick", () => {
 
             } );
 
-            AddEvent( "onrightclick", () => {
+			AddEventListener( "onrightclick", () => {
                 if ( Local.Pawn is not BRPlayer player || !player.ItemInventory.Slots.ContainsKey( SlotKey ) ) return;
                 ConsoleSystem.Run( "request_inventory_drop", SlotKey );
             } );

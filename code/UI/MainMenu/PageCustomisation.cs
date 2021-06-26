@@ -13,11 +13,11 @@ namespace BattleRoyale.UI.MainMenuPages
 		private int ActivePage;
 		private Panel NavigationPanel;
 		private Dictionary<ClothingType, Panel> ClothingPages = new();
+		private Dictionary<string, CustomisationItem> ClothingItemPanels = new();
 
 		private SceneCapture sceneCapture;
 		private Angles CamAngles;
 		private Panel ModelPanel;
-		private Image ModelImage;
 
 		public PageCustomisation()
         {
@@ -25,6 +25,10 @@ namespace BattleRoyale.UI.MainMenuPages
 
 			Panel leftSection = Add.Panel( "leftsection" );
 			ModelPanel = leftSection.Add.Panel( "modelpanel" );
+			ModelPanel.AddEventListener( "OnMouseDown", () => ModelPanel.SetMouseCapture( true ) );
+			ModelPanel.AddEventListener( "OnMouseUp", () => ModelPanel.SetMouseCapture( false ) );
+			ModelPanel.Add.Image( "scene:menucustomisation", "modelimage" );
+
 			CamAngles = new Angles( 25, 180, 0 );
 
 			UpdateClothing();
@@ -87,7 +91,9 @@ namespace BattleRoyale.UI.MainMenuPages
 		[Event( "battleroyale.clothingitemsupdated" )]
 		private void ClothingItemsUpdated()
 		{
-			foreach( var kv in ClothingPages )
+			ClothingItemPanels.Clear();
+
+			foreach ( var kv in ClothingPages )
 			{
 				kv.Value.DeleteChildren();
 
@@ -98,20 +104,25 @@ namespace BattleRoyale.UI.MainMenuPages
 
 				foreach ( var itemKv in ClothingItem.Items )
 				{
-					if ( itemKv.Value.Type != kv.Key ) continue;
+					ClothingItem item = itemKv.Value;
+					if ( item.Type != kv.Key ) continue;
 
 					if ( currentRow == null || currentRow.ChildCount >= rowItemsMax )
 						currentRow = itemList.Add.Panel( "itemrow" );
 
-					CustomisationItem item = currentRow.AddChild<CustomisationItem>();
-					item.SetItemInfo( itemKv.Value );
-					item.Style.MarginRight = currentRow.ChildCount < rowItemsMax ? 10f : 0f;
+					CustomisationItem itemPanel = currentRow.AddChild<CustomisationItem>();
+					itemPanel.SetItemInfo( item );
+					itemPanel.Style.MarginRight = currentRow.ChildCount < rowItemsMax ? 10f : 0f;
+
+					ClothingItemPanels.Add( item.ID, itemPanel );
 				}
 
 				if ( currentRow != null && currentRow.ChildCount < rowItemsMax )
 					for ( int i = 0; i <= rowItemsMax - currentRow.ChildCount; i++ )
 						currentRow.Add.Panel( "itementryfill" );
 			}
+
+			UpdateActiveClothing();
 		}		
 		
 		[Event( "battleroyale.updateclothing" )]
@@ -120,6 +131,21 @@ namespace BattleRoyale.UI.MainMenuPages
 			if ( Local.Pawn == null || Local.Pawn is not BRPlayer player ) return;
 
 			RefreshScene( player.Clothing );
+			UpdateActiveClothing();
+		}
+
+		private void UpdateActiveClothing()
+		{
+			Dictionary<ClothingType, string> clothing = new();
+			if ( Local.Pawn != null && Local.Pawn is BRPlayer player ) clothing = player.Clothing;
+
+			foreach ( var kv in ClothingItemPanels )
+			{
+				if ( !ClothingItem.Items.ContainsKey( kv.Key ) ) return;
+				ClothingItem item = ClothingItem.Items[kv.Key];
+
+				kv.Value.SetActive( clothing.ContainsKey( item.Type ) && clothing[item.Type] == item.ID );
+			}
 		}
 
 		private void RefreshScene( Dictionary<ClothingType, string> clothing )
@@ -149,9 +175,6 @@ namespace BattleRoyale.UI.MainMenuPages
 
 				sceneCapture.SetCamera( Vector3.Up * 30 + CamAngles.Direction * -150, CamAngles, 45 );
 			}
-
-			ModelImage?.Delete();
-			ModelImage = ModelPanel.Add.Image( "scene:menucustomisation", "modelimage" );
 		}
 
 		public override void OnDeleted()
@@ -162,21 +185,11 @@ namespace BattleRoyale.UI.MainMenuPages
 			sceneCapture = null;
 		}
 
-		public override void OnButtonEvent( ButtonEvent e )
-		{
-			if ( e.Button == "mouseleft" )
-			{
-				//SetMouseCapture( e.Pressed );
-			}
-
-			base.OnButtonEvent( e );
-		}
-
 		public override void Tick()
 		{
 			base.Tick();
 
-			if ( HasMouseCapture )
+			if ( ModelPanel.HasMouseCapture )
 			{
 				CamAngles.pitch += Mouse.Delta.y;
 				CamAngles.yaw -= Mouse.Delta.x;
@@ -205,6 +218,7 @@ namespace BattleRoyale.UI.MainMenuPages
 	public class CustomisationItem : Panel
 	{
 		private SceneCapture sceneCapture;
+		private Panel ActiveIcon;
 
 		public CustomisationItem()
 		{
@@ -217,14 +231,19 @@ namespace BattleRoyale.UI.MainMenuPages
 
 			using ( SceneWorld.SetCurrent( new SceneWorld() ) )
 			{
-				SceneObject model = SceneObject.CreateModel( item.Model, Transform.Zero );
-				SceneObject.CreateModel( "models/room.vmdl", Transform.Zero );
+				SceneObject.CreateModel( item.Model, Transform.Zero );
 
-				Light.Point( Vector3.Up * 150.0f, 200.0f, Color.White * 5000.0f );
-				Light.Point( Vector3.Up * 10.0f + Vector3.Forward * 100.0f, 200, Color.White * 15000.0f );
+				/*SceneObject.CreateModel( "models/room.vmdl", Transform.Zero );
+
+				Transform wallTransform = Transform.Zero;
+				wallTransform.Rotation = Rotation.From( 90f, 0f, 0f );
+				wallTransform.Position += camAngles.Direction * 70;
+
+				SceneObject.CreateModel( "models/room.vmdl", wallTransform );*/
+
+				Light.Point( Vector3.Up * 150.0f + camAngles.Direction * -50, 2000.0f, Color.White * 50000.0f );
 
 				sceneCapture = SceneCapture.Create( "clothing:" + item.Model, 512, 512 );
-
 				sceneCapture.SetCamera( Vector3.Up * item.YDisplayOffset + camAngles.Direction * -50, camAngles, 60 );
 			}
 
@@ -236,6 +255,22 @@ namespace BattleRoyale.UI.MainMenuPages
 			{
 				ConsoleSystem.Run( "request_equipclothing", item.ID );
 			} );
+		}
+
+		public void SetActive( bool active )
+		{
+			SetClass( "active", active );
+
+			if ( !active )
+			{
+				ActiveIcon?.Delete();
+				ActiveIcon = null;
+				return;
+			}
+
+			if ( active && ActiveIcon != null ) return;
+
+			ActiveIcon = Add.Label( "check_circle", "activemark" );
 		}
 
 		public override void OnDeleted()

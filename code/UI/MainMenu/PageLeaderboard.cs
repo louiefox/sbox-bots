@@ -31,7 +31,7 @@ namespace BattleRoyale.UI.MainMenuPages
         {
             LeaderboardPanel board = LeaderboardsBack.AddChild<LeaderboardPanel>( "leaderboard" );
             board.SetInfo( title, formatStat, getSortValue );
-            board.SwitchButton.AddEvent( "onclick", () => {
+            board.SwitchButton.AddEventListener( "onclick", () => {
                 SetTargetLeaderboard( board );
             } );
             board.SwitchButton.AddClass( "inactive" );
