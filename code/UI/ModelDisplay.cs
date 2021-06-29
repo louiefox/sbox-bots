@@ -8,7 +8,7 @@ namespace BattleRoyale.UI
 {
 	public class ModelDisplay : Panel
 	{
-		SceneCapture sceneCapture;
+		//SceneCapture sceneCapture;
 		Angles CamAngles;
 		private Image ImgScene;
 
@@ -40,9 +40,9 @@ namespace BattleRoyale.UI
 				Light.Point( Vector3.Up * 10.0f + Vector3.Right * 100.0f, 200, Color.White * 15000.0f );
 				Light.Point( Vector3.Up * 10.0f + Vector3.Left * 100.0f, 200, Color.White * 15000.0f );
 
-				sceneCapture = SceneCapture.Create( "modeldisplay_" + model, 512, 512 );
+				//sceneCapture = SceneCapture.Create( "modeldisplay_" + model, 512, 512 );
 
-				sceneCapture.SetCamera( CamAngles.Direction * -40, CamAngles, 45 );
+				//sceneCapture.SetCamera( CamAngles.Direction * -40, CamAngles, 45 );
 			}
 
 			ImgScene = Add.Image( "scene:" + "modeldisplay_" + model );
@@ -57,8 +57,8 @@ namespace BattleRoyale.UI
 		{
 			base.OnDeleted();
 
-			sceneCapture?.Delete();
-			sceneCapture = null;
+			//sceneCapture?.Delete();
+			//sceneCapture = null;
 		}
 	}
 }

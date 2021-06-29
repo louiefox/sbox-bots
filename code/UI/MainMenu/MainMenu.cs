@@ -46,8 +46,7 @@ namespace BattleRoyale.UI
             {
                 Page pageInfo = kv.Value;
 
-                IconPanel pageButton = navigationPanel.Add.Icon( pageInfo.Icon );
-                pageButton.AddClass( "pagebutton" );
+                IconPanel pageButton = navigationPanel.Add.Icon( pageInfo.Icon, "pagebutton" );
                 pageButton.AddEventListener( "onclick", () => {
                     SetActivePage( kv.Key );
                 } );

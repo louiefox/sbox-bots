@@ -10,7 +10,7 @@
 // 
 // FloorUsable : Sandbox.Prop 
 // 
-@PointClass  model() = ent_floorusable : ""
+@PointClass model() = ent_floorusable : ""
 [
 	model(studio) [report]: "World Model" : ""
 	skin(materialgroup) [ group="Render Properties" ] : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -29,13 +29,12 @@
 		14 : "COLLISION_GROUP_WEAPON"
 	]
 	disableshadows(boolean) [ group="Render Properties" ] : "Disable shadow casting" : 0 : "Disable shadow casting for this entity"
-
 ]
 
 // 
 // LootPickup : FloorUsable 
 // 
-@PointClass  model() = ent_lootpickup : ""
+@PointClass model() = ent_lootpickup : ""
 [
 	model(studio) [report]: "World Model" : ""
 	skin(materialgroup) [ group="Render Properties" ] : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -54,7 +53,6 @@
 		14 : "COLLISION_GROUP_WEAPON"
 	]
 	disableshadows(boolean) [ group="Render Properties" ] : "Disable shadow casting" : 0 : "Disable shadow casting for this entity"
-
 ]
 
 // 
@@ -65,13 +63,12 @@
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 	disableshadows(boolean) [ group="Render Properties" ] : "Disable shadow casting" : 0 : "Disable shadow casting for this entity"
-
 ]
 
 // 
 // SupplyCrate : FloorUsable 
 // 
-@PointClass  model() = ent_supplycrate : ""
+@PointClass model() = ent_supplycrate : ""
 [
 	model(studio) [report]: "World Model" : ""
 	skin(materialgroup) [ group="Render Properties" ] : "Skin" : "default" : "Some models have multiple versions of their textures, called skins." 
@@ -90,7 +87,6 @@
 		14 : "COLLISION_GROUP_WEAPON"
 	]
 	disableshadows(boolean) [ group="Render Properties" ] : "Disable shadow casting" : 0 : "Disable shadow casting for this entity"
-
 ]
 
 // 
@@ -101,7 +97,6 @@
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 	disableshadows(boolean) [ group="Render Properties" ] : "Disable shadow casting" : 0 : "Disable shadow casting for this entity"
-
 ]
 
 // 
@@ -112,7 +107,6 @@
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 	disableshadows(boolean) [ group="Render Properties" ] : "Disable shadow casting" : 0 : "Disable shadow casting for this entity"
-
 ]
 
 // 
@@ -123,7 +117,6 @@
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 	disableshadows(boolean) [ group="Render Properties" ] : "Disable shadow casting" : 0 : "Disable shadow casting for this entity"
-
 ]
 
 // 
@@ -134,7 +127,6 @@
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 	disableshadows(boolean) [ group="Render Properties" ] : "Disable shadow casting" : 0 : "Disable shadow casting for this entity"
-
 ]
 
 // 
@@ -145,7 +137,6 @@
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 	disableshadows(boolean) [ group="Render Properties" ] : "Disable shadow casting" : 0 : "Disable shadow casting for this entity"
-
 ]
 
 // 
@@ -156,6 +147,5 @@
 	targetname(target_source) : "Name" : : "The name that other entities refer to this entity by."
 	parentname(target_destination) [ group="Hierarchy" ] : "Parent" : : "The name of this entity's parent in the movement hierarchy. Entities with parents move with their parent."
 	disableshadows(boolean) [ group="Render Properties" ] : "Disable shadow casting" : 0 : "Disable shadow casting for this entity"
-
 ]
 

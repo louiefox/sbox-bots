@@ -6,8 +6,8 @@ namespace BattleRoyale
 {
     public partial class PlayerInfo
     {
-        public static Dictionary<ulong, PlayerInfo> Players = new();
-        public static Dictionary<ulong, (TimeSince, int)> DelayedSendAddPlayer = new();
+        public static Dictionary<Client, PlayerInfo> Players = new();
+        public static Dictionary<Client, (TimeSince, int)> DelayedSendAddPlayer = new();
 
         public Client Client;
         public PlayerGameState State;
@@ -34,42 +34,37 @@ namespace BattleRoyale
 
         public static void AddPlayer( Client client )
         {
-            if ( Players.ContainsKey( client.SteamId ) ) return;
+            if ( Players.ContainsKey( client ) ) return;
 
-            Players.Add( client.SteamId, new( client ) );
+            Players.Add( client, new( client ) );
 
-            SendAddPlayer( To.Everyone, client.SteamId );
+            SendAddPlayer( To.Everyone, client );
 
             foreach ( var kv in Players )
             {
-                if ( kv.Key == client.SteamId ) continue;
+                if ( kv.Key == client ) continue;
                 SendAddPlayer( To.Single( client ), kv.Key );
             }
         }
         
         public static void RemovePlayer( Client client )
         {
-            if ( !Players.ContainsKey( client.SteamId ) ) return;
+            if ( !Players.ContainsKey( client ) ) return;
 
-            Players.Remove( client.SteamId );
-            SendRemovePlayer( To.Everyone, client.SteamId );
+            Players.Remove( client );
+            SendRemovePlayer( To.Everyone, client );
         }
         
-        public static PlayerInfo GetPlayerInfo( ulong steamID )
+        public static PlayerInfo GetPlayerInfo( Client client )
         {
-            if ( !Players.ContainsKey( steamID ) ) return null;
-            return Players[steamID];
+            if ( !Players.ContainsKey( client ) ) return null;
+            return Players[client];
         }
 
         public static PlayerInfo GetPlayerInfo( Player player )
         {
-            return GetPlayerInfo( player.GetClientOwner().SteamId );
-        }        
-        
-        public static PlayerInfo GetPlayerInfo( Client client )
-        {
-            return GetPlayerInfo( client.SteamId );
-        }    
+            return GetPlayerInfo( player.GetClientOwner() );
+        }         
         
         public static void UpdateGameState( Client client, PlayerGameState state )
         {
@@ -89,7 +84,7 @@ namespace BattleRoyale
 
             playerInfo.State = state;
 
-            UpdateGameState( To.Everyone, playerInfo.Client.SteamId, state );
+            SendUpdateGameState( To.Everyone, playerInfo.Client, state );
         }
 
         public static void UpdateGameState( Player player, PlayerGameState state )
@@ -98,9 +93,9 @@ namespace BattleRoyale
         }
 
         [ClientRpc]
-        public static void UpdateGameState( ulong steamID, PlayerGameState state )
+        public static void SendUpdateGameState( Client client, PlayerGameState state )
         {
-            if ( GetPlayerInfo( steamID ) is not PlayerInfo playerInfo ) return;
+            if ( GetPlayerInfo( client ) is not PlayerInfo playerInfo ) return;
             playerInfo.State = state;
 
             switch ( state )
@@ -115,7 +110,7 @@ namespace BattleRoyale
 
             if ( state != PlayerGameState.Dead ) playerInfo.Kills = 0;
 
-            Event.Run( "battleroyale.updateplayer", steamID );
+            Event.Run( "battleroyale.updateplayer", client );
         }
 
         public static void UpdateKills( Client client, int kills, bool setKills )
@@ -123,7 +118,7 @@ namespace BattleRoyale
             if ( GetPlayerInfo( client ) is not PlayerInfo playerInfo ) return;
             playerInfo.Kills = setKills ? kills : playerInfo.Kills + kills;
 
-            UpdateKills( To.Everyone, playerInfo.Client.SteamId, playerInfo.Kills );
+            SendUpdateKills( To.Everyone, playerInfo.Client, playerInfo.Kills );
         }           
         
         public static void UpdateKills( Player player, int kills, bool setKills )
@@ -137,66 +132,56 @@ namespace BattleRoyale
         }
 
         [ClientRpc]
-        public static void UpdateKills( ulong steamID, int kills )
+        public static void SendUpdateKills( Client client, int kills )
         {
-            if ( GetPlayerInfo( steamID ) is not PlayerInfo playerInfo ) return;
+            if ( GetPlayerInfo( client ) is not PlayerInfo playerInfo ) return;
             playerInfo.Kills = kills;
 
-            Event.Run( "battleroyale.updateplayer", steamID );
-        }
-
-        public static Client GetClientFromSteamID( ulong steamID )
-        {
-            foreach( Client client in Client.All )
-            {
-                if ( client.SteamId == steamID ) return client;
-            }
-
-            return null;
+            Event.Run( "battleroyale.updateplayer", client );
         }
 
         [ClientRpc]
-        public static void SendAddPlayer( ulong steamID )
+        public static void SendAddPlayer( Client client )
         {
-            DelayedSendAddPlayer.Add( steamID, (0, 0) );
+            DelayedSendAddPlayer.Add( client, (0, 0) );
         }
 
         [Event( "client.tick" )]
         public static void DelayedSendPlayerUpdate()
         {
-            List<ulong> toDelete = new();
+            List<Client> toDelete = new();
             foreach ( var kv in DelayedSendAddPlayer )
             {
                 if ( kv.Value.Item1 < .5f ) continue;
 
                 DelayedSendAddPlayer[kv.Key] = (0, kv.Value.Item2 + 1);
 
-                if ( GetClientFromSteamID( kv.Key ) is Client client )
+                if ( kv.Key is Client client )
                 {
                     PlayerInfo playerInfo = new( client );
 
-                    Players.Add( kv.Key, playerInfo );
+                    Players.Add( client, playerInfo );
                     Event.Run( "battleroyale.addplayer", kv.Key );
-                    toDelete.Add( kv.Key );
+                    toDelete.Add( client );
                     continue;
                 }
 
                 if ( kv.Value.Item2 >= 120 ) toDelete.Add( kv.Key );
             }
 
-            foreach ( ulong steamID in toDelete )
+            foreach ( Client client in toDelete )
             {
-                DelayedSendAddPlayer.Remove( steamID );
+                DelayedSendAddPlayer.Remove( client );
             }
         }
 
         [ClientRpc]
-        public static void SendRemovePlayer( ulong steamID )
+        public static void SendRemovePlayer( Client client )
         {
-            if ( !Players.ContainsKey( steamID ) ) return;
+            if ( !Players.ContainsKey( client ) ) return;
 
-            Players.Remove( steamID );
-            Event.Run( "battleroyale.removeplayer", steamID );
+            Players.Remove( client );
+            Event.Run( "battleroyale.removeplayer", client );
         }
     }
 

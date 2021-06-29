@@ -15,10 +15,11 @@ namespace BattleRoyale.UI.MainMenuPages
 		private Dictionary<ClothingType, Panel> ClothingPages = new();
 		private Dictionary<string, CustomisationItem> ClothingItemPanels = new();
 
-		private SceneCapture sceneCapture;
+		private SceneWorld sceneWorld;
 		private Angles CamAngles;
 		private Panel ModelPanel;
-		private Panel ModelImage;
+		private Scene ModelImage;
+		private List<SceneObject> SceneClothing = new();
 
 		public PageCustomisation()
         {
@@ -30,6 +31,8 @@ namespace BattleRoyale.UI.MainMenuPages
 			ModelPanel.AddEventListener( "OnMouseUp", () => ModelPanel.SetMouseCapture( false ) );
 
 			CamAngles = new Angles( 25, 180, 0 );
+			CreateSceneWorld();
+			ModelImage = ModelPanel.Add.Scene( sceneWorld, Vector3.Up * 30 + CamAngles.Direction * -150, CamAngles, 45, "modelimage" );
 
 			UpdateClothing();
 
@@ -148,21 +151,13 @@ namespace BattleRoyale.UI.MainMenuPages
 			}
 		}
 
-		private void RefreshScene( Dictionary<ClothingType, string> clothing )
+		private void CreateSceneWorld()
 		{
-			sceneCapture?.Delete();
-			sceneCapture = null;
+			sceneWorld = new SceneWorld();
 
-			using ( SceneWorld.SetCurrent( new SceneWorld() ) )
+			using ( SceneWorld.SetCurrent( sceneWorld ) )
 			{
 				SceneObject.CreateModel( "models/citizen/citizen.vmdl", Transform.Zero );
-
-				foreach ( var kv in clothing )
-				{
-					if ( !ClothingItem.Items.ContainsKey( kv.Value ) || ClothingItem.Items[kv.Value] is not ClothingItem item ) continue;
-					SceneObject.CreateModel( item.Model, Transform.Zero );
-				}
-
 				SceneObject.CreateModel( "models/room.vmdl", Transform.Zero );
 
 				Light.Point( Vector3.Up * 150.0f, 200.0f, Color.Red * 5000.0f );
@@ -170,22 +165,33 @@ namespace BattleRoyale.UI.MainMenuPages
 				Light.Point( Vector3.Up * 10.0f + Vector3.Backward * 100.0f, 200, Color.Magenta * 15000.0f );
 				Light.Point( Vector3.Up * 10.0f + Vector3.Right * 100.0f, 200, Color.Blue * 15000.0f );
 				Light.Point( Vector3.Up * 10.0f + Vector3.Left * 100.0f, 200, Color.Green * 15000.0f );
+			}
+		}
 
-				sceneCapture = SceneCapture.Create( "menucustomisation", 512, 512 );
-
-				sceneCapture.SetCamera( Vector3.Up * 30 + CamAngles.Direction * -150, CamAngles, 45 );
+		private void RefreshScene( Dictionary<ClothingType, string> clothing )
+		{
+			foreach( SceneObject obj in SceneClothing )
+			{
+				obj?.Delete();
 			}
 
-			if ( ModelImage != null ) return;
-			ModelImage = ModelPanel.Add.Image( "scene:menucustomisation", "modelimage" );
+			SceneClothing.Clear();
+
+			using ( SceneWorld.SetCurrent( sceneWorld ) )
+			{
+				foreach ( var kv in clothing )
+				{
+					if ( !ClothingItem.Items.ContainsKey( kv.Value ) || ClothingItem.Items[kv.Value] is not ClothingItem item ) continue;
+					SceneClothing.Add( SceneObject.CreateModel( item.Model, Transform.Zero ) );
+				}
+			}
 		}
 
 		public override void OnDeleted()
 		{
 			base.OnDeleted();
 
-			sceneCapture?.Delete();
-			sceneCapture = null;
+			sceneWorld?.Delete();
 		}
 
 		public override void Tick()
@@ -197,7 +203,9 @@ namespace BattleRoyale.UI.MainMenuPages
 				CamAngles.pitch += Mouse.Delta.y;
 				CamAngles.yaw -= Mouse.Delta.x;
 
-				sceneCapture?.SetCamera( Vector3.Up * 30 + CamAngles.Direction * -150, CamAngles, 45 );
+				if ( ModelImage == null ) return;
+				ModelImage.Position = Vector3.Up * 30 + CamAngles.Direction * -150;
+				ModelImage.Angles = CamAngles;
 			}
 		}
 
@@ -220,7 +228,7 @@ namespace BattleRoyale.UI.MainMenuPages
 
 	public class CustomisationItem : Panel
 	{
-		private SceneCapture sceneCapture;
+		private SceneWorld sceneWorld;
 		private Panel ActiveIcon;
 
 		public CustomisationItem()
@@ -230,27 +238,17 @@ namespace BattleRoyale.UI.MainMenuPages
 
 		public void SetItemInfo( ClothingItem item )
 		{
+			sceneWorld = new SceneWorld();
 			Angles camAngles = new Angles( 0, 180, 0 );
 
-			using ( SceneWorld.SetCurrent( new SceneWorld() ) )
+			using ( SceneWorld.SetCurrent( sceneWorld ) )
 			{
 				SceneObject.CreateModel( item.Model, Transform.Zero );
 
-				/*SceneObject.CreateModel( "models/room.vmdl", Transform.Zero );
-
-				Transform wallTransform = Transform.Zero;
-				wallTransform.Rotation = Rotation.From( 90f, 0f, 0f );
-				wallTransform.Position += camAngles.Direction * 70;
-
-				SceneObject.CreateModel( "models/room.vmdl", wallTransform );*/
-
 				Light.Point( Vector3.Up * 150.0f + camAngles.Direction * -50, 2000.0f, Color.White * 50000.0f );
-
-				sceneCapture = SceneCapture.Create( "clothing:" + item.Model, 512, 512 );
-				sceneCapture.SetCamera( Vector3.Up * item.YDisplayOffset + camAngles.Direction * -50, camAngles, 60 );
 			}
 
-			Add.Image( "scene:clothing:" + item.Model, "itemimage" );
+			Add.Scene( sceneWorld, Vector3.Up * item.YDisplayOffset + camAngles.Direction * -50, camAngles, 60, "itemimage" );
 
 			Add.Label( item.Name, "itemname" );
 
@@ -280,8 +278,7 @@ namespace BattleRoyale.UI.MainMenuPages
 		{
 			base.OnDeleted();
 
-			sceneCapture?.Delete();
-			sceneCapture = null;
+			sceneWorld?.Delete();
 		}
 	}
 }

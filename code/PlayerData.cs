@@ -109,8 +109,8 @@ public partial class PlayerData
 			dataToSend.Add( steamID, Data[steamID] );
 		}
 
-        // Will be replaced once dictionaries can be networked
-        SendPlayerData( To.Single( client ), JsonSerializer.Serialize( dataToSend ) );
+		// Will be replaced once dictionaries can be networked
+        SendPlayerData( To.Single( client ), JsonSerializer.Serialize( Data ) );
     }
 
     [ClientRpc]

@@ -9,7 +9,7 @@ namespace BattleRoyale.UI
 {
     public class Scoreboard : Panel
     {
-        private Dictionary<ulong, ScoreboardEntry> Players = new();
+        private Dictionary<Client, ScoreboardEntry> Players = new();
         private Dictionary<string, Panel> Sections = new();
 
         public Scoreboard()
@@ -44,31 +44,31 @@ namespace BattleRoyale.UI
         }
 
         [Event( "battleroyale.addplayer" )]
-        public void AddPlayer( ulong steamID )
+        public void AddPlayer( Client client )
         {
-            if ( Players.ContainsKey( steamID ) ) return;
-            PlayerInfo playerInfo = PlayerInfo.Players[steamID];
+            if ( Players.ContainsKey( client ) ) return;
+            PlayerInfo playerInfo = PlayerInfo.Players[client];
 
             ScoreboardEntry panel = Sections[playerInfo.State.ToString().ToLower()].AddChild<ScoreboardEntry>( "player" );
             panel.SetInfo( playerInfo );
 
-            Players.Add( steamID, panel );
+            Players.Add( client, panel );
         }
 
         [Event( "battleroyale.removeplayer" )]
-        private void RemovePlayer( ulong steamID )
+        private void RemovePlayer( Client client )
         {
-            if ( !Players.ContainsKey( steamID ) ) return;
+            if ( !Players.ContainsKey( client ) ) return;
 
-            Players[steamID].Delete();
-            Players.Remove( steamID );
+            Players[client].Delete();
+            Players.Remove( client );
         }
 
         [Event( "battleroyale.updateplayer" )]
-        private void UpdatePlayer( ulong steamID )
+        private void UpdatePlayer( Client client )
         {
-            if ( !Players.ContainsKey( steamID ) ) return;
-            ScoreboardEntry entry = Players[steamID];
+            if ( !Players.ContainsKey( client ) ) return;
+            ScoreboardEntry entry = Players[client];
 
             entry.Parent = Sections[entry.Info.State.ToString().ToLower()];
             entry.UpdateInfo();
