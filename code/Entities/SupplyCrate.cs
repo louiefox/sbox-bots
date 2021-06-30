@@ -115,6 +115,6 @@ public partial class SupplyCrate : FloorUsable
     public void CreateParticleEffect()
     {
         var pickupEffect = Particles.Create( "particles/loot_pickup.vpcf" );
-        pickupEffect.SetPos( 0, Position );
+        pickupEffect.SetPosition( 0, Position );
     }
 }
