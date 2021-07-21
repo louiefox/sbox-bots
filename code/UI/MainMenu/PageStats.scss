@@ -91,17 +91,20 @@ pagestats {
         width: 100%;
         height: 100%;
         overflow: scroll;
+        flex-direction: column;
     }
 
     .playerentry {
         width: 100%;
         margin-top: 5px;
         background-color: $theme-background;
-        box-shadow: 0 0 5px red;
+        box-shadow: 0 0 5px black;
         border: 2px solid $theme-foreground;
         border-radius: 8px;
         align-items: center;
         cursor: pointer;
+        height: 50px;
+        flex-shrink: 0;
         transition: all 0.1s all;
 
         &:hover {

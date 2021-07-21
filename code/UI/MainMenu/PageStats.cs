@@ -11,7 +11,7 @@ namespace BattleRoyale.UI.MainMenuPages
 {
     public class PageStats : Panel
     {
-        private VirtualScrollPanel<PageStatsEntry> PlayerList;
+        private Panel PlayerList;
 
         public PageStats()
         {
@@ -29,9 +29,7 @@ namespace BattleRoyale.UI.MainMenuPages
             playerStats.Add.Label( "Wins", "header" );
             playerStats.Add.Label( "Survived", "header" ).AddClass( "survived" );
 
-            PlayerList = playerListArea.AddChild<VirtualScrollPanel<PageStatsEntry>>( "playerlist");
-			PlayerList.Layout.ItemSize = new Vector2( 0, 50 );
-			PlayerList.Layout.AutoColumns = true;
+            PlayerList = playerListArea.Add.Panel( "playerlist");
 
 			RefreshStats();
         }
@@ -44,35 +42,25 @@ namespace BattleRoyale.UI.MainMenuPages
 		
 		private void RefreshStats(string filter)
         {
-			PlayerList.Clear();
+			PlayerList.DeleteChildren();
 
             if ( PlayerData.Data == null ) return;
 
 			filter = filter.ToLower();
 
-			PlayerList.Data.AddRange( PlayerData.Data.Select( x => (object)x ).Where( x => 
+			foreach( KeyValuePair<ulong, PlayerData.Stats> kv in PlayerData.Data )
 			{
-				if ( x == null || x is not KeyValuePair<ulong, PlayerData.Stats> kv ) return false;
+				if ( !kv.Value.Name.ToLower().Contains( filter ) ) continue;
 
-
-				return kv.Value.Name.ToLower().Contains( filter );
-			} ) );
+				PlayerList.AddChild<PageStatsEntry>( "playerentry" ).SetData( kv );
+			}
         }
     }
 
 	public class PageStatsEntry : Panel
 	{
-		public PageStatsEntry()
+		public void SetData( KeyValuePair<ulong, PlayerData.Stats> kv )
 		{
-			SetClass( "playerentry", true );
-		}
-
-		public override void SetDataObject( object obj )
-		{
-			base.SetDataObject( obj );
-
-			if ( obj is not KeyValuePair<ulong, PlayerData.Stats> kv ) return;
-
 			PlayerData.Stats stats = kv.Value;
 
 			Panel playerInfo = Add.Panel( "playerinfo" );
