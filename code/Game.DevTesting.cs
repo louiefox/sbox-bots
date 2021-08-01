@@ -2,10 +2,23 @@ using Sandbox;
 using BattleRoyale;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Linq;
 
 public partial class BRGame
 {
-    [ServerCmd( "test_spawnloot" )]
+	[ServerCmd( "test_spawnheli" )]
+    public static void TestSpawnHeli()
+    {
+		DropShip dropShip = new();
+		dropShip.StartMoving();
+
+		foreach( Client client in Client.All )
+		{
+			client.Camera = dropShip.DropCamera;
+		}
+	}	
+	
+	[ServerCmd( "test_spawnloot" )]
     public static void TestSpawnLoot( string itemID, int amount )
     {
         var owner = ConsoleSystem.Caller.Pawn;

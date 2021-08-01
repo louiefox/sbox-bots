@@ -133,15 +133,24 @@ public partial class BRGame : Game
 
         if ( IsServer )
         {
-            foreach ( var data in SupplyCrate.SpawnLocations )
+			List<Entity> spawnLocations = new();
+			foreach ( var ent in All.OfType<SupplyCrateSpawn>() )
             {
-                new SupplyCrate
-                {
-                    Position = data.Item1,
-                    WorldAng = data.Item2
-                };
+				spawnLocations.Add( ent );
             }
-        }
+			
+			foreach ( var ent in spawnLocations )
+            {
+				new SupplyCrate
+                {
+                    Position = ent.Position,
+                    WorldAng = ent.WorldAng
+				};
+            }
+
+			DropShip dropShip = new();
+			dropShip.StartMoving();
+		}
     }
 
     [ClientRpc]

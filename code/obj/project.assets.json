@@ -32,11 +32,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\sbox\\addons\\bots\\code\\bots.csproj",
+      "projectUniqueName": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\sbox\\Addons\\bots\\code\\bots.csproj",
       "projectName": "bots",
-      "projectPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\sbox\\addons\\bots\\code\\bots.csproj",
+      "projectPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\sbox\\Addons\\bots\\code\\bots.csproj",
       "packagesPath": "C:\\Users\\louie\\.nuget\\packages\\",
-      "outputPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\sbox\\addons\\bots\\code\\obj\\",
+      "outputPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\sbox\\Addons\\bots\\code\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\louie\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -83,7 +83,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.301\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.302\\RuntimeIdentifierGraph.json"
       }
     }
   }
