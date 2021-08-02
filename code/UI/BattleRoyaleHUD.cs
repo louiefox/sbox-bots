@@ -44,7 +44,7 @@ public partial class BattleRoyaleHUD : HudEntity<RootPanel>
 
         PanelList.Add( RootPanel.AddChild<Vitals>(), false );
         PanelList.Add( RootPanel.AddChild<Ammo>(), false );
-    }
+	}
 
     [Event( "client.tick" )]
     public void SpectatingUpdate()

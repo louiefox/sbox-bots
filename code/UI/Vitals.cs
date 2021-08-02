@@ -68,15 +68,16 @@ public class Vitals : Panel
         {
             float percent = Math.Clamp( (player.Armour - (currentCount * 50f)) / 50f * 100f, 0f, 100f );
 
-            panel.SetClass( "active", percent > 0 );
-
             if( percent > 0 )
             {
                 panel.Style.Dirty();
                 panel.Style.Width = Length.Percent( percent );
+				panel.SkipTransitions();
             }
 
-            currentCount++;
+			panel.SetClass( "active", percent > 0 );
+
+			currentCount++;
         }
 
         float extraHealth = 0f;

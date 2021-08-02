@@ -24,8 +24,7 @@ namespace BattleRoyale.UI
             Panel menuPanel = Add.Panel( "menu" );
             Panel navigationPanel = menuPanel.Add.Panel( "navbar" );
 
-            Panel menuIcon = navigationPanel.Add.Icon( "menu" );
-            menuIcon.AddClass( "menuicon" );
+            navigationPanel.Add.Icon( "menu", "menuicon" );
 
             Panel mainArea = menuPanel.Add.Panel( "mainarea" );
 

@@ -45,6 +45,7 @@ mainmenu {
 		text-align: center;
 		align-items: center;
 		font-size: 40px;
+		text-shadow: 0 0 2px black;
 	}
 
 	.pagebutton {
@@ -56,7 +57,7 @@ mainmenu {
 		cursor: pointer;
 		background-color: $theme-foreground;
 		transition: all 0.2s ease-out;
-		text-shadow: 0 0 5px black;
+		text-shadow: 0 0 2px black;
 
 		&:hover {
 			background-color: $theme-background;
@@ -92,13 +93,13 @@ mainmenu {
 		font-size: 20px;
 		font-weight: 500;
 		color: $theme-text;
-		text-shadow: 0 0 5px black;
+		text-shadow: 0 0 1px black;
 	}
 
 	.pagedescription {
 		font-size: 15px;
 		color: $theme-accent;
-		text-shadow: 0 0 5px black;
+		text-shadow: 0 0 1px black;
 	}
 
 	.pagearea {

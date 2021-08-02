@@ -25,7 +25,7 @@ armourplates {
 		transform: translateX(50%) translateY(-50%);
 		font-family: Roboto;
 		font-weight: bold;
-		text-shadow: 0 0 10px black;
+		text-shadow: 0 0 1px black;
 		font-size: 22px;
 		color: $theme-accent;
 	}
@@ -35,14 +35,14 @@ armourplates {
 		left: 50%;
 		bottom: 2px;
 		transform: translateX(-50%) translateY(50%);
-		box-shadow: 0 0 5px black;
+		box-shadow: 0 0 1px black;
 		padding: 0 6px;
 		border: 1px solid $theme-background;
 		border-radius: 5px;
 		background-color: $theme-text;
 		font-family: Roboto;
 		font-weight: bold;
-		text-shadow: 0 0 10px black;
+		text-shadow: 0 0 1px black;
 		font-size: 13px;
 		color: $theme-foreground;
 		text-align: center;
@@ -56,9 +56,9 @@ armourplates {
 		background-color: #232931;
 		font-family: Roboto;
 		font-weight: 500;
-		text-shadow: 0 0 3px black;
+		text-shadow: 0 0 1px black;
 		border-radius: 10px;
-		box-shadow: 0 0 8px black;
+		box-shadow: 0 0 1px black;
 		padding: 5px 20px;
 		transition: all 0.1s ease-out;
 		opacity: 0;

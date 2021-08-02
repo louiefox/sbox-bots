@@ -21,7 +21,7 @@ pagestats {
         color: $theme-text;
         font-size: 13px;
         font-weight: normal;
-        text-shadow: 0 0 5px black;
+        text-shadow: 0 0 1px black;
         transition: all 0.2s all;
 
         .placeholder {
@@ -58,7 +58,7 @@ pagestats {
         width: 20%;
         font-size: 13px;
         font-weight: normal;
-        text-shadow: 0 0 10px black;
+        text-shadow: 0 0 2px black;
         color: $theme-text;
         text-align: center;
         padding: 5px 0;
@@ -134,19 +134,19 @@ pagestats {
         font-size: 15px;
         font-weight: 500;
         color: $theme-text;
-        text-shadow: 0 0 5px black;
+        text-shadow: 0 0 1px black;
     }
 
     .playerid {
         font-size: 10px;
         color: $theme-accent;
-        text-shadow: 0 0 5px black;
+        text-shadow: 0 0 1px black;
     }
 
     .playerstattxt {
         font-size: 13px;
         font-weight: normal;
-        text-shadow: 0 0 10px black;
+        text-shadow: 0 0 1px black;
         color: $theme-text;
         width: 20%;
         text-align: center;

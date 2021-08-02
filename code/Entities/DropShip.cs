@@ -5,7 +5,7 @@ using System.Linq;
 [Library( "ent_dropship" )]
 public partial class DropShip : Prop
 {
-	private float TravelTime = 3f;
+	private float TravelTime = 10f;
 	private TimeSince StartTime;
 	private bool Travelling;
 	private Vector3 StartPos;

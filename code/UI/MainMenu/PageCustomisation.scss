@@ -46,7 +46,7 @@ pagecustomisation {
         cursor: pointer;
         background-color: $theme-foreground;
         transition: all 0.2s ease-out;
-        text-shadow: 0 0 5px black;
+        text-shadow: 0 0 1px black;
         font-family: MaterialIcons;
         color: $theme-text;
 
@@ -132,7 +132,7 @@ pagecustomisation {
         font-weight: 500;
         font-size: 12px;
         padding: 10px 0;
-        text-shadow: 0 0 5px black;
+        text-shadow: 0 0 1px black;
     }
 
     .itemimage {
@@ -149,6 +149,6 @@ pagecustomisation {
         font-family: MaterialIcons;
         color: $theme-accent;
         font-size: 20px;
-        text-shadow: 0 0 5px black;
+        text-shadow: 0 0 1px black;
     }
 }
