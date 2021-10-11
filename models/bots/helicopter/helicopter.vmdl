@@ -11,8 +11,7 @@
 				[
 					{
 						_class = "RenderMeshFile"
-						name = "uploads_files_1839214_helicopter"
-						filename = "models/bots/helicopter/uploads_files_1839214_helicopter.FBX"
+						filename = "models/bots/helicopter/untitled2.fbx"
 						import_translation = [ 0.0, 0.0, 0.0 ]
 						import_rotation = [ 0.0, 0.0, 0.0 ]
 						import_scale = 3.0
@@ -38,13 +37,40 @@
 						[
 							{
 								from = "01___default.vmat"
-								to = "materials/default/white.vmat"
+								to = "models/bots/helicopter/helicopter.vmat"
 							},
 						]
 						use_global_default = false
 						global_default_material = ""
 					},
 				]
+			},
+			{
+				_class = "AnimationList"
+				children = 
+				[
+					{
+						_class = "AnimFile"
+						name = "untitled2"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						source_filename = "models/bots/helicopter/untitled2.fbx"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						reverse = false
+					},
+				]
+				default_root_bone_name = ""
 			},
 		]
 		model_archetype = ""

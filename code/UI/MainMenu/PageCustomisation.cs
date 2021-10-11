@@ -18,7 +18,7 @@ namespace BattleRoyale.UI.MainMenuPages
 		private SceneWorld sceneWorld;
 		private Angles CamAngles;
 		private Panel ModelPanel;
-		private Scene ModelImage;
+		private ScenePanel ModelImage;
 		private List<SceneObject> SceneClothing = new();
 
 		public PageCustomisation()

@@ -56,7 +56,7 @@ partial class BRPlayer : Player
     {
         base.Simulate( cl );
 
-        if ( LifeState != LifeState.Alive ) return;
+		if ( LifeState != LifeState.Alive ) return;
 
         if ( Input.MouseWheel != 0 || Input.Pressed( InputButton.Slot1 ) || Input.Pressed( InputButton.Slot2 ) )
         {

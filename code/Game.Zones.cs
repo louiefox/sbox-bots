@@ -28,7 +28,7 @@ public partial class BRGame
 
             ZoneModel.Position = new Vector3( ZoneCenterPos.x, ZoneCenterPos.y, 300 );
             ZoneModel.Scale = (DeathZoneDistance() * 2) / 100f;
-            ZoneModel.RenderColor = Color32.Red;
+            ZoneModel.RenderColor = Color.Red;
             ZoneModel.RenderAlpha = .5f;
         }
 

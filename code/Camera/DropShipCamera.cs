@@ -18,8 +18,8 @@ public partial class DropShipCamera : Camera
 			return;
 		}
 
-        Pos = TargetDropShip.Position + new Vector3( 0, 0, 300f ) + TargetDropShip.Rotation.Forward * 500;
-		Rot = Rotation.From( TargetDropShip.Rotation.Pitch(), TargetDropShip.Rotation.Yaw() + 180f, TargetDropShip.Rotation.Roll() );
+		Rot = Rotation.From( Input.Rotation.Pitch(), Input.Rotation.Yaw(), TargetDropShip.Rotation.Roll() );
+		Pos = TargetDropShip.Position + (Rot.Up * 200) + (Rot.Forward * -800);
 
 		FieldOfView = 70;
 

@@ -20,11 +20,7 @@ public partial class DropShip : Prop
 
 		SetModel( "models/bots/helicopter/helicopter.vmdl_c" );
 
-        GlowState = GlowStates.GlowStateOn;
-		GlowDistanceStart = 0;
-		GlowDistanceEnd = 1000;
-		GlowColor = new Color( 0.0f, 1.0f, 0.0f, 1.0f );
-		GlowActive = true;
+		PlaySound( "helicopter" );
 	}
 
 	public void StartMoving()
